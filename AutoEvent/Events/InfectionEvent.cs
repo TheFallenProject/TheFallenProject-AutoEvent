@@ -144,7 +144,7 @@ namespace AutoEvent
                 Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
                 // EventManager.CurrentEvent.OnStop();
                 // Выключение музыки
-                StopAudio();
+                if (Audio.Microphone.IsRecording) StopAudio();
                 // Рестарт Лобби
                 // EventManager.Init();
                 // Очистка карты Ивента

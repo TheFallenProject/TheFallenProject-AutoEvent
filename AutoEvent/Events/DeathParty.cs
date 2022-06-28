@@ -163,7 +163,7 @@ namespace AutoEvent
                 CleanUpAll();
                 Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
                 // Выключение музыки
-                StopAudio();
+                if (Audio.Microphone.IsRecording) StopAudio();
                 // Очистка карты Ивента
                 Log.Info("Запуск удаления");
                 NetworkServer.UnSpawn(Model.GameObject);

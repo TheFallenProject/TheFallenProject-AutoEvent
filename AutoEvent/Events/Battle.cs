@@ -114,7 +114,7 @@ namespace AutoEvent
                 // фф выключаем
                 Server.FriendlyFire = false;
                 // Выключение музыки
-                // StopAudio();
+                if (Audio.Microphone.IsRecording) StopAudio();
                 // Очистка карты Ивента
                 Log.Info("Запуск удаления");
                 NetworkServer.UnSpawn(Model.GameObject);

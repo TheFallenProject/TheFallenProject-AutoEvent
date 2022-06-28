@@ -46,7 +46,7 @@ namespace AutoEvent
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
             Qurre.Events.Player.RagdollSpawn -= OnRagdollSpawn;
-            EventEnd();
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
         {
@@ -137,23 +137,19 @@ namespace AutoEvent
         // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
-            // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
-            Timing.CallDelayed(10f, () =>
-            {
-                // Очистка оружия
-                CleanUpAll();
-                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
-                // фф выключаем
-                Server.FriendlyFire = false;
-                // Выключение музыки
-                StopAudio();
-                // Очистка карты Ивента
-                Log.Info("Запуск удаления");
-                Timing.RunCoroutine(DestroyObjects(Model));
-                Timing.RunCoroutine(DestroyObjects(LavaModel));
-                // Рестарт Лобби
-                // EventManager.Init();
-            });
+            // Очистка оружия
+            CleanUpAll();
+            Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+            // фф выключаем
+            Server.FriendlyFire = false;
+            // Выключение музыки
+            if (Audio.Microphone.IsRecording) StopAudio();
+            // Очистка карты Ивента
+            Log.Info("Запуск удаления");
+            Timing.RunCoroutine(DestroyObjects(Model));
+            Timing.RunCoroutine(DestroyObjects(LavaModel));
+            // Рестарт Лобби
+            // EventManager.Init();
         }
         // Рандомная позиция игрока
         public Vector3 RandomPlayerPosition()

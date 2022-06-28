@@ -56,7 +56,7 @@ namespace AutoEvent
             Qurre.Events.Player.PickupItem -= OnPickupItem;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
-            EventEnd();
+            Timing.CallDelayed(10f, () => EventEnd());
         }
 
         public void OnEventStarted()
@@ -176,35 +176,32 @@ namespace AutoEvent
         // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
-            // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
-            Timing.CallDelayed(10f, () =>
+            // Чистим трупы и оружия
+            CleanUpAll();
+            Player.List.ToList().ForEach(player =>
             {
-                // Чистим трупы и оружия
-                CleanUpAll();
-                Player.List.ToList().ForEach(player =>
-                {
-                    player.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
-                    player.Role = RoleType.Tutorial;
-                });
-                // Очистка времени
-                EventTime = new TimeSpan(0, 0, 0);
-                DayWeek = string.Empty;
-                // Очистка карты
-                JailerDoorsTime.Clear();
-
-                Log.Info("Запуск удаления");
-                Timing.RunCoroutine(DestroyObjects(Maps));
-                Button.Destroy();
-                Timing.RunCoroutine(DestroyObjects(Doors));
-                Timing.RunCoroutine(DestroyObjects(JailerDoors));
-                Spawners.Destroy();
-
-                isDoorsOpen = false;
-                // выключить огонь по своим
-                Server.FriendlyFire = false;
-                // Рестарт Лобби
-                // EventManager.Init();
+                player.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
+                player.Role = RoleType.Tutorial;
             });
+            if (Audio.Microphone.IsRecording) StopAudio();
+            // Очистка времени
+            EventTime = new TimeSpan(0, 0, 0);
+            DayWeek = string.Empty;
+            // Очистка карты
+            JailerDoorsTime.Clear();
+
+            Log.Info("Запуск удаления");
+            Timing.RunCoroutine(DestroyObjects(Maps));
+            Button.Destroy();
+            Timing.RunCoroutine(DestroyObjects(Doors));
+            Timing.RunCoroutine(DestroyObjects(JailerDoors));
+            Spawners.Destroy();
+
+            isDoorsOpen = false;
+            // выключить огонь по своим
+            Server.FriendlyFire = false;
+            // Рестарт Лобби
+            // EventManager.Init();
         }
         public List<string> RandomMessage = new List<string>()
         {
