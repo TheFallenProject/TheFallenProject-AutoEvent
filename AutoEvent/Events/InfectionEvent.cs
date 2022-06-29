@@ -51,7 +51,7 @@ namespace AutoEvent
             Qurre.Events.Player.Damage -= OnDamage;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
-            EventEnd();
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
         {
@@ -137,8 +137,6 @@ namespace AutoEvent
                 $"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
             }
             // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
-            Timing.CallDelayed(10f, () =>
-            {
                 // Чистим трупы и оружия
                 CleanUpAll();
                 Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
@@ -150,7 +148,6 @@ namespace AutoEvent
                 // Очистка карты Ивента
                 Log.Info("Запуск удаления");
                 Timing.RunCoroutine(DestroyObjects(Model));
-            });
         }
         // Дальше идут ивенты ... для удобства думаю лучше их писать в конкретном ивенте
         public void OnDamage(DamageEvent ev)

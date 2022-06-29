@@ -41,7 +41,7 @@ namespace AutoEvent
             Plugin.IsEventRunning = false;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
-            EventEnd();
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
         {
@@ -106,8 +106,6 @@ namespace AutoEvent
         public void EventEnd()
         {
             // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
-            Timing.CallDelayed(10f, () =>
-            {
                 // Первым мы чистим трупы и оружия
                 CleanUpAll();
                 Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
@@ -121,7 +119,6 @@ namespace AutoEvent
                 Timing.RunCoroutine(DestroyObjects(Model));
                 // Рестарт Лобби
                 // EventManager.Init();
-            });
         }
         public void CreateSoldier(bool isMtf, Player player)
         {
