@@ -179,16 +179,16 @@ namespace AutoEvent
                 Timing.KillCoroutines("jump");
                 // Чистим трупы и оружия
                 CleanUpAll();
-                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
                 // Выключение музыки
                 if (Audio.Microphone.IsRecording) StopAudio();
-                // Рестарт Лобби
-                // EventManager.Init();
-                // Очистка карты Ивента
+            // Рестарт Лобби
+            // EventManager.Init();
+            // Очистка карты Ивента
                 Log.Info("Запуск удаления");
                 Timing.RunCoroutine(DestroyObjects(Platformes));
                 Timing.RunCoroutine(DestroyObjects(ModelCheckPoint));
                 Timing.RunCoroutine(DestroyObjects(Model));
+                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
 
         }
         // Ивенты

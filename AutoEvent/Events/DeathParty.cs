@@ -158,15 +158,15 @@ namespace AutoEvent
         {
                 // Чистим трупы и оружия
                 CleanUpAll();
-                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
                 // Выключение музыки
                 if (Audio.Microphone.IsRecording) StopAudio();
                 // Очистка карты Ивента
                 Log.Info("Запуск удаления");
                 NetworkServer.UnSpawn(Model.GameObject);
                 Timing.RunCoroutine(DestroyObjects(Model));
-                // Рестарт Лобби
-                // EventManager.Init();
+                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+            // Рестарт Лобби
+            // EventManager.Init();
         }
         // Манипуляции с дверьми и примитивами
         public Vector3 RandomPosition()

@@ -120,12 +120,6 @@ namespace AutoEvent
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
-            OnStop();
-            yield break;
-        }
-        // Подведение итогов ивента и возврат в лобби
-        public void EventEnd()
-        {
             if (Player.List.Count(r => r.Role == RoleType.ClassD) == 0)
             {
                 BroadcastPlayers($"<color=red>Зомби Победили!</color>\n" +
@@ -136,10 +130,15 @@ namespace AutoEvent
                 BroadcastPlayers($"<color=yellow><color=#D71868><b><i>Люди</i></b></color> Победили!</color>\n" +
                 $"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
             }
+            OnStop();
+            yield break;
+        }
+        // Подведение итогов ивента и возврат в лобби
+        public void EventEnd()
+        {
             // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
                 // Чистим трупы и оружия
                 CleanUpAll();
-                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
                 // EventManager.CurrentEvent.OnStop();
                 // Выключение музыки
                 if (Audio.Microphone.IsRecording) StopAudio();
@@ -148,6 +147,7 @@ namespace AutoEvent
                 // Очистка карты Ивента
                 Log.Info("Запуск удаления");
                 Timing.RunCoroutine(DestroyObjects(Model));
+                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
         }
         // Дальше идут ивенты ... для удобства думаю лучше их писать в конкретном ивенте
         public void OnDamage(DamageEvent ev)

@@ -108,7 +108,6 @@ namespace AutoEvent
             // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
                 // Первым мы чистим трупы и оружия
                 CleanUpAll();
-                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
                 // фф выключаем
                 Server.FriendlyFire = false;
                 // Выключение музыки
@@ -117,8 +116,9 @@ namespace AutoEvent
                 Log.Info("Запуск удаления");
                 NetworkServer.UnSpawn(Model.GameObject);
                 Timing.RunCoroutine(DestroyObjects(Model));
-                // Рестарт Лобби
-                // EventManager.Init();
+                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+            // Рестарт Лобби
+            // EventManager.Init();
         }
         public void CreateSoldier(bool isMtf, Player player)
         {

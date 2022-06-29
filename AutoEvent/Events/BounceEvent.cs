@@ -135,7 +135,7 @@ namespace AutoEvent
             // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
                 // Первым мы чистим трупы и оружия
                 CleanUpAll();
-                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+
                 // Выключение музыки
                 if (Audio.Microphone.IsRecording) StopAudio();
                 // Рестарт Лобби
@@ -145,6 +145,7 @@ namespace AutoEvent
                 Log.Info("Запуск удаления");
                 NetworkServer.UnSpawn(Model.GameObject);
                 Timing.RunCoroutine(DestroyObjects(Model));
+                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
         }
         public Vector3 RandomPosition(bool isMTF)
         {

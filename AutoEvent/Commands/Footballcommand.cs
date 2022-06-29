@@ -6,11 +6,11 @@ using Qurre.API;
 namespace AutoEvent.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class BossBattleCommand : ICommand
+    public class Footballcommand : ICommand
     {
-        public string Command => "ev_boss";
+        public string Command => "ev_football";
         public string[] Aliases => new string[] { };
-        public string Description => "Создать авто-ивента бой с боссом: ev_boss";
+        public string Description => "Создать авто-ивент Футбол: ev_football";
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player admin = Player.Get((sender as CommandSender).SenderId);
@@ -30,7 +30,7 @@ namespace AutoEvent.Commands
                 return false;
             }
             Functions.MainFunctions.StartEventParametres();
-            new Bossbattle().OnStart();
+            new Football().OnStart();
             response = $"Игра началась";
             return true;
         }

@@ -178,11 +178,6 @@ namespace AutoEvent
         {
             // Чистим трупы и оружия
             CleanUpAll();
-            Player.List.ToList().ForEach(player =>
-            {
-                player.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
-                player.Role = RoleType.Tutorial;
-            });
             if (Audio.Microphone.IsRecording) StopAudio();
             // Очистка времени
             EventTime = new TimeSpan(0, 0, 0);
@@ -196,6 +191,11 @@ namespace AutoEvent
             Timing.RunCoroutine(DestroyObjects(Doors));
             Timing.RunCoroutine(DestroyObjects(JailerDoors));
             Spawners.Destroy();
+            Player.List.ToList().ForEach(player =>
+            {
+                player.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
+                player.Role = RoleType.Tutorial;
+            });
 
             isDoorsOpen = false;
             // выключить огонь по своим

@@ -1,3 +1,4 @@
 
 *.cs
 AutoEvent/Properties/AssemblyInfo.cs
+*.csproj

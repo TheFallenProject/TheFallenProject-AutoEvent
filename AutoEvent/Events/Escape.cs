@@ -105,11 +105,11 @@ namespace AutoEvent
 
                 // Чистим трупы и оружия
                 CleanUpAll();
-                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
                 // Выключение музыки
                 if (Audio.Microphone.IsRecording) StopAudio();
-                // Рестарт Лобби
-                // EventManager.Init();
+            // Рестарт Лобби
+            // EventManager.Init();
+            Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
         }
         // Ивенты
         public void OnJoin(JoinEvent ev)
