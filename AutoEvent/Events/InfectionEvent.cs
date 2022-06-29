@@ -147,7 +147,7 @@ namespace AutoEvent
                 // Очистка карты Ивента
                 Log.Info("Запуск удаления");
                 Timing.RunCoroutine(DestroyObjects(Model));
-                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+              //  Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
         }
         // Дальше идут ивенты ... для удобства думаю лучше их писать в конкретном ивенте
         public void OnDamage(DamageEvent ev)

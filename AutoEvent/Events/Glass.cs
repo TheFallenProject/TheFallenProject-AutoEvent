@@ -188,7 +188,7 @@ namespace AutoEvent
                 Timing.RunCoroutine(DestroyObjects(Platformes));
                 Timing.RunCoroutine(DestroyObjects(ModelCheckPoint));
                 Timing.RunCoroutine(DestroyObjects(Model));
-                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+               // Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
 
         }
         // Ивенты

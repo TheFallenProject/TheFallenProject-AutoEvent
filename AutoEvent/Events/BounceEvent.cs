@@ -1,4 +1,4 @@
-﻿using AutoEvent.Functions;
+﻿ using AutoEvent.Functions;
 using MEC;
 using Mirror;
 using Qurre;
@@ -145,7 +145,7 @@ namespace AutoEvent
                 Log.Info("Запуск удаления");
                 NetworkServer.UnSpawn(Model.GameObject);
                 Timing.RunCoroutine(DestroyObjects(Model));
-                Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+               // Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
         }
         public Vector3 RandomPosition(bool isMTF)
         {

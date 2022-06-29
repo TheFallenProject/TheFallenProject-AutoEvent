@@ -147,7 +147,7 @@ namespace AutoEvent
             Log.Info("Запуск удаления");
             Timing.RunCoroutine(DestroyObjects(Model));
             Timing.RunCoroutine(DestroyObjects(LavaModel));
-            Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+           // Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
             // Рестарт Лобби
             // EventManager.Init();
         }

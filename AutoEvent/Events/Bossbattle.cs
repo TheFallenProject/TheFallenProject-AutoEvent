@@ -145,7 +145,7 @@ namespace AutoEvent
             Log.Info("Запуск удаления");
             NetworkServer.UnSpawn(Model.GameObject);
             Timing.RunCoroutine(DestroyObjects(Model));
-            Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+          //  Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
             // Рестарт Лобби
             // EventManager.Init();
         }
