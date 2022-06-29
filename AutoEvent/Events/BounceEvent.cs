@@ -43,7 +43,7 @@ namespace AutoEvent
             Qurre.Events.Player.Damage -= OnDamage;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
-            EventEnd();
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
         {
@@ -133,8 +133,6 @@ namespace AutoEvent
                 $"<color=yellow>Конец ивент: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
             }
             // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
-            Timing.CallDelayed(10f, () =>
-            {
                 // Первым мы чистим трупы и оружия
                 CleanUpAll();
                 Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
@@ -147,7 +145,6 @@ namespace AutoEvent
                 Log.Info("Запуск удаления");
                 NetworkServer.UnSpawn(Model.GameObject);
                 Timing.RunCoroutine(DestroyObjects(Model));
-            });
         }
         public Vector3 RandomPosition(bool isMTF)
         {

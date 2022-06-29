@@ -41,7 +41,7 @@ namespace AutoEvent
             Qurre.Events.Player.Join -= OnJoin;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
-            EventEnd();
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnWaitingEvent()
         {
@@ -174,8 +174,7 @@ namespace AutoEvent
         public void EventEnd()
         {
             // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
-            Timing.CallDelayed(10f, () =>
-            {
+
                 // Киляем корутину
                 Timing.KillCoroutines("jump");
                 // Чистим трупы и оружия
@@ -190,7 +189,7 @@ namespace AutoEvent
                 Timing.RunCoroutine(DestroyObjects(Platformes));
                 Timing.RunCoroutine(DestroyObjects(ModelCheckPoint));
                 Timing.RunCoroutine(DestroyObjects(Model));
-            });
+
         }
         // Ивенты
         public void OnJoin(JoinEvent ev)

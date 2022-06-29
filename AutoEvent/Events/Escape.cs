@@ -41,7 +41,7 @@ namespace AutoEvent
             Qurre.Events.Alpha.Stopping -= OnNukeDisable;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
-            EventEnd();
+            Timing.CallDelayed(10f, () => EventEnd());
         }
 
         static void OnNukeDisable(AlphaStopEvent ev)
@@ -103,8 +103,6 @@ namespace AutoEvent
             BroadcastPlayers($"Атомный Побег\n" +
                 $"<color=red>ПОБЕДА SCP</color>", 10);
 
-            Timing.CallDelayed(10f, () =>
-            {
                 // Чистим трупы и оружия
                 CleanUpAll();
                 Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
@@ -112,7 +110,6 @@ namespace AutoEvent
                 if (Audio.Microphone.IsRecording) StopAudio();
                 // Рестарт Лобби
                 // EventManager.Init();
-            });
         }
         // Ивенты
         public void OnJoin(JoinEvent ev)
