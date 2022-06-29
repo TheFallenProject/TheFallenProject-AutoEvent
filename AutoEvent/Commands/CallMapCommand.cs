@@ -48,7 +48,10 @@ namespace AutoEvent.Commands
                     $" - Death.json - Большая плоская карта\n" +
                     $" - Glass.json - Длинная карта, но без поверхностей\n" +
                     $" - Lava.json - Карта на подобии Пабга, но без лавы\n" +
-                    $" - Parkour.json - Паркур, чтобы люди залезали наверх\n";
+                    $" - Parkour.json - Паркур, чтобы люди залезали наверх\n" +
+                    $" - Battle.json - Карта для войны\n" +
+                    $" - Parkour_g1.json - Паркур горизонтальный версия 1\n" +
+                    $" - Parkour_g2.json - Паркур горизонтальный версия 2\n";
                 return true;
             }
             if (Model.Primitives.Count > 0)

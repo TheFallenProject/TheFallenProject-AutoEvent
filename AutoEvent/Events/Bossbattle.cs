@@ -29,7 +29,7 @@ namespace AutoEvent
         public Model Model { get; set; }
         public TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
-        public int who, i = 0;
+        public int i = 1;
         public static int hp = 5000;
 
         public void OnStart()
@@ -62,10 +62,9 @@ namespace AutoEvent
             {
                 cont++;
             }
-            who = Random.Range(0, cont);
             foreach(Player pl in Player.List)
             {
-                if(i != who)
+                if(i != cont)
                 {
                     pl.ShowHint("<color=blue>ВЫ РЫЦАРЬ</color>");
                     pl.Role = RoleType.ClassD;
@@ -76,8 +75,9 @@ namespace AutoEvent
                     {
                         pl.Position = Model.GameObject.transform.position + new Vector3(44, 5, 5);
                     });
+                    i++;                   
                 }
-                else if(i == who)
+                else if(i == cont)
                 {
                     pl.ShowHint("<color=red>ВЫ БОСС</color>");
                     pl.Role = RoleType.Tutorial;
@@ -91,11 +91,12 @@ namespace AutoEvent
                     {
                         pl.Position = Model.GameObject.transform.position + new Vector3(-44, 5, -7);
                     });
+
                 }
             }
             
             // Запуск ивента
-            Timing.RunCoroutine(Cycle(), "battle_time");
+            Timing.RunCoroutine(Cycle(), "battle_time");    
         }
         public IEnumerator<float> Cycle()
         {
@@ -107,7 +108,7 @@ namespace AutoEvent
                 yield return Timing.WaitForSeconds(1f);
             }
             Player.List.ToList().ForEach(player => player.DisableEffect(EffectType.Ensnared));
-            while (Player.List.Count(r => r.Team == Team.MTF) > 0 && Player.List.Count(r => r.Team == Team.TUT) > 0)
+            while (Player.List.Count(r => r.Team == Team.CDP) > 0 && Player.List.Count(r => r.Team == Team.TUT) > 0)
             {
                 BroadcastPlayers($"<color=#D71868><b><i>Бой с боссом</i></b></color>\n" +
                 $"<color=yellow><color=blue>{Player.List.Count(r => r.Team == Team.MTF)}</color> VS БОССА</color></color>\n" +
@@ -115,15 +116,15 @@ namespace AutoEvent
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
-            if (Player.List.Count(r => r.Team == Team.MTF) == 0)
+            if (Player.List.Count(r => r.Team == Team.CDP) == 0)
             {
-                BroadcastPlayers($"<color=#D71868><b><i>Заруба</i></b></color>\n" +
+                BroadcastPlayers($"<color=#D71868><b><i>Бой с боссом</i></b></color>\n" +
                 $"<color=yellow>ПОБЕДИЛ <color=green> БОСС</color></color>\n" +
                 $"<color=yellow>Конец ивент: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
             }
             else if (Player.List.Count(r => r.Team == Team.TUT) == 0)
             {
-                BroadcastPlayers($"<color=#D71868><b><i>Заруба</i></b></color>\n" +
+                BroadcastPlayers($"<color=#D71868><b><i>Бой с боссом</i></b></color>\n" +
                 $"<color=yellow>ПОБЕДИЛИ - <color=blue>{Player.List.Count(r => r.Team == Team.MTF)} РЫЦАРИ</color></color>\n" +
                 $"<color=yellow>Конец ивент: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
             }
