@@ -41,7 +41,7 @@ namespace AutoEvent
             Plugin.IsEventRunning = false;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
-            Timing.CallDelayed(10f, () => EventEnd());
+            Timing.CallDelayed(5f, () => EventEnd());ё
         }
         public void OnEventStarted()
         {
@@ -105,14 +105,9 @@ namespace AutoEvent
         // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
-            // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
-                // Первым мы чистим трупы и оружия
                 CleanUpAll();
-                // фф выключаем
                 Server.FriendlyFire = false;
-                // Выключение музыки
                 if (Audio.Microphone.IsRecording) StopAudio();
-                // Очистка карты Ивента
                 Log.Info("Запуск удаления");
                 NetworkServer.UnSpawn(Model.GameObject);
                 Timing.RunCoroutine(DestroyObjects(Model));

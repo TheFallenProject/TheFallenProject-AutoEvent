@@ -39,7 +39,7 @@ namespace AutoEvent
             Qurre.Events.Player.Damage += OnDamage;
             Qurre.Events.Round.TeamRespawn += OnTeamRespawning;
             Qurre.Events.Server.SendingRA += OnSendRA;
-            OnEventStarted();
+            Timing.CallDelayed(5f, () => EventEnd());
         }
 
         /// </inheritdoc>

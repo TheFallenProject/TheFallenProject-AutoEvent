@@ -45,7 +45,7 @@ namespace AutoEvent
             Plugin.IsEventRunning = false;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
-            Timing.CallDelayed(10f, () => EventEnd());
+            Timing.CallDelayed(5f, () => EventEnd());ы
         }
         public void OnEventStarted()
         {

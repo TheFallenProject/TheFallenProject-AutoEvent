@@ -41,7 +41,7 @@ namespace AutoEvent
             Qurre.Events.Alpha.Stopping -= OnNukeDisable;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
-            Timing.CallDelayed(10f, () => EventEnd());
+            Timing.CallDelayed(5f, () => EventEnd());
         }
 
         static void OnNukeDisable(AlphaStopEvent ev)

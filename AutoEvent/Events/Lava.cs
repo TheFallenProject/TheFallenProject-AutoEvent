@@ -46,7 +46,7 @@ namespace AutoEvent
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
             Qurre.Events.Player.RagdollSpawn -= OnRagdollSpawn;
-            Timing.CallDelayed(10f, () => EventEnd());
+            Timing.CallDelayed(5f, () => EventEnd());
         }
         public void OnEventStarted()
         {
