@@ -14,16 +14,18 @@ namespace AutoEvent.Functions
 {
     public class FootballComponent : MonoBehaviour
     {
-        private SphereCollider collider;
+        private SphereCollider sphere;
         private Rigidbody rigid;
         private void Start()
         {
-            collider = gameObject.AddComponent<SphereCollider>();
-            collider.isTrigger = true;
+            sphere = gameObject.AddComponent<SphereCollider>();
+            sphere.isTrigger = true;
+            sphere.radius = 1.1f;
             rigid = gameObject.AddComponent<Rigidbody>();
-            gameObject.AddComponent<Rigidbody>().isKinematic = false;
-            gameObject.AddComponent<Rigidbody>().useGravity = true;
-            gameObject.AddComponent<Rigidbody>().mass = 0.5f;
+            rigid.isKinematic = false;
+            rigid.useGravity = true;
+            rigid.mass = 0.1f;
+            rigid.drag = 0.1f;
             /*var material = new PhysicMaterial("Proverka")
             {
                 staticFriction = 0f,
@@ -35,6 +37,7 @@ namespace AutoEvent.Functions
         void OnCollisionEnter(Rigidbody other)
         {
             //gameObject.AddComponent<Rigidbody>().velocity
+            Log.Info("Проверка");
         }
         void FixedUpdate()
         {

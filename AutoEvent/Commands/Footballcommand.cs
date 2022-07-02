@@ -10,7 +10,7 @@ namespace AutoEvent.Commands
     {
         public string Command => "ev_football";
         public string[] Aliases => new string[] { };
-        public string Description => "Создать авто-ивент Футбол: ev_football";
+        public string Description => "Создать авто-ивент Футбольчик: ev_football";
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player admin = Player.Get((sender as CommandSender).SenderId);
