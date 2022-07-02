@@ -39,7 +39,7 @@ namespace AutoEvent
             Plugin.IsEventRunning = false;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
-            Timing.CallDelayed(10f, () => EventEnd());
+            Timing.CallDelayed(5f, () => EventEnd());
         }
         public void OnEventStarted()
         {
@@ -80,6 +80,9 @@ namespace AutoEvent
         {
             // Обнуление таймера
             EventTime = new TimeSpan(0, 0, 0);
+            BluePoints = 0;
+            RedPoints = 0;
+            // Запуск
             while (BluePoints < 7 && RedPoints < 7 && Player.List.ToList().Count(player => player.Role != RoleType.Spectator) > 1)
             {
                 foreach(Player player in Player.List)
@@ -98,6 +101,7 @@ namespace AutoEvent
                         Ball.Primitives[0].GameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
                         rig.AddForce(player.Transform.forward + new Vector3(0, 0.5f, 0), ForceMode.Impulse);
                     }
+                    player.ClearBroadcasts();
                     player.Broadcast(text + $"<color=blue>{BluePoints}</color> VS <color=red>{RedPoints}</color>", 1);
                 }
                 if (Vector3.Distance(Ball.Primitives[0].Primitive.Position, new Vector3(98.47f, 949.87f, -122.48f)) < 5)
@@ -130,6 +134,7 @@ namespace AutoEvent
                 {
                     if (player.Role == RoleType.NtfCaptain) player.Kill();
                 }
+                OnStop();
             }
             else if (RedPoints >= 7)
             {
@@ -139,8 +144,8 @@ namespace AutoEvent
                 {
                     if (player.Role == RoleType.ClassD) player.Kill();
                 }
+                OnStop();
             }
-            OnStop();
             yield break;
         }
         public void EventEnd()
@@ -148,9 +153,8 @@ namespace AutoEvent
             CleanUpAll();
             if (Audio.Microphone.IsRecording) StopAudio();
             Log.Info("Запуск удаления");
-            Ball.Destroy();
-            BluePoints = 0;
-            RedPoints = 0;
+            NetworkServer.UnSpawn(Ball.GameObject);
+            Timing.RunCoroutine(DestroyObjects(Ball));
             NetworkServer.UnSpawn(Model.GameObject);
             Timing.RunCoroutine(DestroyObjects(Model));
             //Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
