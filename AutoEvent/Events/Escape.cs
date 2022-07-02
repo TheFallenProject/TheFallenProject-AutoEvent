@@ -49,7 +49,7 @@ namespace AutoEvent
             ev.Allowed = false;
         }
 
-        public void OnEventStarted() // сделать ЛГБТ цвет
+        public void OnEventStarted()
         {
             // Делаем всех д классами
             Player.List.ToList().ForEach(player =>
@@ -60,9 +60,7 @@ namespace AutoEvent
             // Запуск боеголовки
             Alpha.Start();
             Alpha.TimeToDetonation = 80f;
-            // Запуск музыки
             PlayAudio("Bomba_haus1.f32le", 20, false, "Escape");
-            // Запуск ивента
             Timing.RunCoroutine(Cycle(), "escape_time");
         }
         public IEnumerator<float> Cycle()
@@ -97,19 +95,14 @@ namespace AutoEvent
             OnStop();
             yield break;
         }
-        // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
             BroadcastPlayers($"Атомный Побег\n" +
-                $"<color=red>ПОБЕДА SCP</color>", 10);
+            $"<color=red>ПОБЕДА SCP</color>", 10);
 
-                // Чистим трупы и оружия
-                CleanUpAll();
-                // Выключение музыки
-                if (Audio.Microphone.IsRecording) StopAudio();
-            // Рестарт Лобби
+            CleanUpAll();
+            if (Audio.Microphone.IsRecording) StopAudio();
             // EventManager.Init();
-           //s   Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
         }
         // Ивенты
         public void OnJoin(JoinEvent ev)

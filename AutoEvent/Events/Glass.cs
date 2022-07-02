@@ -175,21 +175,14 @@ namespace AutoEvent
         {
             // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
 
-                // Киляем корутину
-                Timing.KillCoroutines("jump");
-                // Чистим трупы и оружия
-                CleanUpAll();
-                // Выключение музыки
-                if (Audio.Microphone.IsRecording) StopAudio();
-            // Рестарт Лобби
+            Timing.KillCoroutines("jump");
+            CleanUpAll();
+            if (Audio.Microphone.IsRecording) StopAudio();
             // EventManager.Init();
-            // Очистка карты Ивента
-                Log.Info("Запуск удаления");
-                Timing.RunCoroutine(DestroyObjects(Platformes));
-                Timing.RunCoroutine(DestroyObjects(ModelCheckPoint));
-                Timing.RunCoroutine(DestroyObjects(Model));
-               // Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
-
+            Log.Info("Запуск удаления");
+            Timing.RunCoroutine(DestroyObjects(Platformes));
+            Timing.RunCoroutine(DestroyObjects(ModelCheckPoint));
+            Timing.RunCoroutine(DestroyObjects(Model));
         }
         // Ивенты
         public void OnJoin(JoinEvent ev)

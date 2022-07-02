@@ -133,19 +133,13 @@ namespace AutoEvent
         }
         public void EventEnd()
         {
-            // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
-            // Первым мы чистим трупы и оружия
             CleanUpAll();
-
-            // фф выключаем
             Server.FriendlyFire = false;
-            // Выключение музыки
             if (Audio.Microphone.IsRecording) StopAudio();
             // Очистка карты Ивента
-            Log.Info("Запуск удаления");
             NetworkServer.UnSpawn(Model.GameObject);
             Timing.RunCoroutine(DestroyObjects(Model));
-          //  Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+            //Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
             // Рестарт Лобби
             // EventManager.Init();
         }

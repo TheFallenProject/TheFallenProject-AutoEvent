@@ -29,8 +29,6 @@ namespace AutoEvent
         public static Model Model { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
-
-        /// </inheritdoc>
         public void OnStart()
         {
             Plugin.IsEventRunning = true;
@@ -41,8 +39,6 @@ namespace AutoEvent
             Qurre.Events.Server.SendingRA += OnSendRA;
             Timing.CallDelayed(5f, () => EventEnd());
         }
-
-        /// </inheritdoc>
         public void OnStop()
         {
             Plugin.IsEventRunning = false;
@@ -80,7 +76,6 @@ namespace AutoEvent
                 BroadcastPlayers($"<color=#D71868><b><i>{eventName}</i></b></color>\n<color=#ABF000>До начала ивента осталось <color=red>{_time}</color> секунд.</color>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-            // Спавн зомби
             SpawnZombie();
             yield break;
         }
@@ -107,7 +102,7 @@ namespace AutoEvent
             yield break;
         }
         // Если останется один человек, то обратный отсчет
-        public IEnumerator<float> DopTime() // дальше него не проходит!
+        public IEnumerator<float> DopTime()
         {
             for (int doptime = 30; doptime > 0; doptime--)
             {
@@ -133,23 +128,16 @@ namespace AutoEvent
             OnStop();
             yield break;
         }
-        // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
-            // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
-                // Чистим трупы и оружия
-                CleanUpAll();
-                // EventManager.CurrentEvent.OnStop();
-                // Выключение музыки
-                if (Audio.Microphone.IsRecording) StopAudio();
-                // Рестарт Лобби
-                // EventManager.Init();
-                // Очистка карты Ивента
-                Log.Info("Запуск удаления");
-                Timing.RunCoroutine(DestroyObjects(Model));
-              //  Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+            CleanUpAll();
+            if (Audio.Microphone.IsRecording) StopAudio();
+            // Рестарт Лобби
+            // EventManager.Init();
+            Log.Info("Запуск удаления");
+            Timing.RunCoroutine(DestroyObjects(Model));
         }
-        // Дальше идут ивенты ... для удобства думаю лучше их писать в конкретном ивенте
+        // Ивенты
         public void OnDamage(DamageEvent ev)
         {
             if (ev.Attacker.Role == RoleType.Scp0492)

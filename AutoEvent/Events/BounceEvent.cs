@@ -132,20 +132,14 @@ namespace AutoEvent
                 $"<color=yellow>ПОБЕДИЛИ - <color=blue>{Player.List.Count(r => r.Team == Team.MTF)} МОГ</color></color>\n" +
                 $"<color=yellow>Конец ивент: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
             }
-            // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
-                // Первым мы чистим трупы и оружия
-                CleanUpAll();
-
-                // Выключение музыки
-                if (Audio.Microphone.IsRecording) StopAudio();
-                // Рестарт Лобби
-                // EventManager.Init();
-                // Очистка карты Ивента
-                // Затем чистим карту
-                Log.Info("Запуск удаления");
-                NetworkServer.UnSpawn(Model.GameObject);
-                Timing.RunCoroutine(DestroyObjects(Model));
-               // Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+            CleanUpAll();
+            // Выключение музыки
+            if (Audio.Microphone.IsRecording) StopAudio();
+            // EventManager.Init();
+            Log.Info("Запуск удаления");
+            NetworkServer.UnSpawn(Model.GameObject);
+            Timing.RunCoroutine(DestroyObjects(Model));
+            //Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
         }
         public Vector3 RandomPosition(bool isMTF)
         {
@@ -173,7 +167,6 @@ namespace AutoEvent
                 }
             return position;
         }
-        // Ивенты
         public void OnDamage(DamageEvent ev)
         {
             if (ev.DamageType == DamageTypes.Scp018)

@@ -32,45 +32,42 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\AppData\Roaming\Qurre\Plugins\dependencies\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>D:\!SCPDLServeTEST\SCPSLD\SCPSL_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>C:\Users\РОМАН\Desktop\файлы\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\!SCPDLServeTEST\Qurry\lib\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>C:\Users\РОМАН\Desktop\файлы\Qurre\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp_publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\!SCPDLServeTEST\Qurry\lib\Assembly-CSharp_publicized.dll</HintPath>
+      <HintPath>C:\Users\РОМАН\Desktop\файлы\Qurre\Assembly-CSharp_publicized.dll</HintPath>
     </Reference>
     <Reference Include="CommandSystem.Core">
-      <HintPath>D:\!SCPDLServeTEST\Qurry\lib\CommandSystem.Core.dll</HintPath>
+      <HintPath>C:\Users\РОМАН\Desktop\файлы\CommandSystem.Core.dll</HintPath>
     </Reference>
     <Reference Include="DissonanceVoip">
-      <HintPath>D:\!SCPDLServeTEST\Qurry\lib\DissonanceVoip.dll</HintPath>
+      <HintPath>C:\Users\РОМАН\Desktop\файлы\DissonanceVoip.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
-      <HintPath>D:\!SCPDLServeTEST\Qurry\lib\Mirror.dll</HintPath>
+      <HintPath>C:\Users\РОМАН\Desktop\файлы\Mirror.dll</HintPath>
     </Reference>
     <Reference Include="Qurre, Version=1.14.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\AppData\Roaming\Qurre\Qurre.dll</HintPath>
+      <HintPath>C:\Users\РОМАН\Desktop\файлы\Qurre\Qurre.dll</HintPath>
     </Reference>
     <Reference Include="SchematicUnity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\AppData\Roaming\Qurre\Plugins\SchematicUnity.dll</HintPath>
+      <HintPath>..\SchematicUnity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>D:\!SCPDLServeTEST\SCPSLD\SCPSL_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>C:\Users\РОМАН\Desktop\файлы\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>D:\!SCPDLServeTEST\SCPSLD\SCPSL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>C:\Users\РОМАН\Desktop\файлы\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>D:\!SCPDLServeTEST\Qurry\lib\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>C:\Users\РОМАН\Desktop\файлы\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -87,7 +84,6 @@
     <Compile Include="Commands\ScpInfectCommand.cs" />
     <Compile Include="EventManager.cs" />
     <Compile Include="Events\Bossbattle.cs" />
-    <Compile Include="Events\Football.cs" />
     <Compile Include="Events\Glass.cs" />
     <Compile Include="Events\Battle.cs" />
     <Compile Include="Events\Lava.cs" />

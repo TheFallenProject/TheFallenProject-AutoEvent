@@ -30,7 +30,7 @@ namespace AutoEvent.Commands
                 return false;
             }
             Functions.MainFunctions.StartEventParametres();
-            new Bossbattle().OnStart();
+            //new Bossbattle().OnStart();
             response = $"Игра началась";
             return true;
         }

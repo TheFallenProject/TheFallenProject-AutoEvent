@@ -52,12 +52,9 @@ namespace AutoEvent
 
         public void OnEventStarted()
         {
-            // Создание карты
             CreatingMapFromJson("Death.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
-            // Запуск музыки
             PlayAudio("FallGuys_FallRoll.f32le", 15, true, "Death");
             Model = model;
-            // Новый раунд ивента
             WaitingEvent();
         }
         public void WaitingEvent()
@@ -156,15 +153,12 @@ namespace AutoEvent
         // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
-                // Чистим трупы и оружия
-                CleanUpAll();
-                // Выключение музыки
-                if (Audio.Microphone.IsRecording) StopAudio();
-                // Очистка карты Ивента
-                Log.Info("Запуск удаления");
-                NetworkServer.UnSpawn(Model.GameObject);
-                Timing.RunCoroutine(DestroyObjects(Model));
-               // Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+            CleanUpAll();
+            if (Audio.Microphone.IsRecording) StopAudio();
+            Log.Info("Запуск удаления");
+            NetworkServer.UnSpawn(Model.GameObject);
+            Timing.RunCoroutine(DestroyObjects(Model));
+            //Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
             // Рестарт Лобби
             // EventManager.Init();
         }

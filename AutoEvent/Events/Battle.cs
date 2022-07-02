@@ -41,7 +41,7 @@ namespace AutoEvent
             Plugin.IsEventRunning = false;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
-            Timing.CallDelayed(5f, () => EventEnd());ё
+            Timing.CallDelayed(5f, () => EventEnd());
         }
         public void OnEventStarted()
         {
@@ -105,13 +105,13 @@ namespace AutoEvent
         // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
-                CleanUpAll();
-                Server.FriendlyFire = false;
-                if (Audio.Microphone.IsRecording) StopAudio();
-                Log.Info("Запуск удаления");
-                NetworkServer.UnSpawn(Model.GameObject);
-                Timing.RunCoroutine(DestroyObjects(Model));
-               // Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+            CleanUpAll();
+            Server.FriendlyFire = false;
+            if (Audio.Microphone.IsRecording) StopAudio();
+            Log.Info("Запуск удаления");
+            NetworkServer.UnSpawn(Model.GameObject);
+            Timing.RunCoroutine(DestroyObjects(Model));
+            // Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
             // Рестарт Лобби
             // EventManager.Init();
         }
