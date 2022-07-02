@@ -31,7 +31,6 @@ namespace AutoEvent
         public int Votes { get; set; }
         public int i = 1;
         public static int hp = 5000;
-
         public void OnStart()
         {
             Plugin.IsEventRunning = true;
@@ -39,7 +38,6 @@ namespace AutoEvent
             Qurre.Events.Server.SendingRA += OnSendRA;
             OnEventStarted();
         }
-
         public void OnStop()
         {
             Plugin.IsEventRunning = false;

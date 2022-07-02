@@ -26,7 +26,6 @@ namespace AutoEvent
         public static Model Model { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
-
         public void OnStart()
         {
             Plugin.IsEventRunning = true;

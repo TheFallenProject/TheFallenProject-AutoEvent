@@ -30,7 +30,7 @@ namespace AutoEvent.Commands
                 return false;
             }
             Functions.MainFunctions.StartEventParametres();
-            //new Football().OnStart();
+            new FootballEvent().OnStart();
             response = $"Игра началась";
             return true;
         }

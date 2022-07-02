@@ -29,8 +29,6 @@ namespace AutoEvent
         public static TimeSpan EventTime { get; set; }
         public static int CountRound = 1;
         public int Votes { get; set; }
-
-        /// </inheritdoc>
         public void OnStart()
         {
             Plugin.IsEventRunning = true;
@@ -39,8 +37,6 @@ namespace AutoEvent
             Qurre.Events.Server.SendingRA += OnSendRA;
             OnEventStarted();
         }
-
-        /// </inheritdoc>
         public void OnStop()
         {
             Plugin.IsEventRunning = false;
