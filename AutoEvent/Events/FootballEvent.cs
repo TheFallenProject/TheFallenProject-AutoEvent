@@ -83,7 +83,7 @@ namespace AutoEvent
             BluePoints = 0;
             RedPoints = 0;
             // Запуск
-            while (BluePoints < 7 && RedPoints < 7)
+            while (BluePoints < 5 && RedPoints < 5)
             {
                 foreach(Player player in Player.List)
                 {
