@@ -83,7 +83,7 @@ namespace AutoEvent
             BluePoints = 0;
             RedPoints = 0;
             // Запуск
-            while (BluePoints < 7 && RedPoints < 7 && Player.List.ToList().Count(player => player.Role != RoleType.Spectator) > 1)
+            while (BluePoints < 7 && RedPoints < 7)
             {
                 foreach(Player player in Player.List)
                 {
@@ -118,17 +118,9 @@ namespace AutoEvent
                 }
                 yield return Timing.WaitForSeconds(1f);
             }
-            if (Player.List.ToList().Count(player => player.Role != RoleType.Spectator) == 1)
+            if (BluePoints >= 5)
             {
-                BroadcastPlayers($"Недостаточно игроков: Конец Мини-Игры!", 10);
-            }
-            else if (Player.List.ToList().Count(player => player.Role != RoleType.Spectator) == 0)
-            {
-                BroadcastPlayers($"Недостаточно игроков: Конец Мини-Игры!", 10);
-            }
-            else if (BluePoints >= 7)
-            {
-                // 7 очков забито в синие ворота
+                // 5 очков забито в синие ворота
                 BroadcastPlayers($"<color=red>ПОБЕДА!</color>", 10);
                 foreach(Player player in Player.List)
                 {
@@ -136,9 +128,9 @@ namespace AutoEvent
                 }
                 OnStop();
             }
-            else if (RedPoints >= 7)
+            else if (RedPoints >= 5)
             {
-                // 7 очков забито в красные ворота
+                // 5 очков забито в красные ворота
                 BroadcastPlayers($"<color=blue>ПОБЕДА!</color>", 10);
                 foreach (Player player in Player.List)
                 {
