@@ -68,8 +68,6 @@ namespace AutoEvent
                 Timing.CallDelayed(2f, () =>
                 {
                     player.Position = Model.GameObject.transform.position + new Vector3(0, 5, 0);
-                    player.GameObject.TryGetComponent<BoxCollider>(out BoxCollider collider);
-                    collider.size = new Vector3(1f, 1f, 1f);
                 });
                 count++;
             }
@@ -79,13 +77,13 @@ namespace AutoEvent
         public IEnumerator<float> Cycle()
         {
             // Обнуление таймера
-            EventTime = new TimeSpan(0, 0, 0);
+            EventTime = new TimeSpan(0, 10, 0);
             BluePoints = 0;
             RedPoints = 0;
             // Запуск
-            while (BluePoints < 5 && RedPoints < 5)
+            while (BluePoints < 3 && RedPoints < 3 && EventTime.TotalSeconds > 0)
             {
-                foreach(Player player in Player.List)
+                foreach (Player player in Player.List)
                 {
                     var text = string.Empty;
                     if (player.Role == RoleType.NtfCaptain)
@@ -96,45 +94,51 @@ namespace AutoEvent
                     {
                         text += "<color=red>Вы играете за Красную Команду</color>\n";
                     }
+                    
+                    // Проверка расстояния между игроком и мячом
                     if (Vector3.Distance(Ball.Primitives[0].Primitive.Position, player.Position) < 5)
                     {
                         Ball.Primitives[0].GameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
                         rig.AddForce(player.Transform.forward + new Vector3(0, 0.5f, 0), ForceMode.Impulse);
                     }
                     player.ClearBroadcasts();
-                    player.Broadcast(text + $"<color=blue>{BluePoints}</color> VS <color=red>{RedPoints}</color>", 1);
+                    player.Broadcast(text + $"<color=blue>{BluePoints}</color> VS <color=red>{RedPoints}</color>\n" +
+                        $"Время до конца: {EventTime.Minutes}:{EventTime.Seconds}", 1);
                 }
+                // Проверка выпадения мяча за карту
+                if (Ball.Primitives[0].Primitive.Position.y < Model.GameObject.transform.position.y - 10f)
+                {
+                    Ball.Primitives[0].Primitive.Position = Model.GameObject.transform.position + new Vector3(0, 5f, 0);
+                }
+                // Проверка попадания мяча в синии ворота
                 if (Vector3.Distance(Ball.Primitives[0].Primitive.Position, new Vector3(98.47f, 949.87f, -122.48f)) < 5)
                 {
-                    // Синии ворота
                     Ball.Primitives[0].Primitive.Position = Model.GameObject.transform.position + new Vector3(0, 5f, 0);
                     RedPoints++;
                 }
+                // Проверка попадания мяча в красные ворота
                 if (Vector3.Distance(Ball.Primitives[0].Primitive.Position, new Vector3(191.71f, 949.87f, -123.13f)) < 5)
                 {
-                    // Красные ворота
                     Ball.Primitives[0].Primitive.Position = Model.GameObject.transform.position + new Vector3(0, 5f, 0);
                     BluePoints++;
                 }
                 yield return Timing.WaitForSeconds(1f);
+                EventTime -= TimeSpan.FromSeconds(1f);
             }
-            if (BluePoints >= 5)
+            // Голов в синие ворота больше чем красных
+            if (BluePoints > RedPoints)
             {
-                // 5 очков забито в синие ворота
-                BroadcastPlayers($"<color=red>ПОБЕДА!</color>", 10);
-                foreach(Player player in Player.List)
-                {
-                    if (player.Role == RoleType.ClassD) player.Kill();
-                }
+                BroadcastPlayers($"<color=blue>ПОБЕДА СИНИХ!</color>", 10);
             }
-            else if (RedPoints >= 5)
+            // Голов красные ворота больше чем синих
+            else if (RedPoints > BluePoints)
             {
-                // 5 очков забито в красные ворота
-                BroadcastPlayers($"<color=blue>ПОБЕДА!</color>", 10);
-                foreach (Player player in Player.List)
-                {
-                    if (player.Team == Team.MTF) player.Kill();
-                }
+                BroadcastPlayers($"<color=red>ПОБЕДА КРАСНЫХ!</color>", 10);
+            }
+            // Ничья
+            else
+            {
+                BroadcastPlayers($"<color=#808080>Ничья</color>\n<color=blue>{BluePoints}</color> VS <color=red>{RedPoints}</color>", 10);
             }
             OnStop();
             yield break;
