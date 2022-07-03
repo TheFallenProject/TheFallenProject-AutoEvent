@@ -124,9 +124,8 @@ namespace AutoEvent
                 BroadcastPlayers($"<color=red>ПОБЕДА!</color>", 10);
                 foreach(Player player in Player.List)
                 {
-                    if (player.Role == RoleType.NtfCaptain) player.Kill();
+                    if (player.Role == RoleType.ClassD) player.Kill();
                 }
-                OnStop();
             }
             else if (RedPoints >= 5)
             {
@@ -134,10 +133,10 @@ namespace AutoEvent
                 BroadcastPlayers($"<color=blue>ПОБЕДА!</color>", 10);
                 foreach (Player player in Player.List)
                 {
-                    if (player.Role == RoleType.ClassD) player.Kill();
+                    if (player.Team == Team.MTF) player.Kill();
                 }
-                OnStop();
             }
+            OnStop();
             yield break;
         }
         public void EventEnd()
@@ -145,11 +144,9 @@ namespace AutoEvent
             CleanUpAll();
             if (Audio.Microphone.IsRecording) StopAudio();
             Log.Info("Запуск удаления");
-            NetworkServer.UnSpawn(Ball.GameObject);
-            Timing.RunCoroutine(DestroyObjects(Ball));
-            NetworkServer.UnSpawn(Model.GameObject);
-            Timing.RunCoroutine(DestroyObjects(Model));
-            //Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+            Ball.Destroy();
+            Model.Destroy();
+            // Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
             // Рестарт Лобби
             // EventManager.Init();
         }
