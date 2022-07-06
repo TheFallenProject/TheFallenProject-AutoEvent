@@ -6,7 +6,7 @@ using Qurre.API;
 namespace AutoEvent.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class Footballcommand : ICommand
+    public class FootballCommand : ICommand
     {
         public string Command => "ev_football";
         public string[] Aliases => new string[] { };

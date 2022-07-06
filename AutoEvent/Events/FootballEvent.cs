@@ -94,7 +94,6 @@ namespace AutoEvent
                     {
                         text += "<color=red>Вы играете за Красную Команду</color>\n";
                     }
-                    
                     // Проверка расстояния между игроком и мячом
                     if (Vector3.Distance(Ball.Primitives[0].Primitive.Position, player.Position) < 5)
                     {

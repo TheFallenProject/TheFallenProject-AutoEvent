@@ -74,7 +74,7 @@
     <Compile Include="Commands\BattleCommand.cs" />
     <Compile Include="Commands\Bossbattlecommand.cs" />
     <Compile Include="Commands\DeathPartyCommand.cs" />
-    <Compile Include="Commands\Footballcommand.cs" />
+    <Compile Include="Commands\FootballCommand.cs" />
     <Compile Include="Commands\GlassCommand.cs" />
     <Compile Include="Commands\LavaCommand.cs" />
     <Compile Include="Commands\EscapeCommand.cs" />

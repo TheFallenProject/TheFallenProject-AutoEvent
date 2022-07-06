@@ -37,7 +37,7 @@ namespace AutoEvent
             Qurre.Events.Player.Damage += OnDamage;
             Qurre.Events.Round.TeamRespawn += OnTeamRespawning;
             Qurre.Events.Server.SendingRA += OnSendRA;
-            Timing.CallDelayed(5f, () => EventEnd());
+            OnEventStarted();
         }
         public void OnStop()
         {
@@ -57,7 +57,8 @@ namespace AutoEvent
             CreatingMapFromJson("Zombie.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
             Model = model;
             // Запуск музыки
-            PlayAudio("Zombie.f32le", 20, true, "Zombie");
+            if (Random.Range(0, 2) == 0) PlayAudio("Zombie.f32le", 20, true, "Zombie");
+            else PlayAudio("Zombie1.f32le", 10, true, "Zombie");
             Player.List.ToList().ForEach(player =>
             {
                 player.Role = RoleType.ClassD;
