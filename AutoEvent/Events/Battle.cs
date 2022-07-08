@@ -44,14 +44,12 @@ namespace AutoEvent
         }
         public void OnEventStarted()
         {
-            // Обнуление Таймера
             EventTime = new TimeSpan(0, 0, 0);
-            // Создание карты
+
             CreatingMapFromJson("Battle.json", new Vector3(145.18f, 930f, -122.97f), out var model);
             Model = model;
-            // Запуск музыки
-            // PlayAudio("FallGuys_DnB.f32le", 10, true, "LavaAudio");
-            // Создание и телепорт отрядов
+
+            PlayAudio("MGS4.f32le", 10, true, "БИТВА");
             var count = 0;
             foreach (Player player in Player.List)
             {
@@ -65,13 +63,11 @@ namespace AutoEvent
                 }
                 count++;
             }
-            // Запуск ивента
             Timing.RunCoroutine(Cycle(), "battle_time");
         }
         public IEnumerator<float> Cycle()
         {
             Player.List.ToList().ForEach(player => player.EnableEffect(EffectType.Ensnared));
-            // Отсчет обратного времени
             for (int time = 10; time > 0; time--)
             {
                 BroadcastPlayers($"<size=100><color=red>{time}</color></size>", 1);
@@ -101,18 +97,12 @@ namespace AutoEvent
             OnStop();
             yield break;
         }
-        // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
-            CleanUpAll();
-            Server.FriendlyFire = false;
             if (Audio.Microphone.IsRecording) StopAudio();
-            Log.Info("Запуск удаления");
-            NetworkServer.UnSpawn(Model.GameObject);
+            Server.FriendlyFire = false;
             Timing.RunCoroutine(DestroyObjects(Model));
-            // Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
-            // Рестарт Лобби
-            // EventManager.Init();
+            Timing.RunCoroutine(CleanUpAll());
         }
         public void CreateSoldier(bool isMtf, Player player)
         {
@@ -170,7 +160,6 @@ namespace AutoEvent
                     break;
             }
         }
-        // Ивенты
         public void OnJoin(JoinEvent ev)
         {
             ev.Player.Role = RoleType.Spectator;

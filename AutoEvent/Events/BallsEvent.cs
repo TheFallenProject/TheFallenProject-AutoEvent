@@ -70,14 +70,9 @@ namespace AutoEvent
         }
         public void EventEnd()
         {
-            CleanUpAll();
             if (Audio.Microphone.IsRecording) StopAudio();
-            Log.Info("Запуск удаления");
-            NetworkServer.UnSpawn(Model.GameObject);
             Timing.RunCoroutine(DestroyObjects(Model));
-            //Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
-            // Рестарт Лобби
-            // EventManager.Init();
+            Timing.RunCoroutine(CleanUpAll());
         }
         // Ивенты
         public void OnJoin(JoinEvent ev)

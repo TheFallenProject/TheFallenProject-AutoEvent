@@ -134,22 +134,13 @@ namespace AutoEvent
             OnStop();
             yield break;
         }
-        // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
-            // Очистка оружия
-            CleanUpAll();
-            // фф выключаем
-            Server.FriendlyFire = false;
-            // Выключение музыки
             if (Audio.Microphone.IsRecording) StopAudio();
-            // Очистка карты Ивента
-            Log.Info("Запуск удаления");
+            Server.FriendlyFire = false;
             Timing.RunCoroutine(DestroyObjects(Model));
             Timing.RunCoroutine(DestroyObjects(LavaModel));
-           // Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
-            // Рестарт Лобби
-            // EventManager.Init();
+            Timing.RunCoroutine(CleanUpAll());
         }
         // Рандомная позиция игрока
         public Vector3 RandomPlayerPosition()

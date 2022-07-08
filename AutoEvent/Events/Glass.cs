@@ -33,6 +33,7 @@ namespace AutoEvent
             Qurre.Events.Player.Join += OnJoin;
             Qurre.Events.Round.TeamRespawn += OnTeamRespawning;
             Qurre.Events.Server.SendingRA += OnSendRA;
+            //Qurre.Events.Voice.PressAltChat += OnPressV;
             OnWaitingEvent();
         }
         public void OnStop()
@@ -41,25 +42,25 @@ namespace AutoEvent
             Qurre.Events.Player.Join -= OnJoin;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Server.SendingRA -= OnSendRA;
+            //Qurre.Events.Voice.PressAltChat -= OnPressV;
             Timing.CallDelayed(5f, () => EventEnd());
         }
         public void OnWaitingEvent()
         {
-            // Обнуление Таймера
             EventTime = new TimeSpan(0, 0, 0);
-            // Создание карты
+
             CreatingMapFromJson("Glass.json", new Vector3(140f, 930f, -122.97f), out var model);
             Model = model;
-            // Создаем Чекпоинт
+
             CreateCheckPoint();
-            // Выдаем каждому BoxCollider
+
             foreach(Player player in Player.List)
             {
                 player.GameObject.AddComponent<BoxCollider>();
                 player.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 3.5f, 1f);
             }
-            // Запуск музыки
-            PlayAudio("CrabGame_BigFunky.f32le", 10, true, "STEKLO");
+
+            PlayAudio("FallGuys_BeanThieves.f32le", 10, true, "STEKLO");
             OnEventStarted(Player.List.ToList());
         }
         public void OnEventStarted(List<Player> players)
@@ -173,16 +174,11 @@ namespace AutoEvent
         // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
-            // Ожидание рестарта лобби допустим внезапный рестарт негативно встретится, а тут подведение итогов ивента
-
-            Timing.KillCoroutines("jump");
-            CleanUpAll();
             if (Audio.Microphone.IsRecording) StopAudio();
-            // EventManager.Init();
-            Log.Info("Запуск удаления");
             Timing.RunCoroutine(DestroyObjects(Platformes));
             Timing.RunCoroutine(DestroyObjects(ModelCheckPoint));
             Timing.RunCoroutine(DestroyObjects(Model));
+            Timing.RunCoroutine(CleanUpAll());
         }
         // Ивенты
         public void OnJoin(JoinEvent ev)
@@ -196,6 +192,20 @@ namespace AutoEvent
         public void OnTeamRespawning(TeamRespawnEvent ev)
         {
             if (Plugin.IsEventRunning) ev.Allowed = false;
+        }
+        public void OnPressV(PressAltChatEvent ev)
+        {
+            if (ev.Value)
+            {
+                foreach(Player player in Player.List)
+                {
+                    if (ev.Player != player)
+                    {
+                        ev.Player.GameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
+                        rig.AddForce(player.Transform.forward * 0.5f, ForceMode.Impulse);
+                    }
+                }
+            }
         }
         public void OnSendRA(SendingRAEvent ev)
         {

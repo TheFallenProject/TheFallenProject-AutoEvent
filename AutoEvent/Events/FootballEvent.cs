@@ -144,14 +144,10 @@ namespace AutoEvent
         }
         public void EventEnd()
         {
-            CleanUpAll();
             if (Audio.Microphone.IsRecording) StopAudio();
-            Log.Info("Запуск удаления");
             Ball.Destroy();
-            Model.Destroy();
-            // Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
-            // Рестарт Лобби
-            // EventManager.Init();
+            Timing.RunCoroutine(DestroyObjects(Model));
+            Timing.RunCoroutine(CleanUpAll());
         }
         // Ивенты
         public void OnJoin(JoinEvent ev)

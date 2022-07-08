@@ -131,15 +131,10 @@ namespace AutoEvent
         }
         public void EventEnd()
         {
-            CleanUpAll();
-            Server.FriendlyFire = false;
             if (Audio.Microphone.IsRecording) StopAudio();
-            // Очистка карты Ивента
-            NetworkServer.UnSpawn(Model.GameObject);
+            Server.FriendlyFire = false;
             Timing.RunCoroutine(DestroyObjects(Model));
-            //Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
-            // Рестарт Лобби
-            // EventManager.Init();
+            Timing.RunCoroutine(CleanUpAll());
         }
         public void OnJoin(JoinEvent ev)
         {

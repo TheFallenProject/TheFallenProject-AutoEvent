@@ -100,9 +100,8 @@ namespace AutoEvent
             BroadcastPlayers($"Атомный Побег\n" +
             $"<color=red>ПОБЕДА SCP</color>", 10);
 
-            CleanUpAll();
             if (Audio.Microphone.IsRecording) StopAudio();
-            // EventManager.Init();
+            Timing.RunCoroutine(CleanUpAll());
         }
         // Ивенты
         public void OnJoin(JoinEvent ev)

@@ -176,32 +176,20 @@ namespace AutoEvent
         // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
-            // Чистим трупы и оружия
-            CleanUpAll();
             if (Audio.Microphone.IsRecording) StopAudio();
             // Очистка времени
             EventTime = new TimeSpan(0, 0, 0);
             DayWeek = string.Empty;
-            // Очистка карты
             JailerDoorsTime.Clear();
+            isDoorsOpen = false;
+            Server.FriendlyFire = false;
 
-            Log.Info("Запуск удаления");
-            Timing.RunCoroutine(DestroyObjects(Maps));
             Button.Destroy();
+            Spawners.Destroy();
+            Timing.RunCoroutine(DestroyObjects(Maps));
             Timing.RunCoroutine(DestroyObjects(Doors));
             Timing.RunCoroutine(DestroyObjects(JailerDoors));
-            Spawners.Destroy();
-            // Player.List.ToList().ForEach(player =>
-            //{
-            //    player.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
-            //    player.Role = RoleType.Tutorial;
-            //});
-
-            isDoorsOpen = false;
-            // выключить огонь по своим
-            Server.FriendlyFire = false;
-            // Рестарт Лобби
-            // EventManager.Init();
+            Timing.RunCoroutine(CleanUpAll());
         }
         public List<string> RandomMessage = new List<string>()
         {

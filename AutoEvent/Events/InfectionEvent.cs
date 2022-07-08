@@ -131,12 +131,9 @@ namespace AutoEvent
         }
         public void EventEnd()
         {
-            CleanUpAll();
             if (Audio.Microphone.IsRecording) StopAudio();
-            // Рестарт Лобби
-            // EventManager.Init();
-            Log.Info("Запуск удаления");
             Timing.RunCoroutine(DestroyObjects(Model));
+            Timing.RunCoroutine(CleanUpAll());
         }
         // Ивенты
         public void OnDamage(DamageEvent ev)

@@ -57,7 +57,7 @@
     </Reference>
     <Reference Include="SchematicUnity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SchematicUnity.dll</HintPath>
+      <HintPath>C:\Users\РОМАН\Desktop\SchematicUnity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">

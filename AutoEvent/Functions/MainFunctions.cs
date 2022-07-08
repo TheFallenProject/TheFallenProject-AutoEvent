@@ -125,10 +125,19 @@ namespace AutoEvent.Functions
         {
             players.ForEach(x => x.DisableEffect(effect));
         }
-        public static void CleanUpAll()
+        public static IEnumerator<float> CleanUpAll()
         {
-            Map.Ragdolls.ForEach(r => r.Destroy());
-            Map.Pickups.ForEach(r => r.Destroy());
+            foreach(var ragdoll in Map.Ragdolls)
+            {
+                GameObject.Destroy(ragdoll.GameObject);
+                yield return Timing.WaitForSeconds(0.01f);
+            }
+            foreach (var pickup in Map.Pickups)
+            {
+                GameObject.Destroy(pickup.Base.gameObject);
+                yield return Timing.WaitForSeconds(0.01f);
+            }
+            yield break;
         }
         public static IEnumerator<float> DestroyObjects(Model model)
         {

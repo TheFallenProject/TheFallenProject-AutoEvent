@@ -149,14 +149,9 @@ namespace AutoEvent
         // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
-            CleanUpAll();
             if (Audio.Microphone.IsRecording) StopAudio();
-            Log.Info("Запуск удаления");
-            NetworkServer.UnSpawn(Model.GameObject);
             Timing.RunCoroutine(DestroyObjects(Model));
-            //Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
-            // Рестарт Лобби
-            // EventManager.Init();
+            Timing.RunCoroutine(CleanUpAll());
         }
         // Манипуляции с дверьми и примитивами
         public Vector3 RandomPosition()

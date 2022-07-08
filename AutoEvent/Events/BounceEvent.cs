@@ -119,6 +119,7 @@ namespace AutoEvent
         // Подведение итогов ивента и возврат в лобби
         public void EventEnd()
         {
+            if (Audio.Microphone.IsRecording) StopAudio();
             if (Player.List.Count(r => r.Team == Team.MTF) == 0)
             {
                 BroadcastPlayers($"<color=#D71868><b><i>Вышибалы</i></b></color>\n" +
@@ -131,14 +132,8 @@ namespace AutoEvent
                 $"<color=yellow>ПОБЕДИЛИ - <color=blue>{Player.List.Count(r => r.Team == Team.MTF)} МОГ</color></color>\n" +
                 $"<color=yellow>Конец ивент: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
             }
-            CleanUpAll();
-            // Выключение музыки
-            if (Audio.Microphone.IsRecording) StopAudio();
-            // EventManager.Init();
-            Log.Info("Запуск удаления");
-            NetworkServer.UnSpawn(Model.GameObject);
             Timing.RunCoroutine(DestroyObjects(Model));
-            //Player.List.ToList().ForEach(player => player.Role = RoleType.Tutorial);
+            Timing.RunCoroutine(CleanUpAll());
         }
         public Vector3 RandomPosition(bool isMTF)
         {
