@@ -129,12 +129,12 @@ namespace AutoEvent.Functions
         {
             foreach(var ragdoll in Map.Ragdolls)
             {
-                GameObject.Destroy(ragdoll.GameObject);
+                ragdoll.Destroy();
                 yield return Timing.WaitForSeconds(0.01f);
             }
             foreach (var pickup in Map.Pickups)
             {
-                GameObject.Destroy(pickup.Base.gameObject);
+                pickup.Destroy();
                 yield return Timing.WaitForSeconds(0.01f);
             }
             yield break;
