@@ -17,7 +17,7 @@ using UnityEngine;
 using static AutoEvent.Functions.MainFunctions;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent
+namespace AutoEvent.Events
 {
     internal class Escape : Interfaces.IEvent
     {
@@ -26,6 +26,8 @@ namespace AutoEvent
         public string Color => "FFFF00";
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
+
+        public string CommandName => "nukerun";
 
         public void OnStart()
         {

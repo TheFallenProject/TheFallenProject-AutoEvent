@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using static AutoEvent.Functions.MainFunctions;
 using Random = UnityEngine.Random;
-namespace AutoEvent
+namespace AutoEvent.Events
 {
     internal class Bossbattle : Interfaces.IEvent
     {
@@ -29,6 +29,9 @@ namespace AutoEvent
         public Model Model { get; set; }
         public TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
+
+        public string CommandName => "bossbattle";
+
         public int i = 1;
         public static int hp = 5000;
         public void OnStart()

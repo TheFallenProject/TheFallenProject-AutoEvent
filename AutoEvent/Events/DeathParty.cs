@@ -18,7 +18,7 @@ using UnityEngine;
 using static AutoEvent.Functions.MainFunctions;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent
+namespace AutoEvent.Events
 {
     internal class DeathParty : Interfaces.IEvent
     {
@@ -29,6 +29,9 @@ namespace AutoEvent
         public static TimeSpan EventTime { get; set; }
         public static int CountRound = 1;
         public int Votes { get; set; }
+
+        public string CommandName => "deathparty";
+
         public void OnStart()
         {
             Plugin.IsEventRunning = true;

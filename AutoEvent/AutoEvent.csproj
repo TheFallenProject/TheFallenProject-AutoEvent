@@ -70,17 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\BattleCommand.cs" />
-    <Compile Include="Commands\Bossbattlecommand.cs" />
-    <Compile Include="Commands\DeathPartyCommand.cs" />
-    <Compile Include="Commands\FootballCommand.cs" />
-    <Compile Include="Commands\GlassCommand.cs" />
-    <Compile Include="Commands\LavaCommand.cs" />
-    <Compile Include="Commands\EscapeCommand.cs" />
-    <Compile Include="Commands\BounceCommand.cs" />
-    <Compile Include="Commands\JailCommand.cs" />
-    <Compile Include="Commands\CallMapCommand.cs" />
-    <Compile Include="Commands\ScpInfectCommand.cs" />
+    <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="EventManager.cs" />
     <Compile Include="Events\FootballEvent.cs" />
     <Compile Include="Events\Bossbattle.cs" />

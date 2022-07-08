@@ -18,7 +18,7 @@ using UnityEngine;
 using static AutoEvent.Functions.MainFunctions;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent
+namespace AutoEvent.Events
 {
     internal class Battle : Interfaces.IEvent
     {
@@ -28,6 +28,9 @@ namespace AutoEvent
         public Model Model { get; set; }
         public TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
+
+        public string CommandName => "battle";
+
         public void OnStart()
         {
             Plugin.IsEventRunning = true;

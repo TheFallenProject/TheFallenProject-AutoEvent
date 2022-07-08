@@ -18,7 +18,7 @@ using UnityEngine;
 using static AutoEvent.Functions.MainFunctions;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent
+namespace AutoEvent.Events
 {
     internal class Lava : Interfaces.IEvent
     {
@@ -29,6 +29,8 @@ namespace AutoEvent
         public Model LavaModel { get; set; }
         public TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
+
+        public string CommandName => "lava";
 
         public void OnStart()
         {
@@ -180,6 +182,9 @@ namespace AutoEvent
             new Vector3(9.58f, 13.53f, -22.4f),
             new Vector3(-24.58f, 6.43f, 4.68f)
         };
+
+        
+
         // Ивенты
         public void OnDamage(DamageEvent ev)
         {

@@ -18,7 +18,7 @@ using Player = Qurre.API.Player;
 using Random = UnityEngine.Random;
 using Server = Qurre.API.Server;
 
-namespace AutoEvent
+namespace AutoEvent.Events
 {
     internal class InfectionEvent : Interfaces.IEvent
     {
@@ -29,6 +29,9 @@ namespace AutoEvent
         public static Model Model { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
+
+        public string CommandName => "infection";
+
         public void OnStart()
         {
             Plugin.IsEventRunning = true;
