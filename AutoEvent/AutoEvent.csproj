@@ -56,7 +56,7 @@
     </Reference>
     <Reference Include="SchematicUnity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\SchematicUnity.dll</HintPath>
+      <HintPath>..\..\..\..\AppData\Roaming\Qurre\Plugins\SchematicUnity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
