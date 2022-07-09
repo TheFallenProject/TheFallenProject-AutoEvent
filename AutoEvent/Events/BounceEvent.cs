@@ -22,7 +22,7 @@ namespace AutoEvent.Events
     internal class BounceEvent : IEvent
     {
         public string Name => "Вышибалы с Мячиком";
-        public string Description => "";
+        public string Description => "Кидайте в противника мяч, чтобы победить.";
         public string Color => "FFFF00";
         public string CommandName => "bounce";
         public static Model Model { get; set; }

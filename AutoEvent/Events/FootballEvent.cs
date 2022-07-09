@@ -20,7 +20,7 @@ namespace AutoEvent.Events
     internal class FootballEvent : IEvent
     {
         public string Name => "Футбольчик";
-        public string Description => "";
+        public string Description => "Режим Футбол, в котором надо забить 3 гола противоположной команде.";
         public string Color => "FFFF00";
         public string CommandName => "football";
         public static Model Model { get; set; }

@@ -24,7 +24,7 @@ namespace AutoEvent.Events
     internal class Lava : IEvent
     {
         public string Name => "Пол - это ЛАВА";
-        public string Description => "";
+        public string Description => "Выживание, в котором необходимо избегать лаву и стрелять в других.";
         public string Color => "FFFF00";
         public string CommandName => "lava";
         public Model Model { get; set; }

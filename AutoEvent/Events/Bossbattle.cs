@@ -23,8 +23,8 @@ namespace AutoEvent.Events
     internal class Bossbattle : IEvent
     {
         public string Name => "Бой с боссом";
+        public string Description => "Битва, в которой нужно победить Биг Босса.";
         public string Color => "0b6f00";
-        public string Description => "";
         public string CommandName => "boss";
         public Model Model { get; set; }
         public TimeSpan EventTime { get; set; }
@@ -109,17 +109,17 @@ namespace AutoEvent.Events
             Player.List.ToList().ForEach(player => player.DisableEffect(EffectType.Ensnared));
             while (Player.List.Count(r => r.Team == Team.CDP) > 0 && Player.List.Count(r => r.Team == Team.TUT) > 0)
             {
-                BroadcastPlayers($"<color=#D71868><b><i>Бой с боссом</i></b></color>\n" +
-                $"<color=yellow><color=blue>{Player.List.Count(r => r.Team == Team.MTF)}</color> VS БОССА</color></color>\n" +
-                $"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 1);
+                BroadcastPlayers($"<b><color=#D71868>Бой с боссом</color></b>\n" +
+                $"<color=blue>{Player.List.Count(r => r.Team == Team.MTF)}</color><color=yellow> VS БОССА</color>\n" +
+                $"<color=yellow>Время ивента </color><color=red>{EventTime.Minutes}:{EventTime.Seconds}</color>", 1);
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
             if (Player.List.Count(r => r.Team == Team.CDP) == 0)
             {
                 BroadcastPlayers($"<color=#D71868><b><i>Бой с боссом</i></b></color>\n" +
-                $"<color=yellow>ПОБЕДИЛ <color=green> БОСС</color></color>\n" +
-                $"<color=yellow>Конец ивент: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
+                $"<color=yellow>ПОБЕДИЛ </color><color=green> БОСС</color>\n" +
+                $"<color=yellow>Конец ивент: </color><color=red>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10);
             }
             else if (Player.List.Count(r => r.Team == Team.TUT) == 0)
             {

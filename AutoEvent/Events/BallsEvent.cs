@@ -19,7 +19,7 @@ namespace AutoEvent.Events
     internal class BallsEvent : IEvent
     {
         public string Name => "Дотронься Мячика";
-        public string Description => "";
+        public string Description => "[В работе!]";
         public string Color => "FFFF00";
         public string CommandName => "balls";
         public static Model Model { get; set; }

@@ -24,7 +24,7 @@ namespace AutoEvent.Events
     internal class Battle : IEvent
     {
         public string Name => "Мясная Заруба";
-        public string Description => "";
+        public string Description => "Битва, в которой одна из команда должна одалеть другую.";
         public string Color => "FFFF00";
         public string CommandName => "battle";
         public Model Model { get; set; }

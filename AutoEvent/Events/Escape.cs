@@ -23,7 +23,7 @@ namespace AutoEvent.Events
     internal class Escape : IEvent
     {
         public string Name => "Атомный Побег";
-        public string Description => "";
+        public string Description => "Сбегите с комплекса Печеньками на сверхзвуковой скорости!";
         public string Color => "FFFF00";
         public string CommandName => "escape";
         public static TimeSpan EventTime { get; set; }

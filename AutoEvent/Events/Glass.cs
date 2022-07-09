@@ -20,7 +20,7 @@ namespace AutoEvent.Events
     internal class Glass : IEvent
     {
         public string Name => "Прыжок Веры";
-        public string Description => "";
+        public string Description => "Пропрыгайте в конец карты через препятствия.";
         public string Color => "FF4242";
         public string CommandName => "glass";
         public static Model Model { get; set; }
