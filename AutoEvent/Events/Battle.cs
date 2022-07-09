@@ -1,4 +1,5 @@
 ﻿using AutoEvent.Functions;
+using AutoEvent.Interfaces;
 using Interactables.Interobjects.DoorUtils;
 using MEC;
 using Mirror;
@@ -20,16 +21,15 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class Battle : Interfaces.IEvent
+    internal class Battle : IEvent
     {
         public string Name => "Мясная Заруба";
         public string Description => "";
         public string Color => "FFFF00";
+        public string CommandName => "battle";
         public Model Model { get; set; }
         public TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
-
-        public string CommandName => "battle";
 
         public void OnStart()
         {

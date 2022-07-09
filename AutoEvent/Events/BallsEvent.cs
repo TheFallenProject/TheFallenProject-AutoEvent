@@ -1,4 +1,5 @@
-﻿using MEC;
+﻿using AutoEvent.Interfaces;
+using MEC;
 using Mirror;
 using Qurre;
 using Qurre.API;
@@ -15,17 +16,16 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class BallsEvent : Interfaces.IEvent
+    internal class BallsEvent : IEvent
     {
         public string Name => "Дотронься Мячика";
         public string Description => "";
         public string Color => "FFFF00";
+        public string CommandName => "balls";
         public static Model Model { get; set; }
         public static Model Balls { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
-
-        public string CommandName => "balls";
 
         public void OnStart()
         {

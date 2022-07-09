@@ -1,4 +1,5 @@
 ﻿using AutoEvent.Functions;
+using AutoEvent.Interfaces;
 using MEC;
 using Mirror;
 using Qurre;
@@ -20,17 +21,16 @@ using Server = Qurre.API.Server;
 
 namespace AutoEvent.Events
 {
-    internal class InfectionEvent : Interfaces.IEvent
+    internal class InfectionEvent : IEvent
     {
         public string Name => "Заражение Зомби";
         public string Description => "";
         public string Color => "FF4242";
+        public string CommandName => "zombie";
         public static Player Zombie { get; set; }
         public static Model Model { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
-
-        public string CommandName => "infection";
 
         public void OnStart()
         {

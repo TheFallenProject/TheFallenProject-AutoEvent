@@ -1,4 +1,5 @@
 ﻿using AutoEvent.Functions;
+using AutoEvent.Interfaces;
 using Interactables.Interobjects.DoorUtils;
 using MEC;
 using Mirror;
@@ -20,11 +21,12 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class JailEvent : Interfaces.IEvent
+    internal class JailEvent : IEvent
     {
         public string Name => "Тюрьма Саймона";
         public string Description => "";
         public string Color => "FFFF00";
+        public string CommandName => "jail";
 
         public static string DayWeek = string.Empty;
         public static Model Maps { get; set; }
@@ -36,8 +38,6 @@ namespace AutoEvent.Events
         public static TimeSpan EventTime { get; set; }
         public static bool isDoorsOpen = false;
         public int Votes { get; set; }
-
-        public string CommandName => "jailbreak";
 
         public void OnStart()
         {

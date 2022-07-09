@@ -1,4 +1,5 @@
 ﻿using AutoEvent.Functions;
+using AutoEvent.Interfaces;
 using Interactables.Interobjects.DoorUtils;
 using MEC;
 using Mirror;
@@ -20,17 +21,16 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class Lava : Interfaces.IEvent
+    internal class Lava : IEvent
     {
         public string Name => "Пол - это ЛАВА";
         public string Description => "";
         public string Color => "FFFF00";
+        public string CommandName => "lava";
         public Model Model { get; set; }
         public Model LavaModel { get; set; }
         public TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
-
-        public string CommandName => "lava";
 
         public void OnStart()
         {

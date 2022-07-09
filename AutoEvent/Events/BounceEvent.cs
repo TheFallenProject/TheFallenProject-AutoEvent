@@ -1,4 +1,5 @@
 ﻿ using AutoEvent.Functions;
+using AutoEvent.Interfaces;
 using MEC;
 using Mirror;
 using Qurre;
@@ -18,16 +19,15 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class BounceEvent : Interfaces.IEvent
+    internal class BounceEvent : IEvent
     {
         public string Name => "Вышибалы с Мячиком";
         public string Description => "";
         public string Color => "FFFF00";
+        public string CommandName => "bounce";
         public static Model Model { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
-
-        public string CommandName => "dodgeball";
 
         public void OnStart()
         {

@@ -1,4 +1,5 @@
 ﻿using AutoEvent.Functions;
+using AutoEvent.Interfaces;
 using Interactables.Interobjects.DoorUtils;
 using MEC;
 using Mirror;
@@ -19,18 +20,15 @@ using static AutoEvent.Functions.MainFunctions;
 using Random = UnityEngine.Random;
 namespace AutoEvent.Events
 {
-    internal class Bossbattle : Interfaces.IEvent
+    internal class Bossbattle : IEvent
     {
         public string Name => "Бой с боссом";
-
         public string Color => "0b6f00";
-
         public string Description => "";
+        public string CommandName => "boss";
         public Model Model { get; set; }
         public TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
-
-        public string CommandName => "bossbattle";
 
         public int i = 1;
         public static int hp = 5000;

@@ -1,4 +1,5 @@
 ﻿using AutoEvent.Functions;
+using AutoEvent.Interfaces;
 using Interactables.Interobjects.DoorUtils;
 using MEC;
 using Qurre;
@@ -19,15 +20,14 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class Escape : Interfaces.IEvent
+    internal class Escape : IEvent
     {
         public string Name => "Атомный Побег";
         public string Description => "";
         public string Color => "FFFF00";
+        public string CommandName => "escape";
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
-
-        public string CommandName => "nukerun";
 
         public void OnStart()
         {

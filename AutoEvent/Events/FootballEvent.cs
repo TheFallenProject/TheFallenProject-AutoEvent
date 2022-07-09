@@ -1,4 +1,5 @@
 ﻿using AutoEvent.Functions;
+using AutoEvent.Interfaces;
 using MEC;
 using Mirror;
 using Qurre;
@@ -16,19 +17,18 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class FootballEvent : Interfaces.IEvent
+    internal class FootballEvent : IEvent
     {
         public string Name => "Футбольчик";
         public string Description => "";
         public string Color => "FFFF00";
+        public string CommandName => "football";
         public static Model Model { get; set; }
         public static Model Ball { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
         public int BluePoints { get; set; } = 0;
         public int RedPoints { get; set; } = 0;
-
-        public string CommandName => "football";
 
         public void OnStart()
         {

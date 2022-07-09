@@ -1,4 +1,5 @@
 ﻿using AutoEvent.Functions;
+using AutoEvent.Interfaces;
 using Interactables.Interobjects.DoorUtils;
 using MEC;
 using Mirror;
@@ -20,17 +21,16 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class DeathParty : Interfaces.IEvent
+    internal class DeathParty : IEvent
     {
         public string Name => "Смертельная Вечеринка";
         public string Description => "";
         public string Color => "FFFF00";
+        public string CommandName => "death";
         public static Model Model { get; set; }
         public static TimeSpan EventTime { get; set; }
         public static int CountRound = 1;
         public int Votes { get; set; }
-
-        public string CommandName => "deathparty";
 
         public void OnStart()
         {

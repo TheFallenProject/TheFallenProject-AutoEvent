@@ -1,4 +1,5 @@
 ﻿using AutoEvent.Functions;
+using AutoEvent.Interfaces;
 using MEC;
 using Mirror;
 using Qurre;
@@ -16,18 +17,17 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class Glass : Interfaces.IEvent
+    internal class Glass : IEvent
     {
         public string Name => "Прыжок Веры";
         public string Description => "";
         public string Color => "FF4242";
+        public string CommandName => "glass";
         public static Model Model { get; set; }
         public static Model Platformes { get; set; }
         public static Model ModelCheckPoint { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
-
-        public string CommandName => "glasssteppingstones";
 
         public void OnStart()
         {
