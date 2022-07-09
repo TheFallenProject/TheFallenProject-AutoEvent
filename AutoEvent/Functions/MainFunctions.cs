@@ -115,48 +115,43 @@ namespace AutoEvent.Functions
             }
             yield break;
         }
-        /// <summary>Переспавнить игроков без телепортиции на точку спавна.</summary>
+        /// <summary>Выдача всем игрокам эффектов.</summary>
         public static void EnablePlayersEffect(List<Player> players, EffectType effect)
         {
             players.ForEach(x => x.EnableEffect(effect));
         }
+        /// <summary>Убрать у всех игроков выданные эффекты.</summary>
         public static void DisablePlayersEffect(List<Player> players, EffectType effect)
         {
             players.ForEach(x => x.DisableEffect(effect));
         }
+        /// <summary>Очистка мусора после ивента.</summary>
         public static IEnumerator<float> CleanUpAll()
         {
-            Task.Run(() =>
+            //Task.Run(() => { });
+            foreach (Pickup pickup in Map.Pickups)
             {
-                Log.Info("Cleanup items");
-                foreach (Pickup pickup in Map.Pickups)
-                {
-                    pickup.Base.DestroySelf();
-                }
-
-                Log.Info("Cleanup ragdolls");
-                foreach (Ragdoll ragdoll in UnityEngine.Object.FindObjectsOfType<Ragdoll>())
-                {
-                    UnityEngine.Object.Destroy(ragdoll.gameObject);
-                }
-            });
+                pickup.Base.DestroySelf();
+            }
+            foreach (Ragdoll ragdoll in UnityEngine.Object.FindObjectsOfType<Ragdoll>())
+            {
+                Object.Destroy(ragdoll.gameObject);
+            }
             yield break;
         }
+        /// <summary>Очистка карты после ивента.</summary>
         public static IEnumerator<float> DestroyObjects(Model model)
         {
-            Task.Run(() =>
+            //Task.Run(() => { });
+            foreach (var prim in model.Primitives)
             {
-                Log.Info("Запуск удаления");
-                foreach (var prim in model.Primitives)
-                {
-                    GameObject.Destroy(prim.GameObject);
-                }
-                foreach (var light in model.Lights)
-                {
-                    GameObject.Destroy(light.GameObject);
-                }
-                model.Destroy();
-            });
+                GameObject.Destroy(prim.GameObject);
+            }
+            foreach (var light in model.Lights)
+            {
+                GameObject.Destroy(light.GameObject);
+            }
+            model.Destroy();
             yield break;
         }
         public static bool IsHuman(Player player) => player.Team != Team.SCP && player.Team != Team.RIP;
