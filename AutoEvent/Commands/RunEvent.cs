@@ -19,6 +19,16 @@ namespace AutoEvent.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!Round.Started)
+            {
+                response = $"Раунд ещё не начался!";
+                return false;
+            }
+            if (Plugin.IsEventRunning)
+            {
+                response = $"Мини-Игра уже проводится!";
+                return false;
+            }
             if (arguments.Count != 1)
             {
                 response = $"Необходим только 1 аргумент - командное название ивента!";
