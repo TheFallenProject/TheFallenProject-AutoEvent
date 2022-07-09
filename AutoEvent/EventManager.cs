@@ -11,6 +11,7 @@ using Qurre.API.Addons.Models;
 using static AutoEvent.Functions.MainFunctions;
 using Random = UnityEngine.Random;
 using HarmonyLib;
+using AutoEvent.Events;
 
 namespace AutoEvent
 {
@@ -92,14 +93,14 @@ namespace AutoEvent
                 //    CheckPlayers();
                 //}
 
-                Patches.BetterHintsManager.Cycle();
+                //Patches.BetterHintsManager.Cycle();
 
                 // Счетчик таймера
                 LobbyTimer = new TimeSpan(0, LobbyTimer.Minutes, LobbyTimer.Seconds - 1);
                 if (LobbyTimer.Minutes == 0 && LobbyTimer.Seconds == 0)
                 {
                     //LoadEvent(LobbyEventCircles.Values.First(x => x.Name == EventsVotes.First().Key));
-                    LobbyEventCircles.Values.First(x => x.Name == EventsVotes.First().Key).OnStart();
+                    //LobbyEventCircles.Values.First(x => x.Name == EventsVotes.First().Key).OnStart();
                     Deinit();
                     // Выключаем патч
                     Harmony.UnpatchAll();
@@ -117,7 +118,7 @@ namespace AutoEvent
         internal static readonly Vector3 LobbyPosition = new Vector3(166.53f, 1047.55f, -62.21f);
 
         private const float CircleRadius = 6;
-        internal static Dictionary<Vector3, Interfaces.IEvent> LobbyEventCircles = new Dictionary<Vector3, Interfaces.IEvent>()
+        /*internal static Dictionary<Vector3, Interfaces.IEvent> LobbyEventCircles = new Dictionary<Vector3, Interfaces.IEvent>()
         {
             // Заражение (Красный круг)
             { LobbyPosition + new Vector3(0, 0.5f, 20), new InfectionEvent() },
@@ -129,14 +130,12 @@ namespace AutoEvent
             { LobbyPosition + new Vector3(-14, 0.25f, -14), new DeathParty() },
             // Атомный Побег (Голубой круг)
             { LobbyPosition + new Vector3(0, 0.25f, -20), new Escape() },
-            // Обычная Игра (Синий круг)
-            { LobbyPosition + new Vector3(14, 0.25f, -14), new Event() },
             // Прыжок Веры (Фиолетовый круг)
             { LobbyPosition + new Vector3(20, 0.25f, 0), new Glass() },
             // Пол - это ЛАВА (Розовый круг)
             { LobbyPosition + new Vector3(14f, 0.25f, 14f), new Lava() }
-        };
-        public static IReadOnlyDictionary<string, int> EventsVotes
+        };*/
+        /*public static IReadOnlyDictionary<string, int> EventsVotes;
         {
             get
             {
@@ -160,7 +159,7 @@ namespace AutoEvent
                 }
                 return null;
             }
-        }
+        }*/
 
         /// <summary>Заспавнить лобби комнату</summary>
         private static void SpawnLobbyRoom()
@@ -176,15 +175,15 @@ namespace AutoEvent
         {
             try
             {
-                LobbyEventCircles.Values.ToList().ForEach(e => e.Votes = 0);
+                //LobbyEventCircles.Values.ToList().ForEach(e => e.Votes = 0);
 
                 foreach (Player p in Player.List)
                 {
-                    var pos = LobbyEventCircles.Keys.OrderBy((vec) => (vec - p.Transform.position).sqrMagnitude).First();
-                    if (Vector3.Distance(p.Position, pos) < CircleRadius)
-                    {
-                        LobbyEventCircles[pos].Votes += 1;
-                    }
+                    //var pos = LobbyEventCircles.Keys.OrderBy((vec) => (vec - p.Transform.position).sqrMagnitude).First();
+                    //if (Vector3.Distance(p.Position, pos) < CircleRadius)
+                    //{
+                        //LobbyEventCircles[pos].Votes += 1;
+                    //}
                 }
             }
             catch (Exception e)

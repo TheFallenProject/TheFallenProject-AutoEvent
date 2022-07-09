@@ -16,7 +16,7 @@ using UnityEngine;
 using static AutoEvent.Functions.MainFunctions;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent
+namespace AutoEvent.Events
 {
     internal class BounceEvent : Interfaces.IEvent
     {
@@ -26,6 +26,9 @@ namespace AutoEvent
         public static Model Model { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
+
+        public string CommandName => "dodgeball";
+
         public void OnStart()
         {
             Plugin.IsEventRunning = true;

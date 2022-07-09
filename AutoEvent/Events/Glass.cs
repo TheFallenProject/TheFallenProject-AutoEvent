@@ -14,7 +14,7 @@ using UnityEngine;
 using static AutoEvent.Functions.MainFunctions;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent
+namespace AutoEvent.Events
 {
     internal class Glass : Interfaces.IEvent
     {
@@ -26,6 +26,8 @@ namespace AutoEvent
         public static Model ModelCheckPoint { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
+
+        public string CommandName => "glasssteppingstones";
 
         public void OnStart()
         {

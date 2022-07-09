@@ -79,7 +79,7 @@ namespace AutoEvent
                         // Включаем АвтоИвент
                         NeedDoLobby = true;
                         // Инициализируем менеджер ивентов
-                        EventManager.Init();
+                        //EventManager.Init();
                         // Изменяем параметры сервера на блокировку раунда
                         AutoEvent.Functions.MainFunctions.StartEventParametres();
                     }

@@ -18,7 +18,7 @@ using UnityEngine;
 using static AutoEvent.Functions.MainFunctions;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent
+namespace AutoEvent.Events
 {
     internal class JailEvent : Interfaces.IEvent
     {
@@ -36,6 +36,9 @@ namespace AutoEvent
         public static TimeSpan EventTime { get; set; }
         public static bool isDoorsOpen = false;
         public int Votes { get; set; }
+
+        public string CommandName => "jailbreak";
+
         public void OnStart()
         {
             Plugin.IsEventRunning = true;

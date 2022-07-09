@@ -20,12 +20,12 @@ namespace AutoEvent.Patches
         /// <summary>Фикс для позиционирования Hint'ов по вертикали</summary>
         private const float FixHintVOffset = -11;
 
-        public static IReadOnlyDictionary<string, int> EventsVotes => EventManager.EventsVotes;
+        //public static IReadOnlyDictionary<string, int> EventsVotes => EventManager.EventsVotes;
 
         /// <summary>
         /// Цикл обработки
         /// </summary>
-        internal static void Cycle()
+        /*internal static void Cycle()
         {
             foreach (Player pl in Player.List)
             {
@@ -59,6 +59,6 @@ namespace AutoEvent.Patches
                 }
                 catch { }
             }
-        }
+        }*/
     }
 }

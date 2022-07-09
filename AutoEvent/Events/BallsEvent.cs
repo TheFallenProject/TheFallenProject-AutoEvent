@@ -13,7 +13,7 @@ using UnityEngine;
 using static AutoEvent.Functions.MainFunctions;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent
+namespace AutoEvent.Events
 {
     internal class BallsEvent : Interfaces.IEvent
     {
@@ -24,6 +24,9 @@ namespace AutoEvent
         public static Model Balls { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
+
+        public string CommandName => "balls";
+
         public void OnStart()
         {
             Plugin.IsEventRunning = true;

@@ -12,6 +12,10 @@ using static AutoEvent.Functions.MainFunctions;
 
 namespace AutoEvent
 {
+    //Why the fuck we even need that?
+    //Wasn't it scrapped?
+
+    /*
     internal class Event : IEvent
     {
         /// <summary>Название</summary>
@@ -32,4 +36,5 @@ namespace AutoEvent
         /// <summary>При окончании</summary>
         public void OnStop() { }
     }
+    */
 }

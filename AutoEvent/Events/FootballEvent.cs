@@ -14,7 +14,7 @@ using UnityEngine;
 using static AutoEvent.Functions.MainFunctions;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent
+namespace AutoEvent.Events
 {
     internal class FootballEvent : Interfaces.IEvent
     {
@@ -27,6 +27,9 @@ namespace AutoEvent
         public int Votes { get; set; }
         public int BluePoints { get; set; } = 0;
         public int RedPoints { get; set; } = 0;
+
+        public string CommandName => "football";
+
         public void OnStart()
         {
             Plugin.IsEventRunning = true;
