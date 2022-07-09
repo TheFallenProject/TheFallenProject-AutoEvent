@@ -1,15 +1,14 @@
-﻿using Qurre.API;
-using System;
+﻿using MEC;
+using Qurre;
+using Qurre.API;
+using Qurre.API.Addons.Models;
+using Qurre.API.Controllers.Items;
+using Qurre.API.Objects;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using MEC;
-using Qurre.API.Addons.Models;
-using Qurre.API.Objects;
-using Qurre;
 
 namespace AutoEvent.Functions
 {
@@ -127,32 +126,37 @@ namespace AutoEvent.Functions
         }
         public static IEnumerator<float> CleanUpAll()
         {
-            foreach(var ragdoll in Map.Ragdolls)
+            Task.Run(() =>
             {
-                ragdoll.Destroy();
-                yield return Timing.WaitForSeconds(0.01f);
-            }
-            foreach (var pickup in Map.Pickups)
-            {
-                pickup.Destroy();
-                yield return Timing.WaitForSeconds(0.01f);
-            }
+                Log.Info("Cleanup items");
+                foreach (Pickup pickup in Map.Pickups)
+                {
+                    pickup.Base.DestroySelf();
+                }
+
+                Log.Info("Cleanup ragdolls");
+                foreach (Ragdoll ragdoll in UnityEngine.Object.FindObjectsOfType<Ragdoll>())
+                {
+                    UnityEngine.Object.Destroy(ragdoll.gameObject);
+                }
+            });
             yield break;
         }
         public static IEnumerator<float> DestroyObjects(Model model)
         {
-            Log.Info("Запуск удаления");
-            foreach (var prim in model.Primitives)
+            Task.Run(() =>
             {
-                GameObject.Destroy(prim.GameObject);
-                yield return Timing.WaitForSeconds(0.1f);
-            }
-            foreach (var light in model.Lights)
-            {
-                GameObject.Destroy(light.GameObject);
-                yield return Timing.WaitForSeconds(0.1f);
-            }
-            model.Destroy();
+                Log.Info("Запуск удаления");
+                foreach (var prim in model.Primitives)
+                {
+                    GameObject.Destroy(prim.GameObject);
+                }
+                foreach (var light in model.Lights)
+                {
+                    GameObject.Destroy(light.GameObject);
+                }
+                model.Destroy();
+            });
             yield break;
         }
         public static bool IsHuman(Player player) => player.Team != Team.SCP && player.Team != Team.RIP;
