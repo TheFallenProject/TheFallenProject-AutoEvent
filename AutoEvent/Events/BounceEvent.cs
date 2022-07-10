@@ -34,8 +34,6 @@ namespace AutoEvent.Events
             Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
             Qurre.Events.Player.Damage += OnDamage;
-            Qurre.Events.Round.TeamRespawn += OnTeamRespawning;
-            Qurre.Events.Server.SendingRA += OnSendRA;
             OnEventStarted();
         }
         public void OnStop()
@@ -43,8 +41,6 @@ namespace AutoEvent.Events
             Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
             Qurre.Events.Player.Damage -= OnDamage;
-            Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
-            Qurre.Events.Server.SendingRA -= OnSendRA;
             Timing.CallDelayed(5f, () => EventEnd());
         }
         public void OnEventStarted()
@@ -199,34 +195,6 @@ namespace AutoEvent.Events
             {
                 ev.Player.Position = Model.GameObject.transform.position + new Vector3(-27.46f, 20.72f, 0.99f);
             });
-        }
-        public void OnTeamRespawning(TeamRespawnEvent ev)
-        {
-            if (Plugin.IsEventRunning) ev.Allowed = false;
-        }
-        public void OnSendRA(SendingRAEvent ev)
-        {
-            if (Plugin.IsEventRunning)
-            {
-                if (Plugin.DonatorGroups.Contains(ev.Player.GroupName))
-                {
-                    ev.Allowed = false;
-                    ev.Success = false;
-                    ev.ReplyMessage = "Сейчас проводится Ивент!";
-                }
-                else if (ev.Name.ToLower() == "server_event")
-                {
-                    if (ev.Args.Count() == 1)
-                    {
-                        if (ev.Args[0].ToLower() == "round_restart")
-                        {
-                            ev.Allowed = false;
-                            EventManager.Harmony.UnpatchAll();
-                            Server.Restart();
-                        }
-                    }
-                }
-            }
         }
     }
 }

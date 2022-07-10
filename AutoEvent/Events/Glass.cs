@@ -33,8 +33,6 @@ namespace AutoEvent.Events
         {
             Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
-            Qurre.Events.Round.TeamRespawn += OnTeamRespawning;
-            Qurre.Events.Server.SendingRA += OnSendRA;
             //Qurre.Events.Voice.PressAltChat += OnPressV;
             OnWaitingEvent();
         }
@@ -42,8 +40,6 @@ namespace AutoEvent.Events
         {
             Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
-            Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
-            Qurre.Events.Server.SendingRA -= OnSendRA;
             //Qurre.Events.Voice.PressAltChat -= OnPressV;
             Timing.CallDelayed(5f, () => EventEnd());
         }
@@ -186,14 +182,6 @@ namespace AutoEvent.Events
         public void OnJoin(JoinEvent ev)
         {
             ev.Player.Role = RoleType.Spectator;
-            ev.Player.ClearBroadcasts();
-            ev.Player.Broadcast("<color=yellow>Привет, Игрок!\n" +
-                "Сейчас проходит ивент <color=red>'Стеклянный Прыжок'</color>" +
-                "Ты мёртв, подожди некоторое время.</color>", 10);
-        }
-        public void OnTeamRespawning(TeamRespawnEvent ev)
-        {
-            if (Plugin.IsEventRunning) ev.Allowed = false;
         }
         public void OnPressV(PressAltChatEvent ev)
         {
@@ -205,30 +193,6 @@ namespace AutoEvent.Events
                     {
                         ev.Player.GameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
                         rig.AddForce(player.Transform.forward * 0.5f, ForceMode.Impulse);
-                    }
-                }
-            }
-        }
-        public void OnSendRA(SendingRAEvent ev)
-        {
-            if (Plugin.IsEventRunning)
-            {
-                if (Plugin.DonatorGroups.Contains(ev.Player.GroupName))
-                {
-                    ev.Allowed = false;
-                    ev.Success = false;
-                    ev.ReplyMessage = "Сейчас проводится Ивент!";
-                }
-                else if (ev.Name.ToLower() == "server_event")
-                {
-                    if (ev.Args.Count() == 1)
-                    {
-                        if (ev.Args[0].ToLower() == "round_restart")
-                        {
-                            ev.Allowed = false;
-                            EventManager.Harmony.UnpatchAll();
-                            Server.Restart();
-                        }
                     }
                 }
             }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AutoEvent.Functions;
 using CommandSystem;
 using Qurre.API;
 
@@ -49,6 +50,7 @@ namespace AutoEvent.Commands
                             {
                                 sender.Respond("Пытаюсь запустить ивент, OnStart не null...");
                                 eng.Invoke(Activator.CreateInstance(type), null);
+                                Round.Lock = true;
                                 response = "Ивент найден, запускаю.";
                                 return true;
                             }

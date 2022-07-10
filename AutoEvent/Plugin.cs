@@ -13,6 +13,7 @@ using HarmonyLib;
 using Round = Qurre.API.Round;
 using Server = Qurre.API.Server;
 using Map = Qurre.API.Map;
+using AutoEvent.Functions;
 
 namespace AutoEvent
 {
@@ -24,12 +25,7 @@ namespace AutoEvent
         public override void Enable() => RegisterEvents();
         public override void Disable() => UnregisterEvents();
         public override int Priority => int.MaxValue;
-        // Проводить ли в этом раунде ивенты?
         public static bool NeedDoLobby = false;
-
-        /// <summary>
-        /// PLEASE REMEMBER TO SET IT TO FALSE
-        /// </summary>
         public static bool IsEventRunning = false;
         public static Config CustomConfig { get; set; }
         public void RegisterEvents()
@@ -39,6 +35,9 @@ namespace AutoEvent
             if (!CustomConfig.IsEnable) return;
 
             Qurre.Events.Round.Start += OnRoundStarted;
+            Qurre.Events.Server.SendingRA += OnSendRA;
+            Qurre.Events.Round.TeamRespawn += OnTeamRespawning;
+            Qurre.Events.Round.End += OnRoundEnded;
             if (NeedDoLobby)
             {
                 Qurre.Events.Player.Join += OnJoin;
@@ -50,6 +49,9 @@ namespace AutoEvent
             if (!CustomConfig.IsEnable) return;
 
             Qurre.Events.Round.Start -= OnRoundStarted;
+            Qurre.Events.Server.SendingRA -= OnSendRA;
+            Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
+            Qurre.Events.Round.End -= OnRoundEnded;
             if (NeedDoLobby)
             {
                 Qurre.Events.Player.Join -= OnJoin;
@@ -104,6 +106,40 @@ namespace AutoEvent
                     ev.Player.Position = EventManager.LobbyPosition + new Vector3(0, 6.67f, 0);
                     return;
                 });
+            }
+        }
+        public void OnTeamRespawning(TeamRespawnEvent ev)
+        {
+            if (Plugin.IsEventRunning) ev.Allowed = false;
+        }
+        public void OnRoundEnded(RoundEndEvent ev)
+        {
+            // независимо от включения или выключения плагина, блокировки раунда и лобби не будет
+            MainFunctions.EndEventParametres();
+        }
+        public void OnSendRA(SendingRAEvent ev)
+        {
+            if (Plugin.IsEventRunning)
+            {
+                if (Plugin.DonatorGroups.Contains(ev.Player.GroupName))
+                {
+                    ev.Allowed = false;
+                    ev.Success = false;
+                    ev.ReplyMessage = "Сейчас проводится Ивент!";
+                }
+                else if (ev.Name.ToLower() == "server_event")
+                {
+                    if (ev.Args.Count() == 1)
+                    {
+                        if (ev.Args[0].ToLower() == "round_restart")
+                        {
+                            ev.Allowed = false;
+                            MainFunctions.EndEventParametres();
+                            EventManager.Harmony.UnpatchAll();
+                            Server.Restart();
+                        }
+                    }
+                }
             }
         }
         public static List<string> DonatorGroups = new List<string>()

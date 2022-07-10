@@ -33,22 +33,15 @@ namespace AutoEvent.Events
         {
             Plugin.IsEventRunning = true;
             Qurre.Events.Alpha.Stopping += OnNukeDisable;
-            Qurre.Events.Round.TeamRespawn += OnTeamRespawning;
-            Qurre.Events.Server.SendingRA += OnSendRA;
+            Qurre.Events.Player.Join += OnJoin;
             OnEventStarted();
         }
         public void OnStop()
         {
             Plugin.IsEventRunning = false;
             Qurre.Events.Alpha.Stopping -= OnNukeDisable;
-            Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
-            Qurre.Events.Server.SendingRA -= OnSendRA;
+            Qurre.Events.Player.Join -= OnJoin;
             Timing.CallDelayed(5f, () => EventEnd());
-        }
-
-        static void OnNukeDisable(AlphaStopEvent ev)
-        {
-            ev.Allowed = false;
         }
 
         public void OnEventStarted()
@@ -108,35 +101,11 @@ namespace AutoEvent.Events
         // Ивенты
         public void OnJoin(JoinEvent ev)
         {
-            ev.Player.Role = RoleType.Scp173;
+            Timing.CallDelayed(2f, () => ev.Player.Role = RoleType.Scp173 );
         }
-        public void OnTeamRespawning(TeamRespawnEvent ev)
+        static void OnNukeDisable(AlphaStopEvent ev)
         {
-            if (Plugin.IsEventRunning) ev.Allowed = false;
-        }
-        public void OnSendRA(SendingRAEvent ev)
-        {
-            if (Plugin.IsEventRunning)
-            {
-                if (Plugin.DonatorGroups.Contains(ev.Player.GroupName))
-                {
-                    ev.Allowed = false;
-                    ev.Success = false;
-                    ev.ReplyMessage = "Сейчас проводится Ивент!";
-                }
-                else if (ev.Name.ToLower() == "server_event")
-                {
-                    if (ev.Args.Count() == 1)
-                    {
-                        if (ev.Args[0].ToLower() == "round_restart")
-                        {
-                            ev.Allowed = false;
-                            EventManager.Harmony.UnpatchAll();
-                            Server.Restart();
-                        }
-                    }
-                }
-            }
+            ev.Allowed = false;
         }
     }
 }

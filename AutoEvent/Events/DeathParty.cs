@@ -36,16 +36,14 @@ namespace AutoEvent.Events
         {
             Plugin.IsEventRunning = true;
             Qurre.Events.Player.Damage += OnDamage;
-            Qurre.Events.Round.TeamRespawn += OnTeamRespawning;
-            Qurre.Events.Server.SendingRA += OnSendRA;
+            Qurre.Events.Player.Join += OnJoin;
             OnEventStarted();
         }
         public void OnStop()
         {
             Plugin.IsEventRunning = false;
             Qurre.Events.Player.Damage -= OnDamage;
-            Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
-            Qurre.Events.Server.SendingRA -= OnSendRA;
+            Qurre.Events.Player.Join -= OnJoin;
             Timing.CallDelayed(5f, () => EventEnd());
         }
 
@@ -195,10 +193,6 @@ namespace AutoEvent.Events
         public void OnJoin(JoinEvent ev)
         {
             ev.Player.Role = RoleType.Spectator;
-            ev.Player.ClearBroadcasts();
-            ev.Player.Broadcast("<color=yellow>Привет, Игрок!\n" +
-                "Сейчас проходит ивент <color=red>'Смертельная вечеринка'</color>" +
-                "Ты мёртв, подожди некоторое время.</color>", 10);
         }
         public void OnDamage(DamageEvent ev)
         {
@@ -206,34 +200,6 @@ namespace AutoEvent.Events
             {
                 if (ev.Target.Hp < 1) ev.Target.Kill("<color=red>Взорвался</color>");
                 ev.Target.Hp -= 50;
-            }
-        }
-        public void OnTeamRespawning(TeamRespawnEvent ev)
-        {
-            if (Plugin.IsEventRunning) ev.Allowed = false;
-        }
-        public void OnSendRA(SendingRAEvent ev)
-        {
-            if (Plugin.IsEventRunning)
-            {
-                if (Plugin.DonatorGroups.Contains(ev.Player.GroupName))
-                {
-                    ev.Allowed = false;
-                    ev.Success = false;
-                    ev.ReplyMessage = "Сейчас проводится Ивент!";
-                }
-                else if (ev.Name.ToLower() == "server_event")
-                {
-                    if (ev.Args.Count() == 1)
-                    {
-                        if (ev.Args[0].ToLower() == "round_restart")
-                        {
-                            ev.Allowed = false;
-                            EventManager.Harmony.UnpatchAll();
-                            Server.Restart();
-                        }
-                    }
-                }
             }
         }
     }

@@ -33,15 +33,13 @@ namespace AutoEvent.Events
         public void OnStart()
         {
             Plugin.IsEventRunning = true;
-            Qurre.Events.Round.TeamRespawn += OnTeamRespawning;
-            Qurre.Events.Server.SendingRA += OnSendRA;
+            Qurre.Events.Player.Join += OnJoin;
             OnEventStarted();
         }
         public void OnStop()
         {
             Plugin.IsEventRunning = false;
-            Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
-            Qurre.Events.Server.SendingRA -= OnSendRA;
+            Qurre.Events.Player.Join -= OnJoin;
             Timing.CallDelayed(5f, () => EventEnd());
         }
         public void OnEventStarted()
@@ -155,35 +153,20 @@ namespace AutoEvent.Events
         // Ивенты
         public void OnJoin(JoinEvent ev)
         {
-            ev.Player.Role = RoleType.Spectator;
-        }
-        public void OnTeamRespawning(TeamRespawnEvent ev)
-        {
-            if (Plugin.IsEventRunning) ev.Allowed = false;
-        }
-        public void OnSendRA(SendingRAEvent ev)
-        {
-            if (Plugin.IsEventRunning)
+            if (Random.Range(0, 2) == 0)
             {
-                if (Plugin.DonatorGroups.Contains(ev.Player.GroupName))
-                {
-                    ev.Allowed = false;
-                    ev.Success = false;
-                    ev.ReplyMessage = "Сейчас проводится Ивент!";
-                }
-                else if (ev.Name.ToLower() == "server_event")
-                {
-                    if (ev.Args.Count() == 1)
-                    {
-                        if (ev.Args[0].ToLower() == "round_restart")
-                        {
-                            ev.Allowed = false;
-                            EventManager.Harmony.UnpatchAll();
-                            Server.Restart();
-                        }
-                    }
-                }
+                ev.Player.Role = RoleType.NtfCaptain;
+                ev.Player.ClearInventory();
             }
+            else
+            {
+                ev.Player.Role = RoleType.ClassD;
+                ev.Player.ClearInventory();
+            }
+            Timing.CallDelayed(2f, () =>
+            {
+                ev.Player.Position = Model.GameObject.transform.position + new Vector3(0, 5, 0);
+            });
         }
     }
 }
