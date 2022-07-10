@@ -24,7 +24,7 @@ namespace AutoEvent.Events
     internal class InfectionEvent : IEvent
     {
         public string Name => "Заражение Зомби";
-        public string Description => "Зомби режим, целью которой заразить всех игроков.";
+        public string Description => "Зомби режим, целью которого заразить всех игроков.";
         public string Color => "FF4242";
         public string CommandName => "zombie";
         public static Player Zombie { get; set; }

@@ -24,7 +24,7 @@ namespace AutoEvent.Events
     internal class DeathParty : IEvent
     {
         public string Name => "Смертельная Вечеринка";
-        public string Description => "Избегайте гранаты и выживите.";
+        public string Description => "Избегайте гранат и выживите.";
         public string Color => "FFFF00";
         public string CommandName => "death";
         public static Model Model { get; set; }

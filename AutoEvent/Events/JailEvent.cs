@@ -24,7 +24,7 @@ namespace AutoEvent.Events
     internal class JailEvent : IEvent
     {
         public string Name => "Тюрьма Саймона";
-        public string Description => "Режим Jail, в которой нужно проводить мероприятия.";
+        public string Description => "Режим Jail, в котором нужно проводить мероприятия.";
         public string Color => "FFFF00";
         public string CommandName => "jail";
 
