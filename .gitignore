@@ -1,5 +1,3 @@
-
-*.cs
-AutoEvent/Properties/AssemblyInfo.cs
-*.csproj
-AutoEvent/bin
+/.vs
+/AutoEvent/obj
+/AutoEvent/bin
