@@ -26,10 +26,11 @@ namespace AutoEvent.Commands
             {
                 if (type.GetProperty("CommandName") != null)
                 {
-                    var ev = Activator.CreateInstance(type);
+                    var command = Activator.CreateInstance(type);
+                    var description = Activator.CreateInstance(type);
                     try
                     {
-                        resp += $"<b><color=yellow>[{type.GetProperty("CommandName").GetValue(ev)}]</color></b> <= {type.Name}\n";
+                        resp += $"<b><color=yellow>[{type.GetProperty("CommandName").GetValue(command)}]</color></b> <= {type.GetProperty("Description").GetValue(description)}\n";
                     }
                     catch (Exception ex)
                     {
