@@ -39,7 +39,6 @@ namespace AutoEvent.Commands
                     }
                 }
             }
-
             response = resp;
             return true;
         }

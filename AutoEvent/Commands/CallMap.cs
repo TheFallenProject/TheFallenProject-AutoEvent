@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using AutoEvent.Functions;
 using CommandSystem;
 using MEC;
 using Qurre.API;
@@ -40,23 +42,18 @@ namespace AutoEvent.Commands
             }
             if (arguments.At(0) == "list")
             {
-                response = $"Все карты: \n" +
-                    $" - Zombie.json - Замок из Зомби Режима\n" +
-                    $" - Battle.json - Мясная Заруба двух команд\n" +
-                    $" - Bounce.json - 2 Команды из Вышибал\n" +
-                    $" - Jail.json - карта Тюрьма Саймона\n" +
-                    $" - Death.json - Большая плоская карта\n" +
-                    $" - Glass.json - Длинная карта, но без поверхностей\n" +
-                    $" - Lava.json - Карта на подобии Пабга, но без лавы\n" +
-                    $" - Parkour.json - Паркур, чтобы люди залезали наверх\n" +
-                    $" - Battle.json - Карта для войны\n" +
-                    $" - Parkour_g1.json - Паркур горизонтальный версия 1\n" +
-                    $" - Parkour_g2.json - Паркур горизонтальный версия 2\n";
+                string files = "<color=yellow><b>Список карт</color></b>:\n";
+                var dir = new DirectoryInfo(Path.Combine(Path.Combine(Qurre.PluginManager.PluginsDirectory, "Map")));
+                foreach (FileInfo file in dir.GetFiles())
+                {
+                    files += $"<color=yellow>[ {file.Name} ]</color>\n";
+                }
+                response = $"{files}";
                 return true;
             }
             if (Model.Primitives.Count > 0)
             {
-                Timing.RunCoroutine(Functions.MainFunctions.DestroyObjects(Model));
+                Timing.RunCoroutine(MainFunctions.DestroyObjects(Model));
                 if (arguments.At(0) == "delete")
                 {
                     response = "Кастомная карта была удалена!";
