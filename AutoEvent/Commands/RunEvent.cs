@@ -21,6 +21,12 @@ namespace AutoEvent.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            Player admin = Player.Get((sender as CommandSender).SenderId);
+            if (Plugin.CustomConfig.DonatorGroups.Contains(admin.GroupName))
+            {
+                response = $"<color=red>Вы не можете это использовать!</color>";
+                return false;
+            }
             if (!Round.Started)
             {
                 response = $"Раунд ещё не начался!";

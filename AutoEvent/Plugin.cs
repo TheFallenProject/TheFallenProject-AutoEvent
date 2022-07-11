@@ -121,7 +121,7 @@ namespace AutoEvent
         {
             if (Plugin.IsEventRunning)
             {
-                if (Plugin.DonatorGroups.Contains(ev.Player.GroupName))
+                if (Plugin.CustomConfig.DonatorGroups.Contains(ev.Player.GroupName))
                 {
                     ev.Allowed = false;
                     ev.Success = false;
@@ -142,12 +142,5 @@ namespace AutoEvent
                 }
             }
         }
-        public static List<string> DonatorGroups = new List<string>()
-        {
-            "owner",
-            "gladcat",
-            "admin",
-            "vip"
-        };
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Qurre.API.Addons;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace AutoEvent
@@ -12,5 +13,13 @@ namespace AutoEvent
         public bool IsEnable { get; set; } = true;
         [Description("Запись количества прошедших раундов")]
         public int RoundCount { get; set; } = 0;
+        [Description("Группа донатеров, которые не смогут запускать мини-игры")]
+        public List<string> DonatorGroups = new List<string>()
+        {
+            "owner",
+            "gladcat",
+            "admin",
+            "vip"
+        };
     }
 }
