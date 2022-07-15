@@ -85,7 +85,7 @@ namespace AutoEvent.Events
 
                 foreach (Player player in Player.List.Where(r => r.Team == Team.MTF))
                 {
-                    player.ShowHint("<color=yellow>Нажмите <color=red>[V]</color> возле игрока.</color>", 1);
+                    player.ShowHint("<color=yellow>Догоните игроков.</color>", 1);
                 }
                 yield return Timing.WaitForSeconds(1f);
                 EventTime -= TimeSpan.FromSeconds(1f);
@@ -172,7 +172,7 @@ namespace AutoEvent.Events
             {
                 List<Player> list = Player.List.Where(r => r.Role != RoleType.Spectator).ToList();
                 Player player = list.RandomItem();
-                //player.Role == RoleType.NtfCaptain;
+                player.Role = RoleType.NtfCaptain;
                 player.ClearInventory();
 
                 player.EnableEffect("Scp207");
