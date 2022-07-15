@@ -87,6 +87,7 @@
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="EventManager.cs" />
+    <Compile Include="Events\Versus.cs" />
     <Compile Include="Events\HideAndSeek.cs" />
     <Compile Include="Events\FootballEvent.cs" />
     <Compile Include="Events\Bossbattle.cs" />
