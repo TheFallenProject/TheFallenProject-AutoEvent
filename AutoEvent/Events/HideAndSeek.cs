@@ -1,9 +1,11 @@
 ﻿using AutoEvent.Interfaces;
+using InventorySystem.Items;
 using MEC;
 using Mirror;
 using Qurre;
 using Qurre.API;
 using Qurre.API.Addons.Models;
+using Qurre.API.Controllers;
 using Qurre.API.Controllers.Items;
 using Qurre.API.Events;
 using Qurre.API.Objects;
@@ -16,7 +18,7 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class HideAndSeek : IEvent
+    internal class HideAndSeek : IEvent // Осталось поправить руки, когда мог достает пушку
     {
         public string Name => "Догонялки [В работе!]";
         public string Description => "Выживание против Догоняющих игроков.";
@@ -30,29 +32,26 @@ namespace AutoEvent.Events
         {
             Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
-            Qurre.Events.Player.RoleChange += OnRoleChange;
+            Qurre.Events.Player.Spawn += OnSpawnEvent;
+            Qurre.Events.Player.Shooting += OnShooting;
             OnEventStarted();
         }
         public void OnStop()
         {
             Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
-            Qurre.Events.Player.RoleChange -= OnRoleChange;
+            Qurre.Events.Player.Spawn -= OnSpawnEvent;
+            Qurre.Events.Player.Shooting -= OnShooting;
             Timing.CallDelayed(5f, () => EventEnd());
-        }
-        public void OnRoleChange(RoleChangeEvent ev)
-        {
-            if (ev.NewRole == RoleType.NtfCaptain || ev.NewRole == RoleType.ClassD) ev.SavePos = true;
         }
         public void OnEventStarted()
         {
             CreatingMapFromJson("HideAndSeek.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
             Model = model;
-            //PlayAudio("FallGuys_FallRoll.f32le", 15, true, "Death");
+            PlayAudio("FallGuys_FallForTheTeam.f32le", 15, true, "Догонялки");
             TeleportAndChangeRolePlayers(Player.List.ToList(), RoleType.ClassD, Model.GameObject.transform.position + new Vector3(-22.67f, 4.94f, 14.61f));
             // Запуск ивента
             Timing.RunCoroutine(TimeToStart(), "time_to_start");
-            Timing.RunCoroutine(CheckPlayers(), "check_players");
         }
         public IEnumerator<float> TimeToStart()
         {
@@ -118,30 +117,6 @@ namespace AutoEvent.Events
             OnStop();
             yield break;
         }
-        public IEnumerator<float> CheckPlayers()
-        {
-            while (Player.List.Count(r => r.Role != RoleType.Spectator) > 1)
-            {
-                foreach (Player player in Player.List.Where(r => r.Team == Team.CDP))
-                {
-                    foreach (Player anyPlayer in Player.List.Where(r => r.Team == Team.CDP))
-                    {
-                        if (Vector3.Distance(player.GameObject.transform.position, anyPlayer.GameObject.transform.position) < 2)
-                        {
-                            player.BlockSpawnTeleport = true;
-                            player.Role = RoleType.NtfCaptain;
-                            player.ClearInventory();
-
-                            anyPlayer.BlockSpawnTeleport = true;
-                            anyPlayer.Role = RoleType.ClassD;
-                            anyPlayer.ClearInventory();
-                        }
-                    }
-                }
-                yield return Timing.WaitForSeconds(3f);
-            }
-            yield break;
-        }
         public void RestartEvent()
         {
             // Ожидаем рестарта
@@ -153,15 +128,15 @@ namespace AutoEvent.Events
         }
         public void InitRandomPlayer()
         {
-            if (Player.List.Count() > 25)
+            if (Player.List.Count() > 20)
             {
                 AddNewPlayers(5);
             }
-            else if (Player.List.Count() > 15)
+            else if (Player.List.Count() > 5 && Player.List.Count() <= 20)
             {
                 AddNewPlayers(3);
             }
-            else if (Player.List.Count() >= 5)
+            else if (Player.List.Count() <= 5)
             {
                 AddNewPlayers(1);
             }
@@ -173,7 +148,8 @@ namespace AutoEvent.Events
                 List<Player> list = Player.List.Where(r => r.Role != RoleType.Spectator).ToList();
                 Player player = list.RandomItem();
                 player.Role = RoleType.NtfCaptain;
-                player.ClearInventory();
+                player.ResetInventory(new List<ItemType> { ItemType.GunCOM18 });
+                player.ItemInHand = Item.Get(player.AllItems.First().Serial);
 
                 player.EnableEffect("Scp207");
                 player.ChangeEffectIntensity("Scp207", 4);
@@ -186,6 +162,7 @@ namespace AutoEvent.Events
             grenade.Base.transform.localScale = new Vector3(0, 0, 0);
             grenade.MaxRadius = 0.5f;
             grenade.Spawn(player.Position);
+            player.ClearInventory();
             player.Kill(Reason);
         }
         public void EventEnd()
@@ -201,6 +178,31 @@ namespace AutoEvent.Events
             Timing.RunCoroutine(CleanUpAll());
         }
         // Ивенты
+        public void OnShooting(ShootingEvent ev)
+        {
+            foreach (Player player in Player.List)
+            {
+                if (Vector3.Distance(ev.Shooter.LookingAt.gameObject.transform.position, player.Position) < 1)
+                if (Vector3.Distance(ev.Shooter.Position, player.Position) < 3 && ev.Shooter != player)
+                {
+                    player.Role = RoleType.NtfCaptain;
+                    player.ResetInventory(new List<ItemType> { ItemType.GunCOM18 });
+                    player.ItemInHand = Item.Get(player.AllItems.First().Serial);
+                    player.EnableEffect("Scp207");
+                    player.ChangeEffectIntensity("Scp207", 4);
+
+                    ev.Shooter.Role = RoleType.ClassD;
+                    ev.Shooter.ClearInventory();
+                    ev.Shooter.EnableEffect("Scp207");
+                    ev.Shooter.ChangeEffectIntensity("Scp207", 4);
+                    break;
+                }
+            }
+        }
+        public void OnSpawnEvent(SpawnEvent ev)
+        {
+            ev.Player.BlockSpawnTeleport = true;
+        }
         public void OnJoin(JoinEvent ev)
         {
             ev.Player.Role = RoleType.Spectator;
