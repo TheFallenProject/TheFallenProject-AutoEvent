@@ -23,7 +23,7 @@ namespace AutoEvent.Events
 {
     internal class Versus : IEvent
     {
-        public string Name => "Петушиные Бои [В работе!]";
+        public string Name => "Петушиные Бои";
         public string Description => "Дуель игроков на карте 35hp из cs 1.6";
         public string Color => "FFFF00";
         public string CommandName => "35hp";
@@ -54,7 +54,7 @@ namespace AutoEvent.Events
             Model = model;
             CreateDoors();
 
-            //PlayAudio("MGS4.f32le", 10, true, "БИТВА");
+            PlayAudio("FallGuys_FutureUtobeania.f32le", 15, true, "Петухи");
             var count = 0;
             foreach (Player player in Player.List)
             {
@@ -63,7 +63,7 @@ namespace AutoEvent.Events
                     player.Role = RoleType.Scientist;
                     Timing.CallDelayed(2f, () =>
                     {
-                        player.Position = Model.GameObject.transform.position + new Vector3(-56.1f, -6.3f, 3.12f);
+                        player.Position = Model.GameObject.transform.position + new Vector3(13.72f, -3.08f, 1.526f);
                         player.ClearInventory();
                     });
                 }
@@ -72,7 +72,7 @@ namespace AutoEvent.Events
                     player.Role = RoleType.ClassD;
                     Timing.CallDelayed(2f, () =>
                     {
-                        player.Position = Model.GameObject.transform.position + new Vector3(27.18f, -6.3f, 3.12f);
+                        player.Position = Model.GameObject.transform.position + new Vector3(-28.21f, -3.08f, 1.526f);
                         player.ClearInventory();
                     });
                 }
@@ -88,35 +88,40 @@ namespace AutoEvent.Events
                 yield return Timing.WaitForSeconds(1f);
             }
             // Do players
-            DoScientist();
-            DoClassD();
+            var gun = Guns.RandomItem();
+            DoScientist(gun);
+            DoClassD(gun);
             // cycle
             while (Player.List.Count(r => r.Team == Team.RSC) > 0 && Player.List.Count(r => r.Team == Team.CDP) > 0)
             {
-                if (Scientist is null || Scientist.Role == RoleType.Spectator)
+                if (Scientist.Role == RoleType.Spectator && ClassD.Role != RoleType.Spectator)
                 {
-                    if (ClassD != null)
-                    {
-                        BroadcastPlayers($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                        $"<color=yellow>Победитель боя: {ClassD.Nickname}</color>", 10);
-                        yield return Timing.WaitForSeconds(10f);
-                        Scientist.ResetInventory( new List<ItemType> { Guns.RandomItem() });
-                    }
-                    DoScientist();
+                    BroadcastPlayers($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
+                    $"<color=yellow>Победитель боя: <color=red>{ClassD.Nickname}</color></color>", 10);
+                    Timing.RunCoroutine(CleanUpAll());
+
+                    yield return Timing.WaitForSeconds(10f);
+
+                    ClassD.Hp = 100;
+                    gun = Guns.RandomItem();
+                    DoScientist(gun);
+                    ClassD.ResetInventory( new List<ItemType> { gun });
                 }
-                if (ClassD is null || ClassD.Role == RoleType.Spectator)
+                if (ClassD.Role == RoleType.Spectator && Scientist.Role != RoleType.Spectator)
                 {
-                    if (Scientist != null && ClassD is null)
-                    {
-                        BroadcastPlayers($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                        $"<color=yellow>Победитель боя: {Scientist.Nickname}</color>", 10);
-                        yield return Timing.WaitForSeconds(10f);
-                        ClassD.ResetInventory(new List<ItemType> { Guns.RandomItem() });
-                    }
-                    DoClassD();
+                    BroadcastPlayers($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
+                    $"<color=yellow>Победитель боя: <color=red>{Scientist.Nickname}</color></color>", 10);
+                    Timing.RunCoroutine(CleanUpAll());
+
+                    yield return Timing.WaitForSeconds(10f);
+
+                    Scientist.Hp = 100;
+                    gun = Guns.RandomItem();
+                    DoClassD(gun);
+                    Scientist.ResetInventory(new List<ItemType> { gun });
                 }
                 BroadcastPlayers($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                $"<color=yellow><color=yellow>{Scientist.Nickname}</color> VS <color=orange>{ClassD.Nickname}</color></color>", 1);
+                $"<color=yellow><color=yellow>{Scientist.Nickname}</color> <color=red>VS</color> <color=orange>{ClassD.Nickname}</color></color>", 1);
 
                 yield return Timing.WaitForSeconds(1f);
             }
@@ -133,17 +138,17 @@ namespace AutoEvent.Events
             OnStop();
             yield break;
         }
-        public void DoScientist()
+        public void DoScientist(ItemType gun)
         {
             Scientist = Player.List.Where(r => r.Team == Team.RSC).ToList().RandomItem();
-            Scientist.Position = Model.GameObject.transform.position + new Vector3(-0.32f, -6.63f, 2.65f);
-            Scientist.ResetInventory(new List<ItemType> { Guns.RandomItem() });
+            Scientist.Position = Model.GameObject.transform.position + new Vector3(-1.45f, -3.08f, 1.526f);
+            Scientist.ResetInventory(new List<ItemType> { gun });
         }
-        public void DoClassD()
+        public void DoClassD(ItemType gun)
         {
             ClassD = Player.List.Where(r => r.Team == Team.CDP).ToList().RandomItem();
-            ClassD.Position = Model.GameObject.transform.position + new Vector3(-28.26f, -6.63f, 2.65f);
-            ClassD.ResetInventory(new List<ItemType> { Guns.RandomItem() });
+            ClassD.Position = Model.GameObject.transform.position + new Vector3(-13.83f, -3.08f, 1.526f);
+            ClassD.ResetInventory(new List<ItemType> { gun });
         }
         public void EventEnd()
         {
@@ -155,8 +160,8 @@ namespace AutoEvent.Events
         public void CreateDoors()
         {
             Doors = new Model("PrisonerDoors", Model.GameObject.transform.position);
-            Doors.AddPart(new ModelPrimitive(Doors, PrimitiveType.Cube, new Color32(85, 87, 85, 51), new Vector3(-30.15f, -5.45f, 3.12f), new Vector3(90, 90, 0), new Vector3(3.1f, 1f, 6.52f)));
-            Doors.AddPart(new ModelPrimitive(Doors, PrimitiveType.Cube, new Color32(85, 87, 85, 51), new Vector3(1.76f, -5.45f, 3.12f), new Vector3(90, 90, 0), new Vector3(3.1f, 1f, 6.52f)));
+            Doors.AddPart(new ModelPrimitive(Doors, PrimitiveType.Cube, new Color32(85, 87, 85, 51), new Vector3(-15.04f, -2.62f, 1.52f), new Vector3(90, 90, 0), new Vector3(3.1f, 1f, 6.52f)));
+            Doors.AddPart(new ModelPrimitive(Doors, PrimitiveType.Cube, new Color32(85, 87, 85, 51), new Vector3(0.83f, -2.62f, 1.52f), new Vector3(90, 90, 0), new Vector3(3.1f, 1f, 6.52f)));
         }
         public List<ItemType> Guns = new List<ItemType>()
         {
@@ -168,7 +173,6 @@ namespace AutoEvent.Events
             ItemType.GunE11SR,
             ItemType.GunRevolver,
             ItemType.GunLogicer,
-            ItemType.GrenadeHE,
             ItemType.ParticleDisruptor,
             ItemType.MicroHID,
             ItemType.GunShotgun
