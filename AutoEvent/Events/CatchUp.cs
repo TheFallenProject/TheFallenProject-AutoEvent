@@ -18,12 +18,12 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class HideAndSeek : IEvent // Осталось поправить руки, когда мог достает пушку
+    internal class CatchUp : IEvent
     {
-        public string Name => "Догонялки [В работе!]";
-        public string Description => "Выживание против Догоняющих игроков.";
+        public string Name => "Догонялки";
+        public string Description => "[В работе!] Выживание против Догоняющих игроков.";
         public string Color => "FFFF00";
-        public string CommandName => "hideandseek";
+        public string CommandName => "catchup";
         public static Model Model { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
@@ -46,7 +46,7 @@ namespace AutoEvent.Events
         }
         public void OnEventStarted()
         {
-            CreatingMapFromJson("HideAndSeek.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
+            CreatingMapFromJson("CatchUp.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
             Model = model;
             PlayAudio("FallGuys_FallForTheTeam.f32le", 15, true, "Догонялки");
             TeleportAndChangeRolePlayers(Player.List.ToList(), RoleType.ClassD, Model.GameObject.transform.position + new Vector3(-22.67f, 4.94f, 14.61f));
@@ -67,7 +67,7 @@ namespace AutoEvent.Events
                 BroadcastPlayers($"<color=#D71868><b><i>{Name}</i></b></color>\n<color=#ABF000>До начала ивента осталось <color=red>{time}</color> секунд.</color>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-            Timing.RunCoroutine(Cycle(), "hideandseek_time");
+            Timing.RunCoroutine(Cycle(), "catchup_time");
             yield break;
         }
         public IEnumerator<float> Cycle()
@@ -84,7 +84,7 @@ namespace AutoEvent.Events
 
                 foreach (Player player in Player.List.Where(r => r.Team == Team.MTF))
                 {
-                    player.ShowHint("<color=yellow>Догоните игроков.</color>", 1);
+                    player.ShowHint("<color=red>Стрельните в игрока вблизи.</color>", 1);
                 }
                 yield return Timing.WaitForSeconds(1f);
                 EventTime -= TimeSpan.FromSeconds(1f);
@@ -123,7 +123,7 @@ namespace AutoEvent.Events
             Timing.CallDelayed(10f, () =>
             {
                 // Запуск Ивента
-                Timing.RunCoroutine(Cycle(), "hideandseek_time");
+                Timing.RunCoroutine(Cycle(), "catchup_time");
             });
         }
         public void InitRandomPlayer()
@@ -148,8 +148,9 @@ namespace AutoEvent.Events
                 List<Player> list = Player.List.Where(r => r.Role != RoleType.Spectator).ToList();
                 Player player = list.RandomItem();
                 player.Role = RoleType.NtfCaptain;
-                player.ResetInventory(new List<ItemType> { ItemType.GunCOM18 });
-                player.ItemInHand = Item.Get(player.AllItems.First().Serial);
+                player.ClearInventory();
+                player.AddItem(ItemType.GunCOM18);
+                player.ItemInHand = Item.Get(player.AllItems.ElementAt(0).Serial);
 
                 player.EnableEffect("Scp207");
                 player.ChangeEffectIntensity("Scp207", 4);

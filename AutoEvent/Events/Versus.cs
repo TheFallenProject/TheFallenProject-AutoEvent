@@ -29,8 +29,6 @@ namespace AutoEvent.Events
         public string CommandName => "35hp";
         public Model Model { get; set; }
         public Model Doors { get; set; }
-        public bool ClassdDoorOpened { get; set; } = false;
-        public bool ScientistDoorOpened { get; set; } = false;
         public Player Scientist { get; set; }
         public Player ClassD { get; set; }
         public TimeSpan EventTime { get; set; }
@@ -46,7 +44,7 @@ namespace AutoEvent.Events
         {
             Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
-            Timing.CallDelayed(5f, () => EventEnd());
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
         {
@@ -89,71 +87,93 @@ namespace AutoEvent.Events
                 BroadcastPlayers($"<size=100><color=red>{time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-            // Player.List.Count(r => r.Team == Team.RSC) > 0 && Player.List.Count(r => r.Team == Team.CDP) > 0
-            while (!Round.Ended)
+            // Do players
+            DoScientist();
+            DoClassD();
+            // cycle
+            while (Player.List.Count(r => r.Team == Team.RSC) > 0 && Player.List.Count(r => r.Team == Team.CDP) > 0)
             {
-                Arena();
+                if (Scientist is null || Scientist.Role == RoleType.Spectator)
+                {
+                    if (ClassD != null)
+                    {
+                        BroadcastPlayers($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
+                        $"<color=yellow>Победитель боя: {ClassD.Nickname}</color>", 10);
+                        yield return Timing.WaitForSeconds(10f);
+                        Scientist.ResetInventory( new List<ItemType> { Guns.RandomItem() });
+                    }
+                    DoScientist();
+                }
+                if (ClassD is null || ClassD.Role == RoleType.Spectator)
+                {
+                    if (Scientist != null && ClassD is null)
+                    {
+                        BroadcastPlayers($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
+                        $"<color=yellow>Победитель боя: {Scientist.Nickname}</color>", 10);
+                        yield return Timing.WaitForSeconds(10f);
+                        ClassD.ResetInventory(new List<ItemType> { Guns.RandomItem() });
+                    }
+                    DoClassD();
+                }
                 BroadcastPlayers($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                $"<color=yellow><color=yellow>{Player.List.Count(r => r.Team == Team.RSC)}</color> VS <color=orange>{Player.List.Count(r => r.Team == Team.CDP)}</color></color>\n" +
-                $"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 1);
+                $"<color=yellow><color=yellow>{Scientist.Nickname}</color> VS <color=orange>{ClassD.Nickname}</color></color>", 1);
+
                 yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
             }
             if (Player.List.Count(r => r.Team == Team.RSC) == 0)
             {
                 BroadcastPlayers($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                $"<color=yellow><color=yellow>{Player.List.Count(r => r.Team == Team.RSC)}</color> VS <color=orange>{Player.List.Count(r => r.Team == Team.CDP)}</color></color>\n" +
-                $"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
+                $"<color=yellow>ПОБЕДИТЕЛЬ: <color=red>{Player.List.ToList().First(r => r.Role != RoleType.Spectator).Nickname}</color></color>", 10);
             }
             else if (Player.List.Count(r => r.Team == Team.CDP) == 0)
             {
                 BroadcastPlayers($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                $"<color=yellow><color=yellow>{Player.List.Count(r => r.Team == Team.RSC)}</color> VS <color=orange>{Player.List.Count(r => r.Team == Team.CDP)}</color></color>\n" +
-                $"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
+                $"<color=yellow>ПОБЕДИТЕЛЬ: <color=red>{Player.List.ToList().First(r => r.Role != RoleType.Spectator).Nickname}</color></color>", 10);
             }
             OnStop();
             yield break;
         }
-        public void Arena()
+        public void DoScientist()
         {
-            if (!Player.List.Contains(Scientist) && Scientist.Role != RoleType.Spectator)
-            {
-                Scientist = Player.List.Where(r => r.Team == Team.RSC).ToList().RandomItem();
-                Scientist.Position = Model.GameObject.transform.position + new Vector3(-30, -5.45f, 3.12f);
-            }
-            else
-            {
-                if (Scientist.Role == RoleType.Spectator)
-                {
-                    Player.List.ToList().Remove(Scientist);
-                }
-            }
-            
-            if (!Player.List.Contains(ClassD))
-            {
-                ClassD = Player.List.Where(r => r.Team == Team.RSC).ToList().RandomItem();
-                ClassD.Position = Model.GameObject.transform.position + new Vector3(20, -5.45f, 3.12f);
-            }
-            else
-            {
-                if (ClassD.Role == RoleType.Spectator)
-                {
-                    Player.List.ToList().Remove(ClassD);
-                }
-            }
+            Scientist = Player.List.Where(r => r.Team == Team.RSC).ToList().RandomItem();
+            Scientist.Position = Model.GameObject.transform.position + new Vector3(-0.32f, -6.63f, 2.65f);
+            Scientist.ResetInventory(new List<ItemType> { Guns.RandomItem() });
+        }
+        public void DoClassD()
+        {
+            ClassD = Player.List.Where(r => r.Team == Team.CDP).ToList().RandomItem();
+            ClassD.Position = Model.GameObject.transform.position + new Vector3(-28.26f, -6.63f, 2.65f);
+            ClassD.ResetInventory(new List<ItemType> { Guns.RandomItem() });
         }
         public void EventEnd()
         {
             if (Audio.Microphone.IsRecording) StopAudio();
             Timing.RunCoroutine(DestroyObjects(Model));
+            Timing.RunCoroutine(DestroyObjects(Doors));
             Timing.RunCoroutine(CleanUpAll());
         }
         public void CreateDoors()
-        { // 3.16
+        {
             Doors = new Model("PrisonerDoors", Model.GameObject.transform.position);
             Doors.AddPart(new ModelPrimitive(Doors, PrimitiveType.Cube, new Color32(85, 87, 85, 51), new Vector3(-30.15f, -5.45f, 3.12f), new Vector3(90, 90, 0), new Vector3(3.1f, 1f, 6.52f)));
             Doors.AddPart(new ModelPrimitive(Doors, PrimitiveType.Cube, new Color32(85, 87, 85, 51), new Vector3(1.76f, -5.45f, 3.12f), new Vector3(90, 90, 0), new Vector3(3.1f, 1f, 6.52f)));
         }
+        public List<ItemType> Guns = new List<ItemType>()
+        {
+            ItemType.GunCOM15,
+            ItemType.GunCOM18,
+            ItemType.GunFSP9,
+            ItemType.GunCrossvec,
+            ItemType.GunAK,
+            ItemType.GunE11SR,
+            ItemType.GunRevolver,
+            ItemType.GunLogicer,
+            ItemType.GrenadeHE,
+            ItemType.ParticleDisruptor,
+            ItemType.MicroHID,
+            ItemType.GunShotgun
+
+        };
         public void OnJoin(JoinEvent ev)
         {
             ev.Player.Role = RoleType.Spectator;
