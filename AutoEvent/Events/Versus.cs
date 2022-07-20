@@ -54,6 +54,7 @@ namespace AutoEvent.Events
 
             CreatingMapFromJson("35Hp.json", new Vector3(145.18f, 930f, -122.97f), out var model);
             Model = model;
+            CreateDoors();
 
             //PlayAudio("MGS4.f32le", 10, true, "БИТВА");
             var count = 0;
@@ -115,64 +116,30 @@ namespace AutoEvent.Events
         }
         public void Arena()
         {
-            foreach (Player player in Player.List)
+            if (!Player.List.Contains(Scientist) && Scientist.Role != RoleType.Spectator)
             {
-                if (Scientist is null)
+                Scientist = Player.List.Where(r => r.Team == Team.RSC).ToList().RandomItem();
+                Scientist.Position = Model.GameObject.transform.position + new Vector3(-30, -5.45f, 3.12f);
+            }
+            else
+            {
+                if (Scientist.Role == RoleType.Spectator)
                 {
-                    // Открываем двери перед началом, чтобы можно было пройти внутрь
-                    // Делаем проверку на расстояние до объекта внутри комнаты и даем Scientist
-                    // Если это не Scientist, то перемещаем назад
-                    // Если Scientist живой то закрываем комнату
-                    // Если Scientist мертвый то открываем комнату
-
-                    List<Player> newList = (List<Player>)Player.List.Select(r => r.Team == Team.RSC);
-                    Scientist = newList.RandomItem();
-                    Scientist.Position = new Vector3(-30, -5.45f, 3.12f);
-
-                    if (!ScientistDoorOpened)
-                    {
-                        Doors.Primitives[0].Primitive.Position += new Vector3(0, 0, 3.16f);
-                        ScientistDoorOpened = true;
-                    }
+                    Player.List.ToList().Remove(Scientist);
                 }
-                else
+            }
+            
+            if (!Player.List.Contains(ClassD))
+            {
+                ClassD = Player.List.Where(r => r.Team == Team.RSC).ToList().RandomItem();
+                ClassD.Position = Model.GameObject.transform.position + new Vector3(20, -5.45f, 3.12f);
+            }
+            else
+            {
+                if (ClassD.Role == RoleType.Spectator)
                 {
-                    if (Scientist.Role == RoleType.Spectator)
-                    {
-                        Scientist = null;
-                        if (ScientistDoorOpened)
-                        {
-                            Doors.Primitives[0].Primitive.Position -= new Vector3(0, 0, 3.16f);
-                            ScientistDoorOpened = false;
-                        }
-                    }
+                    Player.List.ToList().Remove(ClassD);
                 }
-
-                if (ClassD is null)
-                {
-                    List<Player> newList = (List<Player>)Player.List.Select(r => r.Team == Team.CDP);
-                    ClassD = newList.RandomItem();
-                    ClassD.Position = new Vector3(20, -5.45f, 3.12f);
-
-                    if (!ClassdDoorOpened)
-                    {
-                        Doors.Primitives[1].Primitive.Position += new Vector3(0, 0, 3.16f);
-                        ScientistDoorOpened = true;
-                    }
-                }
-                else
-                {
-                    if (ClassD.Role == RoleType.Spectator)
-                    {
-                        ClassD = null;
-                        if (ClassdDoorOpened)
-                        {
-                            Doors.Primitives[1].Primitive.Position -= new Vector3(0, 0, 3.16f);
-                            ScientistDoorOpened = false;
-                        }
-                    }
-                }
-
             }
         }
         public void EventEnd()
