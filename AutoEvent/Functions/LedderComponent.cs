@@ -20,7 +20,7 @@ namespace AutoEvent.Functions
             collider = gameObject.AddComponent<BoxCollider>();
             collider.isTrigger = true;
         }
-        void OnTouchTRIGGER(Collider other)
+        void OnTriggerEnter(Collider other)
         {
             if (Player.Get(other.gameObject) is Player)
             {
