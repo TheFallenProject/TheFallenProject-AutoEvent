@@ -20,6 +20,7 @@
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Battle.png)
 ### Выживание против Догоняющих игроков.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/CatchUp.png)
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/HNS_Floppytown.jpg)
 ### Пропрыгайте до конца Паркура.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Parkour.png)
 ### Дуель игроков на карте 35hp из cs 1.6.
