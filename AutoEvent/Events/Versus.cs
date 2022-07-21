@@ -38,12 +38,14 @@ namespace AutoEvent.Events
         {
             Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
+            Qurre.Events.Player.DroppingItem += OnDroppingItem;
             OnEventStarted();
         }
         public void OnStop()
         {
             Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
+            Qurre.Events.Player.DroppingItem -= OnDroppingItem;
             Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
@@ -54,7 +56,7 @@ namespace AutoEvent.Events
             Model = model;
             CreateDoors();
 
-            PlayAudio("FallGuys_FutureUtobeania.f32le", 15, true, "Петухи");
+            PlayAudio("FallGuys_FutureUtobeania.f32le", 5, true, "Петухи");
             var count = 0;
             foreach (Player player in Player.List)
             {
@@ -180,6 +182,10 @@ namespace AutoEvent.Events
         public void OnJoin(JoinEvent ev)
         {
             ev.Player.Role = RoleType.Spectator;
+        }
+        public void OnDroppingItem(DroppingItemEvent ev)
+        {
+            ev.Allowed = false;
         }
     }
 }
