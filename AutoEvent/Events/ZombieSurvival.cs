@@ -70,6 +70,7 @@ namespace AutoEvent.Events
                 {
                     player.AddAhp(200, 200, 0, 0, 0, true);
                     player.AddItem(Guns.RandomItem());
+                    player.AddItem(ItemType.GunCOM18);
                     player.Position = Model.GameObject.transform.position + new Vector3(-0.44f, 2.48f, -0.05f);
                 });
             });
@@ -111,7 +112,7 @@ namespace AutoEvent.Events
             {
                 if (EventTime.TotalSeconds == 30)
                 {
-                    PlayAudio("ZombieSurvival.f32le", 15, true, "Зомби");
+                    PlayAudio("ZombieSurvival.f32le", 10, true, "Зомби");
                 }
                 Teleports();
                 Player.List.ToList().ForEach(player =>
@@ -125,13 +126,13 @@ namespace AutoEvent.Events
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
-            if (Player.List.Count(r => r.Team != Team.SCP) == 0)
+            if (Player.List.Count(r => r.Team == Team.SCP) == 0)
             {
                 // Музыка проигрыша
                 BroadcastPlayers($"<color=yellow><color=#D71868><b><i>Люди</i></b></color> Победили!</color>\n" +
                 $"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
             }
-            else if (Player.List.Count(r => r.Team == Team.SCP) == 0)
+            else if (Player.List.Count(r => r.Team != Team.SCP) == 0)
             {
                 // Музыка выйгрыша
                 BroadcastPlayers($"<color=red>Зомби Победили!</color>\n" +
@@ -158,7 +159,6 @@ namespace AutoEvent.Events
         }
         public List<ItemType> Guns = new List<ItemType>()
         {
-            ItemType.GunCOM18,
             ItemType.GunFSP9,
             ItemType.GunCrossvec,
             ItemType.GunAK,
