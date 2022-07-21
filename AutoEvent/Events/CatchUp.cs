@@ -48,6 +48,19 @@ namespace AutoEvent.Events
         {
             CreatingMapFromJson("CatchUp.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
             Model = model;
+            foreach (Player pl in Player.List)
+            {
+                pl.GameObject.AddComponent<BoxCollider>();
+                pl.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 2f, 1f);
+            }
+            foreach (var prim in model.Primitives)
+            {
+                if (prim.Primitive.Color.r == 255 && prim.Primitive.Color.a == 125)
+                {
+                    Log.Info("комп добавлен");
+                    prim.GameObject.AddComponent<Functions.LedderComponent>();
+                }
+            }
             PlayAudio("FallGuys_FallForTheTeam.f32le", 15, true, "Догонялки");
             TeleportAndChangeRolePlayers(Player.List.ToList(), RoleType.ClassD, Model.GameObject.transform.position + new Vector3(-22.67f, 4.94f, 14.61f));
             // Запуск ивента
