@@ -1,6 +1,6 @@
 # AutoEvent
-ENG: Allows you to run Mini-Games in the game.
-RUS: Позволяет запускать мини-игры в игре.
+## ENG: Allows you to run Mini-Games in the game.
+## RUS: Позволяет запускать мини-игры в игре.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Zombie.png)
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Bounce.png)
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Jail.png)
