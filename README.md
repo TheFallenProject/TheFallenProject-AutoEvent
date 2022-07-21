@@ -7,6 +7,7 @@
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Bounce.png)
 ### Режим Jail, в котором нужно проводить мероприятия.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Jail.png)
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Jail_Xmf.jpg)
 ### Избегайте гранат и выживите.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/DeathParty.png)
 ### Пропрыгайте в конец карты через препятствия.
@@ -23,3 +24,6 @@
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Parkour.png)
 ### Дуель игроков на карте 35hp из cs 1.6.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/35Hp.png)
+### Зомби Выживание на карте Zm_Dust_World из cs 1.6
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Survival.png)
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Zm_Dust_World.jpg)
