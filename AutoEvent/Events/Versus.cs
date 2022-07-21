@@ -176,7 +176,6 @@ namespace AutoEvent.Events
             ItemType.ParticleDisruptor,
             ItemType.MicroHID,
             ItemType.GunShotgun
-
         };
         public void OnJoin(JoinEvent ev)
         {
