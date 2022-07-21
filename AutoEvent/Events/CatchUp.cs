@@ -150,8 +150,7 @@ namespace AutoEvent.Events
                 player.Role = RoleType.NtfCaptain;
                 player.ClearInventory();
                 player.AddItem(ItemType.GunCOM18);
-                player.ItemInHand = Item.Get(player.AllItems.ElementAt(0).Serial);
-
+                player.Inventory.ServerSelectItem(player.AllItems.ElementAt(0).Serial);
                 player.EnableEffect("Scp207");
                 player.ChangeEffectIntensity("Scp207", 4);
             }
@@ -187,8 +186,10 @@ namespace AutoEvent.Events
                 if (Vector3.Distance(ev.Shooter.Position, player.Position) < 3 && ev.Shooter != player)
                 {
                     player.Role = RoleType.NtfCaptain;
-                    player.ResetInventory(new List<ItemType> { ItemType.GunCOM18 });
-                    player.ItemInHand = Item.Get(player.AllItems.First().Serial);
+                    //player.ResetInventory(new List<ItemType> { ItemType.GunCOM18 });
+                    player.ClearInventory();
+                    //player.Inventory.ServerSelectItem(player.AllItems.ElementAt(0).Serial);
+                    //player.Inventory.ServerSelectItem(new Item.Get(ItemType.SCP018).Serial);
                     player.EnableEffect("Scp207");
                     player.ChangeEffectIntensity("Scp207", 4);
 
