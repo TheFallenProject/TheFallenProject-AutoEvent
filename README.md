@@ -3,11 +3,11 @@
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
 
 ## Небольшая инструкция:
-- Аудио файлы переместить в => Qurre/Plugins/Audio
-- Карты json переместить в => Qurre/Plugins/Map
-- Плагины AutoEvent.dll и SchematicUnity.dll переместить в => Qurre/Plugins
-- Проверьте конфиги Qurre/Configs/Custom/AutoEvent-[port].yaml, чтобы была ваша роль.
-- Запустите мини-игру ev_run [name], где название можно найти в ev_list
+- Аудио файлы переместить в => ``Qurre/Plugins/Audio``
+- Карты json переместить в => ``Qurre/Plugins/Map``
+- Плагины ``AutoEvent.dll`` и ``SchematicUnity.dll`` переместить в => ``Qurre/Plugins``
+- Проверьте конфиги ``Qurre/Configs/Custom/AutoEvent-[port].yaml``, чтобы была ваша роль.
+- Запустите мини-игру ``ev_run [name]``, где название можно найти в ``ev_list``
 ## !!! Если Мини-Игры не запускаются, попробуйте выполнить всё по инструкции !!!
 
 ### Зомби режим, целью которого заразить всех игроков.
