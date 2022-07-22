@@ -14,12 +14,10 @@ namespace AutoEvent
         [Description("Запись количества прошедших раундов")]
         public int RoundCount { get; set; } = 0;
         [Description("Группа донатеров, которые не смогут запускать мини-игры")]
-        public List<string> DonatorGroups = new List<string>()
+        public List<string> DonatorGroups { get; set; } = new List<string>()
         {
-            "owner",
-            "gladcat",
-            "admin",
-            "vip"
+            "moderator",
+            "admin"
         };
     }
 }
