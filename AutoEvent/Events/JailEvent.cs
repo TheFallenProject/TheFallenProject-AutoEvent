@@ -157,6 +157,7 @@ namespace AutoEvent.Events
             JailerDoorsTime.Clear();
             Button.Destroy();
             Spawners.Destroy();
+            Football.Destroy();
             Timing.RunCoroutine(DestroyObjects(Maps));
             Timing.RunCoroutine(DestroyObjects(Doors));
             Timing.RunCoroutine(DestroyObjects(JailerDoors));
