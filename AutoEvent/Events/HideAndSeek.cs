@@ -48,7 +48,7 @@ namespace AutoEvent.Events
         }
         public void OnEventStarted()
         {
-            CreatingMapFromJson("CatchUp.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
+            1CreatingMapFromJson("CatchUp.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
             Model = model;
 
             LedderCreate();
