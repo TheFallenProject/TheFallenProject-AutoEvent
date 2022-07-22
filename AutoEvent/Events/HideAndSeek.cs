@@ -19,12 +19,12 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class CatchUp : IEvent
+    internal class HideAndSeek : IEvent
     {
         public string Name => "Догонялки";
-        public string Description => "[В работе!] Выживание против Догоняющих игроков.";
+        public string Description => "[В работе!] Догонялки игроков.";
         public string Color => "FFFF00";
-        public string CommandName => "catchup";
+        public string CommandName => "hide";
         public static Model Model { get; set; }
         public static Model Ledders { get; set; }
         public static TimeSpan EventTime { get; set; }
@@ -205,6 +205,7 @@ namespace AutoEvent.Events
             {
                 player.GodMode = false;
                 player.DisableAllEffects();
+                player.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
             }
 
             if (Audio.Microphone.IsRecording) StopAudio();

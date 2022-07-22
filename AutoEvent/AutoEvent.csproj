@@ -91,7 +91,7 @@
     <Compile Include="Events\Parkour.cs" />
     <Compile Include="Events\ZombieSurvival.cs" />
     <Compile Include="Events\Versus.cs" />
-    <Compile Include="Events\CatchUp.cs" />
+    <Compile Include="Events\HideAndSeek.cs" />
     <Compile Include="Events\FootballEvent.cs" />
     <Compile Include="Events\Bossbattle.cs" />
     <Compile Include="Events\BallsEvent.cs" />
