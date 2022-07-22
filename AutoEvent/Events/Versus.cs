@@ -39,6 +39,7 @@ namespace AutoEvent.Events
             Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
             Qurre.Events.Player.DroppingItem += OnDroppingItem;
+            Qurre.Events.Player.PickupItem += OnPickupItem;
             OnEventStarted();
         }
         public void OnStop()
@@ -46,6 +47,7 @@ namespace AutoEvent.Events
             Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
             Qurre.Events.Player.DroppingItem -= OnDroppingItem;
+            Qurre.Events.Player.PickupItem -= OnPickupItem;
             Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
@@ -56,7 +58,7 @@ namespace AutoEvent.Events
             Model = model;
             CreateDoors();
 
-            PlayAudio("FallGuys_FutureUtobeania.f32le", 5, true, "Петухи");
+            PlayAudio("FallGuys_FutureUtobeania.f32le", 10, true, "Петухи");
             var count = 0;
             foreach (Player player in Player.List)
             {
@@ -179,13 +181,8 @@ namespace AutoEvent.Events
             ItemType.MicroHID,
             ItemType.GunShotgun
         };
-        public void OnJoin(JoinEvent ev)
-        {
-            ev.Player.Role = RoleType.Spectator;
-        }
-        public void OnDroppingItem(DroppingItemEvent ev)
-        {
-            ev.Allowed = false;
-        }
+        public void OnJoin(JoinEvent ev) => ev.Player.Role = RoleType.Spectator;
+        public void OnDroppingItem(DroppingItemEvent ev) => ev.Allowed = false;
+        public void OnPickupItem(PickupItemEvent ev) => ev.Allowed = false;
     }
 }
