@@ -110,8 +110,17 @@ namespace AutoEvent.Events
             // Отсчет обратного времени
             for (int time = 10; time > 0; time--)
             {
-                BroadcastPlayers($"<color=yellow>Ивент <color=red><b><i>Тюрьма Саймона</i></b></color>\n" +
+                Player.List.ToList().ForEach(player =>
+                {
+                    if (player.Team == Team.MTF)
+                    {
+                        player.ShowHint("<color=red>Нажми на ящик, чтобы взять <b><i>Оружие</i></b></color>\n" +
+                            "<color=yellow>Стрельните в красный кружок, чтобы открыть <b><i>Двери</i></b>.</color>");
+                    }
+                    player.ClearBroadcasts();
+                    player.Broadcast($"<color=yellow>Ивент <color=red><b><i>Тюрьма Саймона</i></b></color>\n" +
                     $"До начала: <color=red>{time}</color> секунд</color>", 1);
+                });
                 yield return Timing.WaitForSeconds(1f);
             }
             while (Player.List.Count(r => r.Role == RoleType.ClassD) > 0 && Player.List.Count(r => r.Team == Team.MTF) > 0)
@@ -156,7 +165,7 @@ namespace AutoEvent.Events
 
             JailerDoorsTime.Clear();
             Button.Destroy();
-            Spawners.Destroy();
+            Spawners = null;
             Football.Destroy();
             Timing.RunCoroutine(DestroyObjects(Maps));
             Timing.RunCoroutine(DestroyObjects(Doors));
@@ -256,18 +265,16 @@ namespace AutoEvent.Events
                 ev.Player.ResetInventory(new List<ItemType>
                 {
                     ItemType.GunE11SR,
-                    ItemType.GunCOM18
+                    ItemType.GunCOM18,
+                    ItemType.ArmorHeavy
                 });
-                ev.Player.AddAhp(100, 100, 0, 0, 0, true);
             }
             else if (ev.Generator.GameObject == Spawners.Generators[1].GameObject)
             {
-                Log.Info("Броня");
-                ev.Player.AddAhp(100, 100, 0, 0, 0, true);
+                ev.Player.AddItem(ItemType.ArmorHeavy);
             }
             else if (ev.Generator.GameObject == Spawners.Generators[2].GameObject)
             {
-                Log.Info("Хил");
                 ev.Player.Hp = ev.Player.MaxHp;
             }
         }
