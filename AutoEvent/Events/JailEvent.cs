@@ -31,6 +31,7 @@ namespace AutoEvent.Events
         public static Model Button { get; set; }
         public static Model Doors { get; set; }
         public static Model JailerDoors { get; set; }
+        public static Model Football { get; set; }
         public static Dictionary<GameObject, float> JailerDoorsTime { get; set; } = new Dictionary<GameObject, float>();
         public static Model Spawners { get; set; }
         public static TimeSpan EventTime { get; set; }
@@ -69,12 +70,12 @@ namespace AutoEvent.Events
             // Создание дверей у охраны
             CreateJailerDoors();
             // Создаем мячик
-            // CreateBall();
+            CreateFootball();
             // Запуск музыки
-            /*Timing.CallDelayed(5, () =>
+            Timing.CallDelayed(5, () =>
             {
                 PlayAudio("Instruction.f32le", 40, false, "Instruction");
-            });*/
+            });
             WaitingEvent();
         }
         public void WaitingEvent()
@@ -117,10 +118,21 @@ namespace AutoEvent.Events
             while (!Round.Ended)
             {
                 PhysicDoors();
-                BroadcastPlayers($"<size=20><color=red>Тюрьма Саймона</color>\n" +
+                Player.List.ToList().ForEach(player =>
+                {
+                    // Проверка расстояния между игроком и мячом
+                    if (Vector3.Distance(Football.Primitives[0].GameObject.transform.position, player.Position) < 5)
+                    {
+                        Football.Primitives[0].GameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
+                        rig.AddForce(player.Transform.forward + new Vector3(0, 0.5f, 0), ForceMode.Impulse);
+                    }
+
+                    player.ClearBroadcasts();
+                    player.Broadcast($"<size=20><color=red>Тюрьма Саймона</color>\n" +
                     $"<color=yellow>Зеки: {Player.List.Count(r => r.Role == RoleType.ClassD)}</color> || " +
                     $"<color=cyan>Охраники: {Player.List.Count(r => r.Team == Team.MTF)}</color>\n" +
                     $"<color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></size>", 1);
+                });
                 yield return Timing.WaitForSeconds(0.5f);
                 EventTime += TimeSpan.FromSeconds(0.5f);
             }
@@ -205,7 +217,7 @@ namespace AutoEvent.Events
         }
         public void CreatePrisonerDoors()
         {
-            Doors = new Model("PrisonerDoors", new Vector3(145.18f, 945.26f, -122.97f));
+            Doors = new Model("PrisonerDoors", Maps.GameObject.transform.position);
             Doors.AddPart(new ModelPrimitive(Doors, PrimitiveType.Cube, new Color32(0, 0, 0, 200), new Vector3(8.83f, 8.026f, 41.325f), Vector3.zero, new Vector3(3.88f, 14.75f, 1)));
             Doors.AddPart(new ModelPrimitive(Doors, PrimitiveType.Cube, new Color32(0, 0, 0, 200), new Vector3(20.36f, 8.026f, 41.325f), Vector3.zero, new Vector3(3.88f, 14.75f, 1)));
             Doors.AddPart(new ModelPrimitive(Doors, PrimitiveType.Cube, new Color32(0, 0, 0, 200), new Vector3(31.42f, 8.026f, 41.325f), Vector3.zero, new Vector3(3.88f, 14.75f, 1)));
@@ -214,7 +226,7 @@ namespace AutoEvent.Events
         }
         public void CreateJailerDoors()
         {
-            JailerDoors = new Model("PrisonerDoors", new Vector3(145.18f, 945.26f, -122.97f));
+            JailerDoors = new Model("PrisonerDoors", Maps.GameObject.transform.position);
             JailerDoors.AddPart(new ModelPrimitive(JailerDoors, PrimitiveType.Cube, new Color32(255, 0, 0, 125), new Vector3(44.254f, 3f, -10.252f), new Vector3(0f, 90f, 0f), new Vector3(6.68f, 5.43f, 0.64f)));
             JailerDoors.AddPart(new ModelPrimitive(JailerDoors, PrimitiveType.Cube, new Color32(255, 0, 0, 125), new Vector3(25.18f, 3f, -10.252f), new Vector3(0f, 90f, 0f), new Vector3(6.68f, 5.43f, 0.64f)));
             JailerDoors.AddPart(new ModelPrimitive(JailerDoors, PrimitiveType.Cube, new Color32(63, 45, 45, 128), new Vector3(15.524f, 3f, -4.61f), new Vector3(0f, 0f, 0f), new Vector3(4.59f, 5.43f, 0.64f)));
@@ -224,10 +236,16 @@ namespace AutoEvent.Events
         }
         public static void CreateSpawner()
         {
-            Spawners = new Model("Spawner", new Vector3(145.18f, 945.26f, -122.97f));
+            Spawners = new Model("Spawner", Maps.GameObject.transform.position);
             Spawners.AddPart(new ModelGenerator(Spawners, new Vector3(15.82f, 1.02f, 3.53f), new Vector3(0f, 180f, 0f), new Vector3(2f, 1f, 5f)));
             Spawners.AddPart(new ModelGenerator(Spawners, new Vector3(24.83f, 1.02f, -18.76f), new Vector3(0f, -90f, 0f), new Vector3(2f, 1f, 5f)));
             Spawners.AddPart(new ModelGenerator(Spawners, new Vector3(6.1f, 1.02f, -16.66f), new Vector3(0f, 90f, 0f), new Vector3(2f, 1f, 5f)));
+        }
+        public static void CreateFootball()
+        {
+            Football = new Model("ball", Maps.GameObject.transform.position);
+            Football.AddPart(new ModelPrimitive(Football, PrimitiveType.Sphere, new Color32(255, 0, 0, 255), new Vector3(-25, 2, 28.5f), Vector3.zero, new Vector3(1f, 1f, 1f)));
+            Football.Primitives[0].GameObject.AddComponent<FootballComponent>();
         }
         // Ивенты
         public void OnInteractGenerator(InteractGeneratorEvent ev)
