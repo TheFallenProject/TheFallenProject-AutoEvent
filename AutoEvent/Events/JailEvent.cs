@@ -114,7 +114,7 @@ namespace AutoEvent.Events
                 {
                     if (player.Team == Team.MTF)
                     {
-                        player.ShowHint("<color=red>Нажми на ящик, чтобы взять <b><i>Оружие</i></b></color>\n" +
+                        player.ShowHint("\n\n\n\n<color=red>Нажми на ящик, чтобы взять <b><i>Оружие</i></b></color>\n" +
                             "<color=yellow>Стрельните в красный кружок, чтобы открыть <b><i>Двери</i></b>.</color>");
                     }
                     player.ClearBroadcasts();
