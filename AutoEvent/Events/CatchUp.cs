@@ -36,6 +36,7 @@ namespace AutoEvent.Events
             Qurre.Events.Player.Spawn += OnSpawnEvent;
             Qurre.Events.Player.Shooting += OnShooting;
             OnEventStarted();
+            LedderCreate();
         }
         public void OnStop()
         {
@@ -54,15 +55,7 @@ namespace AutoEvent.Events
                 pl.GameObject.AddComponent<BoxCollider>();
                 pl.GameObject.AddComponent<BoxCollider>().size = new Vector3(5f, 5f, 5f);
             }
-            foreach (var prim in model.Primitives)
-            {
-                if (prim.Primitive.Color.r == 255 && prim.Primitive.Color.a == 125)
-                {
-                    Log.Info("комп добавлен");
-                    prim.GameObject.AddComponent<Functions.LedderComponent>();
-                }
-            }
-            PlayAudio("FallGuys_FallForTheTeam.f32le", 15, true, "Догонялки");
+           // PlayAudio("FallGuys_FallForTheTeam.f32le", 15, true, "Догонялки");
             TeleportAndChangeRolePlayers(Player.List.ToList(), RoleType.ClassD, Model.GameObject.transform.position + new Vector3(-22.67f, 4.94f, 14.61f));
             // Запуск ивента
             Timing.RunCoroutine(TimeToStart(), "time_to_start");
