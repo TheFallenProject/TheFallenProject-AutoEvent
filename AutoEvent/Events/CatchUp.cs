@@ -25,6 +25,7 @@ namespace AutoEvent.Events
         public string Color => "FFFF00";
         public string CommandName => "catchup";
         public static Model Model { get; set; }
+        public static Model Ledders { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
 
@@ -51,7 +52,7 @@ namespace AutoEvent.Events
             foreach (Player pl in Player.List)
             {
                 pl.GameObject.AddComponent<BoxCollider>();
-                pl.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 2f, 1f);
+                pl.GameObject.AddComponent<BoxCollider>().size = new Vector3(5f, 5f, 5f);
             }
             foreach (var prim in model.Primitives)
             {
@@ -102,7 +103,7 @@ namespace AutoEvent.Events
                 yield return Timing.WaitForSeconds(1f);
                 EventTime -= TimeSpan.FromSeconds(1f);
             }
-            foreach(Player player in Player.List.Where(r => r.Team == Team.MTF))
+            foreach (Player player in Player.List.Where(r => r.Team == Team.MTF))
             {
                 GrenadeDeath(player, "<color=red>Вы не успели.</color>");
             }
@@ -129,6 +130,35 @@ namespace AutoEvent.Events
             }
             OnStop();
             yield break;
+        }
+        List<Vector3> Ledderpos = new List<Vector3>() {
+             new Vector3(14.59f, 6.88f, 30.51f),
+             new Vector3(11f, 8.92f, 13.13f),
+             new Vector3(22.35f, 4.97f, -3.09f),
+             new Vector3(32.43f, 23.19f, -2.98f),
+             new Vector3(29f, 16.08f, 33.49f),
+             new Vector3(29.85f, 10.54f, -23.85f),
+             new Vector3(29.89f, 19.43f, -33.29f),
+             new Vector3(14.44f, 21.12f, -33.29f),
+             new Vector3(-5.669998f, 6.429999f, -29.84f),
+             new Vector3(-11.34f, 6.18f, -17.15f),
+             new Vector3(-38.7f, 17.72f, -10.62f),
+             new Vector3(-35.31f, 4.52f, -2.52f),
+             new Vector3(-37.22f, 1.08f, 19.94f),
+             new Vector3(-37.22f, 9.49f, 27.77f)
+        };
+        public void LedderCreate()
+        {
+            Log.Info("Создание лестниц...");
+            Ledders = new Model("Ledder", new Vector3(97.49f, 949.5f, -84.55f), new Vector3());
+            foreach (Vector3 ledderpo in Ledderpos)
+            {
+                Log.Info("Создание...");
+                Ledders.AddPart(new ModelPrimitive(Ledders, (PrimitiveType)3, new Color32(0, 0, 0, 200), ledderpo, Vector3.zero, new Vector3(0.0f, 0.0f, 0.0f)));
+            }
+            Log.Info("Добовляем компонент...");
+            Ledders.GameObject.AddComponent<Functions.LedderComponent>();
+            Log.Info("Компонент добавлен");
         }
         public void RestartEvent()
         {
