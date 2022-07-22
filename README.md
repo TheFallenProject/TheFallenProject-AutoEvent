@@ -1,6 +1,12 @@
 # AutoEvent
 ## ENG: Allows you to run auto Mini-Games in the game.
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
+
+##Небольшая инструкция:
+Аудио файлы переместить в => Qurre/Plugins/Audio
+Карты json переместить в => Qurre/Plugins/Map
+AutoEvent.dll и SchematicUnity.dll переместить в => Qurre/Plugins
+
 ### Зомби режим, целью которого заразить всех игроков.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Zombie.png)
 ### Кидайте в противника мяч, чтобы победить.
