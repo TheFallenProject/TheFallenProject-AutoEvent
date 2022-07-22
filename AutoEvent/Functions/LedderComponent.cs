@@ -11,7 +11,6 @@ using UnityEngine;
 
 namespace AutoEvent.Functions
 {
-
     class LedderComponent : MonoBehaviour
     {
         private BoxCollider collider;
@@ -19,13 +18,11 @@ namespace AutoEvent.Functions
         {
             collider = gameObject.AddComponent<BoxCollider>();
             collider.isTrigger = true;
-            Log.Info("Успешно");
         }
-        void OnTriggerEnter(Collider other)
+        void OnTriggerStay(Collider other)
         {
-            Log.Info("косание");
             var pl = Player.Get(other.gameObject);
-            pl.Position = new Vector3(pl.Position.x, pl.Position.y + 1, pl.Position.z);
+            pl.Position += new Vector3(0, 1, 0);
         }
     }
 }
