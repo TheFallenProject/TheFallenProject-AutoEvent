@@ -44,11 +44,11 @@ namespace AutoEvent.Events
             Qurre.Events.Player.Join -= OnJoin;
             Qurre.Events.Player.Spawn -= OnSpawnEvent;
             Qurre.Events.Player.Shooting -= OnShooting;
-            Timing.CallDelayed(5f, () => EventEnd());
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
         {
-            1CreatingMapFromJson("CatchUp.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
+            CreatingMapFromJson("HideAndSeek.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
             Model = model;
 
             LedderCreate();
