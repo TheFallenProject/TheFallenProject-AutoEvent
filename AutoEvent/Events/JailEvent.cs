@@ -114,8 +114,7 @@ namespace AutoEvent.Events
                     $"До начала: <color=red>{time}</color> секунд</color>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-            //Player.List.Count(r => r.Role == RoleType.ClassD) > 0 && Player.List.Count(r => r.Team == Team.MTF) > 0
-            while (!Round.Ended)
+            while (Player.List.Count(r => r.Role == RoleType.ClassD) > 0 && Player.List.Count(r => r.Team == Team.MTF) > 0)
             {
                 PhysicDoors();
                 Player.List.ToList().ForEach(player =>
