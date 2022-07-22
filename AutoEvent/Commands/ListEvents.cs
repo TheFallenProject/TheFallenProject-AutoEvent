@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using CommandSystem;
+using Qurre.API;
 
 namespace AutoEvent.Commands
 {
@@ -19,6 +20,12 @@ namespace AutoEvent.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            Player admin = Player.Get((sender as CommandSender).SenderId);
+            if (!Plugin.CustomConfig.DonatorGroups.Contains(admin.GroupName))
+            {
+                response = $"<color=red>Вы не можете это использовать!</color>";
+                return false;
+            }
             string resp = String.Empty;
             resp += "<color=yellow><b>Список ивентов</color></b>:\n";
             var arr = GetTypesInNamespace(Assembly.GetExecutingAssembly(), "AutoEvent.Events");

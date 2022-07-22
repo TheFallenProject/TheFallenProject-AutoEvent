@@ -13,9 +13,10 @@ namespace AutoEvent
         public bool IsEnable { get; set; } = true;
         [Description("Запись количества прошедших раундов")]
         public int RoundCount { get; set; } = 0;
-        [Description("Группа донатеров, которые не смогут запускать мини-игры")]
+        [Description("Группа донатеров, которые смогут запускать мини-игры")]
         public List<string> DonatorGroups { get; set; } = new List<string>()
         {
+            "owner",
             "moderator",
             "admin"
         };
