@@ -132,12 +132,12 @@ namespace AutoEvent.Events
             if (Player.List.Count(r => r.Team == Team.RSC) == 0)
             {
                 BroadcastPlayers($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                $"<color=yellow>ПОБЕДИТЕЛЬ: <color=red>{Player.List.ToList().First(r => r.Role != RoleType.Spectator).Nickname}</color></color>", 10);
+                $"<color=yellow>ПОБЕДИТЕЛИ: <color=red>Д КЛАСС</color></color>", 10);
             }
             else if (Player.List.Count(r => r.Team == Team.CDP) == 0)
             {
                 BroadcastPlayers($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                $"<color=yellow>ПОБЕДИТЕЛЬ: <color=red>{Player.List.ToList().First(r => r.Role != RoleType.Spectator).Nickname}</color></color>", 10);
+                $"<color=yellow>ПОБЕДИТЕЛИ: <color=red>УЧЕНЫЕ</color></color>", 10);
             }
             OnStop();
             yield break;

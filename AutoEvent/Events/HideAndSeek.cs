@@ -35,7 +35,6 @@ namespace AutoEvent.Events
             Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
             Qurre.Events.Player.Spawn += OnSpawnEvent;
-            Qurre.Events.Player.Shooting += OnShooting;
             OnEventStarted();
         }
         public void OnStop()
@@ -43,7 +42,6 @@ namespace AutoEvent.Events
             Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
             Qurre.Events.Player.Spawn -= OnSpawnEvent;
-            Qurre.Events.Player.Shooting -= OnShooting;
             Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
@@ -56,7 +54,7 @@ namespace AutoEvent.Events
             foreach (Player pl in Player.List)
             {
                 pl.GameObject.AddComponent<BoxCollider>();
-                pl.GameObject.AddComponent<BoxCollider>().size = new Vector3(2f, 1f, 2f);
+                pl.GameObject.AddComponent<BoxCollider>().size = new Vector3(3f, 1f, 3f);
             }
            // PlayAudio("FallGuys_FallForTheTeam.f32le", 15, true, "Догонялки");
             TeleportAndChangeRolePlayers(Player.List.ToList(), RoleType.ClassD, Model.GameObject.transform.position + new Vector3(-22.67f, 4.94f, 14.61f));
@@ -77,7 +75,7 @@ namespace AutoEvent.Events
                 BroadcastPlayers($"<color=#D71868><b><i>{Name}</i></b></color>\n<color=#ABF000>До начала ивента осталось <color=red>{time}</color> секунд.</color>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-            Timing.RunCoroutine(Cycle(), "catchup_time");
+            Timing.RunCoroutine(Cycle(), "hideandseek_time");
             yield break;
         }
         public IEnumerator<float> Cycle()
@@ -88,16 +86,32 @@ namespace AutoEvent.Events
 
             while (EventTime.TotalSeconds != 0)
             {
-                BroadcastPlayers($"<color=#D71868><b><i>{Name}</i></b></color>\n" +
-                $"<color=yellow>Осталось людей: <color=orange>{Player.List.Count(r => r.Role == RoleType.ClassD)}</color></color>\n" +
-                $"<color=yellow>Осталось секунд: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 1);
-
-                foreach (Player player in Player.List.Where(r => r.Team == Team.MTF))
+                foreach (Player player in Player.List)
                 {
-                    player.ShowHint("<color=red>Стрельните в игрока вблизи.</color>", 1);
+                    player.ClearBroadcasts();
+                    player.Broadcast($"<color=#D71868><b><i>{Name}</i></b></color>\n" +
+                    $"<color=yellow>Осталось людей: <color=orange>{Player.List.Count(r => r.Role == RoleType.ClassD)}</color></color>\n" +
+                    $"<color=yellow>Осталось секунд: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 1);
+
+                    // ShitCode awesome :(
+                    foreach (Player anotherPlayer in Player.List)
+                    {
+                        if (player.Team == Team.CDP && anotherPlayer.Team == Team.MTF && player != anotherPlayer)
+                        {
+                            if (Vector3.Distance(player.GameObject.transform.position, anotherPlayer.GameObject.transform.position) < 3)
+                            {
+                                BlockAndChangeRolePlayer(player, RoleType.NtfCaptain);
+                                player.ClearInventory();
+
+                                BlockAndChangeRolePlayer(anotherPlayer, RoleType.ClassD);
+                                anotherPlayer.ClearInventory();
+                            }
+                        }
+                    }
                 }
-                yield return Timing.WaitForSeconds(1f);
-                EventTime -= TimeSpan.FromSeconds(1f);
+
+                yield return Timing.WaitForSeconds(0.5f);
+                EventTime -= TimeSpan.FromSeconds(0.5f);
             }
             foreach (Player player in Player.List.Where(r => r.Team == Team.MTF))
             {
@@ -153,11 +167,9 @@ namespace AutoEvent.Events
         }
         public void RestartEvent()
         {
-            // Ожидаем рестарта
             Timing.CallDelayed(10f, () =>
             {
-                // Запуск Ивента
-                Timing.RunCoroutine(Cycle(), "catchup_time");
+                Timing.RunCoroutine(Cycle(), "hideandseek_time");
             });
         }
         public void InitRandomPlayer()
@@ -183,8 +195,6 @@ namespace AutoEvent.Events
                 Player player = list.RandomItem();
                 player.Role = RoleType.NtfCaptain;
                 player.ClearInventory();
-                player.AddItem(ItemType.GunCOM18);
-                player.Inventory.ServerSelectItem(player.AllItems.ElementAt(0).Serial);
                 player.EnableEffect("Scp207");
                 player.ChangeEffectIntensity("Scp207", 4);
             }
@@ -207,36 +217,12 @@ namespace AutoEvent.Events
                 player.DisableAllEffects();
                 player.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
             }
-
             if (Audio.Microphone.IsRecording) StopAudio();
             Timing.RunCoroutine(DestroyObjects(Model));
             Timing.RunCoroutine(DestroyObjects(Ledders));
             Timing.RunCoroutine(CleanUpAll());
         }
         // Ивенты
-        public void OnShooting(ShootingEvent ev)
-        {
-            foreach (Player player in Player.List)
-            {
-                if (Vector3.Distance(ev.Shooter.LookingAt.gameObject.transform.position, player.Position) < 1)
-                if (Vector3.Distance(ev.Shooter.Position, player.Position) < 3 && ev.Shooter != player)
-                {
-                    player.Role = RoleType.NtfCaptain;
-                    //player.ResetInventory(new List<ItemType> { ItemType.GunCOM18 });
-                    player.ClearInventory();
-                    //player.Inventory.ServerSelectItem(player.AllItems.ElementAt(0).Serial);
-                    //player.Inventory.ServerSelectItem(new Item.Get(ItemType.SCP018).Serial);
-                    player.EnableEffect("Scp207");
-                    player.ChangeEffectIntensity("Scp207", 4);
-
-                    ev.Shooter.Role = RoleType.ClassD;
-                    ev.Shooter.ClearInventory();
-                    ev.Shooter.EnableEffect("Scp207");
-                    ev.Shooter.ChangeEffectIntensity("Scp207", 4);
-                    break;
-                }
-            }
-        }
         public void OnSpawnEvent(SpawnEvent ev)
         {
             ev.Player.BlockSpawnTeleport = true;
