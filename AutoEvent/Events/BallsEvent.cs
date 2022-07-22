@@ -19,7 +19,10 @@ namespace AutoEvent.Events
     internal class BallsEvent : IEvent
     {
         public string Name => "Дотронься Мячика";
-        public string Description => "[В работе!]";
+        // I don't have enough time to implement this mini-game.
+        // In theory, people should split into 3 teams and collect as many balls as possible across the map for a while.
+        // People collect balls, as, for example, in Garry's mod.
+        public string Description => "[Infinity Work]";
         public string Color => "FFFF00";
         public string CommandName => "balls";
         public static Model Model { get; set; }
