@@ -78,6 +78,16 @@ namespace AutoEvent.Events
             Timing.RunCoroutine(Cycle(), "hideandseek_time");
             yield break;
         }
+        internal static Vector3 Getcampos(GameObject gameObject)
+        {
+            Scp049_2PlayerScript component = gameObject.GetComponent<Scp049_2PlayerScript>();
+            Scp106PlayerScript component2 = gameObject.GetComponent<Scp106PlayerScript>();
+
+            Vector3 forward = component.plyCam.transform.forward;
+            Physics.Raycast(component.plyCam.transform.position, forward, out RaycastHit raycastHit, 40f, component2.teleportPlacementMask);
+            Vector3 position = raycastHit.point;
+            return position;
+        }
         public IEnumerator<float> Cycle()
         {
             EventTime = new TimeSpan(0, 0, 30);
@@ -88,6 +98,12 @@ namespace AutoEvent.Events
             {
                 foreach (Player player in Player.List)
                 {
+                    Scp049_2PlayerScript component = player.GameObject.GetComponent<Scp049_2PlayerScript>();
+                    Scp106PlayerScript component2 = player.GameObject.GetComponent<Scp106PlayerScript>();
+
+                    Vector3 forward = component.plyCam.transform.forward;
+                    Physics.Raycast(component.plyCam.transform.position, forward, out RaycastHit raycastHit, 40f, component2.teleportPlacementMask);
+                    Vector3 pos = raycastHit.point;
                     player.ClearBroadcasts();
                     player.Broadcast($"<color=#D71868><b><i>{Name}</i></b></color>\n" +
                     $"<color=yellow>Осталось людей: <color=orange>{Player.List.Count(r => r.Role == RoleType.ClassD)}</color></color>\n" +
@@ -98,14 +114,25 @@ namespace AutoEvent.Events
                     {
                         if (player.Team == Team.CDP && anotherPlayer.Team == Team.MTF && player != anotherPlayer)
                         {
-                            if (Vector3.Distance(player.GameObject.transform.position, anotherPlayer.GameObject.transform.position) < 3)
+                            if(pos.x == anotherPlayer.GameObject.transform.position.x && pos.y == anotherPlayer.GameObject.transform.position.y && pos.z == anotherPlayer.GameObject.transform.position.z)
                             {
-                                BlockAndChangeRolePlayer(player, RoleType.NtfCaptain);
-                                player.ClearInventory();
-
+                                if (Vector3.Distance(player.GameObject.transform.position, anotherPlayer.GameObject.transform.position) < 3)
+                            {
+                                 BlockAndChangeRolePlayer(player, RoleType.NtfCaptain);
+                                 player.ClearInventory();
+                           
                                 BlockAndChangeRolePlayer(anotherPlayer, RoleType.ClassD);
                                 anotherPlayer.ClearInventory();
+                                }
                             }
+                            // if (Vector3.Distance(player.GameObject.transform.position, anotherPlayer.GameObject.transform.position) < 3)
+                            // {
+                            //     BlockAndChangeRolePlayer(player, RoleType.NtfCaptain);
+                            //      player.ClearInventory();
+                            //
+                            //     BlockAndChangeRolePlayer(anotherPlayer, RoleType.ClassD);
+                            //     anotherPlayer.ClearInventory();
+                            //}
                         }
                     }
                 }

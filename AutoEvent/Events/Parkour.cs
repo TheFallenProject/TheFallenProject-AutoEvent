@@ -29,6 +29,7 @@ namespace AutoEvent.Events
         public string CommandName => "parkour";
         public static Player Zombie { get; set; }
         public static Model Model { get; set; }
+        public static Model LavaModel { get; set; }
         public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
 
@@ -55,6 +56,12 @@ namespace AutoEvent.Events
             // Создание карты
             CreatingMapFromJson("Parkour.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
             Model = model;
+            LavaModel = new Model("lava", Model.GameObject.transform.position);
+            LavaModel.AddPart(new ModelPrimitive(LavaModel, PrimitiveType.Cube, new Color32(255, 0, 0, 255), new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(100, 1, 100)));
+            foreach (var prim in LavaModel.Primitives)
+            {
+                prim.GameObject.AddComponent<LavaComponent>();
+            }
             //PlayAudio("Zombie.f32le", 20, true, "Zombie");
             Player.List.ToList().ForEach(player =>
             {
