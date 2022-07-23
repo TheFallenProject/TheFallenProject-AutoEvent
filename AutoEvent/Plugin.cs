@@ -38,6 +38,8 @@ namespace AutoEvent
             Qurre.Events.Server.SendingRA += OnSendRA;
             Qurre.Events.Round.TeamRespawn += OnTeamRespawning;
             Qurre.Events.Round.End += OnRoundEnded;
+            Qurre.Events.Round.Restart += OnRestart;
+            Qurre.Events.Round.Waiting += OnWaiting;
             if (NeedDoLobby)
             {
                 Qurre.Events.Player.Join += OnJoin;
@@ -52,6 +54,8 @@ namespace AutoEvent
             Qurre.Events.Server.SendingRA -= OnSendRA;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Round.End -= OnRoundEnded;
+            Qurre.Events.Round.Restart -= OnRestart;
+            Qurre.Events.Round.Waiting -= OnWaiting;
             if (NeedDoLobby)
             {
                 Qurre.Events.Player.Join -= OnJoin;
@@ -108,15 +112,6 @@ namespace AutoEvent
                 });
             }
         }
-        public void OnTeamRespawning(TeamRespawnEvent ev)
-        {
-            if (Plugin.IsEventRunning) ev.Allowed = false;
-        }
-        public void OnRoundEnded(RoundEndEvent ev)
-        {
-            // независимо от включения или выключения плагина, блокировки раунда и лобби не будет
-            MainFunctions.EndEventParametres();
-        }
         public void OnSendRA(SendingRAEvent ev)
         {
             if (Plugin.IsEventRunning)
@@ -141,6 +136,26 @@ namespace AutoEvent
                     }
                 }
             }
+        }
+        public void OnTeamRespawning(TeamRespawnEvent ev)
+        {
+            if (Plugin.IsEventRunning) ev.Allowed = false;
+        }
+        // независимо от включения или выключения плагина, блокировки раунда и лобби не будет
+        public void OnRoundEnded(RoundEndEvent ev)
+        {
+            Plugin.IsEventRunning = false;
+            MainFunctions.EndEventParametres();
+        }
+        public void OnWaiting()
+        {
+            Plugin.IsEventRunning = false;
+            MainFunctions.EndEventParametres();
+        }
+        public void OnRestart()
+        {
+            Plugin.IsEventRunning = false;
+            MainFunctions.EndEventParametres();
         }
     }
 }
