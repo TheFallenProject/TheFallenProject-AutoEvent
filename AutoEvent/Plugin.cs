@@ -19,7 +19,7 @@ namespace AutoEvent
 {
     public class Plugin : Qurre.Plugin
     {
-        public override string Developer => "KoT0XleB#4663 | TreesHold | AlexanderK";
+        public override string Developer => "KoT0XleB#4663 $ TreesHold $ AlexanderK $ ГIеJIbмeнь#3519";
         public override string Name => "AutoEvent";
         public override Version Version => new Version(2, 0, 0);
         public override void Enable() => RegisterEvents();
@@ -38,6 +38,8 @@ namespace AutoEvent
             Qurre.Events.Server.SendingRA += OnSendRA;
             Qurre.Events.Round.TeamRespawn += OnTeamRespawning;
             Qurre.Events.Round.End += OnRoundEnded;
+            Qurre.Events.Round.Restart += OnRestart;
+            Qurre.Events.Round.Waiting += OnWaiting;
             if (NeedDoLobby)
             {
                 Qurre.Events.Player.Join += OnJoin;
@@ -52,11 +54,18 @@ namespace AutoEvent
             Qurre.Events.Server.SendingRA -= OnSendRA;
             Qurre.Events.Round.TeamRespawn -= OnTeamRespawning;
             Qurre.Events.Round.End -= OnRoundEnded;
+            Qurre.Events.Round.Restart -= OnRestart;
+            Qurre.Events.Round.Waiting -= OnWaiting;
             if (NeedDoLobby)
             {
                 Qurre.Events.Player.Join -= OnJoin;
             }
         }
+        // I wanted to implement a Lobby room.
+        // In the beginning it was a very good idea for players to choose a mini-game,
+        // but they always took only one Zombie Mode.
+        // And in the future, the implementation killed my nerves.
+        // I decided to refuse.
         public void DoLobby()
         {
             string configPath = Path.Combine(Qurre.PluginManager.CustomConfigsDirectory, $"AutoEvent-{Qurre.API.Server.Port}.yaml");
@@ -83,7 +92,7 @@ namespace AutoEvent
                         // Инициализируем менеджер ивентов
                         //EventManager.Init();
                         // Изменяем параметры сервера на блокировку раунда
-                        AutoEvent.Functions.MainFunctions.StartEventParametres();
+                        MainFunctions.StartEventParametres();
                     }
                     file[i] = Convert.ToChar(value.ToString());
                 }
@@ -107,15 +116,6 @@ namespace AutoEvent
                     return;
                 });
             }
-        }
-        public void OnTeamRespawning(TeamRespawnEvent ev)
-        {
-            if (Plugin.IsEventRunning) ev.Allowed = false;
-        }
-        public void OnRoundEnded(RoundEndEvent ev)
-        {
-            // независимо от включения или выключения плагина, блокировки раунда и лобби не будет
-            MainFunctions.EndEventParametres();
         }
         public void OnSendRA(SendingRAEvent ev)
         {
@@ -141,6 +141,32 @@ namespace AutoEvent
                     }
                 }
             }
+        }
+        public void OnTeamRespawning(TeamRespawnEvent ev)
+        {
+            if (Plugin.IsEventRunning) ev.Allowed = false;
+        }
+        // независимо от включения или выключения плагина, блокировки раунда и лобби не будет
+        public void OnRoundEnded(RoundEndEvent ev)
+        {
+            Plugin.IsEventRunning = false;
+
+            Round.LobbyLock = false;
+            Round.Lock = false;
+        }
+        public void OnWaiting()
+        {
+            Plugin.IsEventRunning = false;
+
+            Round.LobbyLock = false;
+            Round.Lock = false;
+        }
+        public void OnRestart()
+        {
+            Plugin.IsEventRunning = false;
+
+            Round.LobbyLock = false;
+            Round.Lock = false;
         }
     }
 }

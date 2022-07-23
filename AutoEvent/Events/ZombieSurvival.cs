@@ -25,7 +25,7 @@ namespace AutoEvent.Events
     internal class ZombieSurvival : IEvent
     {
         public string Name => "Зомби-Выживание";
-        public string Description => "[В РАЗРАБОТКЕ!!!]";
+        public string Description => "Зомби должны заразить всех! А игроки должны убить их.";
         public string Color => "FF4242";
         public string CommandName => "survival";
         public static Model Model { get; set; }
@@ -160,6 +160,14 @@ namespace AutoEvent.Events
                 ev.Allowed = false;
                 if (ev.Target.Ahp > 0) ev.Target.Ahp -= 100;
                 else DoZombie(ev.Target, false);
+            }
+            else if (ev.Attacker.Team != Team.SCP)
+            {
+                if (ev.Target.Team == Team.SCP)
+                {
+                    var forward = ev.Attacker.Transform.forward;
+                    ev.Target.Position += new Vector3(forward.x * 0.3f, forward.y * 0.3f, forward.z * 0.3f);
+                }
             }
         }
         public void OnScpDead(ScpDeadAnnouncementEvent ev) => ev.Allowed = false;

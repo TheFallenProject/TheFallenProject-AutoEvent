@@ -87,7 +87,12 @@ namespace AutoEvent.Events
                 Timing.CallDelayed(2f, () =>
                 {
                     jailer.Position = Maps.GameObject.transform.position + new Vector3(12.194f, 1.56f, -2.59f);
-                    jailer.ClearInventory();
+                    jailer.ResetInventory(new List<ItemType>
+                    {
+                        ItemType.GunE11SR,
+                        ItemType.GunCOM18,
+                        ItemType.ArmorHeavy
+                    });
                 });
             }
             foreach (Player player in Player.List)
@@ -262,7 +267,6 @@ namespace AutoEvent.Events
         {
             if (ev.Generator.GameObject == Spawners.Generators[0].GameObject)
             {
-                Log.Info("Оружие");
                 ev.Player.ResetInventory(new List<ItemType>
                 {
                     ItemType.GunE11SR,

@@ -16,8 +16,10 @@ namespace AutoEvent
         [Description("Группа донатеров, которые не смогут запускать мини-игры")]
         public List<string> DonatorGroups { get; set; } = new List<string>()
         {
-            "moderator",
-            "admin"
+            "owner",
+            "gladcat",
+            "admin",
+            "vip"
         };
     }
 }
