@@ -23,8 +23,11 @@ namespace AutoEvent.Events
 {
     internal class Parkour : IEvent
     {
+        // I don't have enough time to implement this mini-game.
+        // The point is that there is vertical parkour and there is lava.
+        // You need to get to the top quickly before the lava kills a person.
         public string Name => "Паркур";
-        public string Description => "[В РАЗРАБОТКЕ!!!]";
+        public string Description => "[Infinity Work!!!]";
         public string Color => "FF4242";
         public string CommandName => "parkour";
         public static Player Zombie { get; set; }
