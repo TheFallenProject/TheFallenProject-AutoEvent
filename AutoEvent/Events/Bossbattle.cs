@@ -31,7 +31,7 @@ namespace AutoEvent.Events
         public int Votes { get; set; }
 
         public int i = 1;
-        public static int hp = 5000;
+        public static int hp = 25000;
         public void OnStart()
         {
             Plugin.IsEventRunning = true;
@@ -113,13 +113,13 @@ namespace AutoEvent.Events
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
-            if (Player.List.Count(r => r.Team == Team.CDP) == 0)
+            if (Player.List.Count(r => r.Team == Team.TUT) == 0)
             {
                 BroadcastPlayers($"<color=#D71868><b><i>Бой с боссом</i></b></color>\n" +
                 $"<color=yellow>ПОБЕДИЛ </color><color=green> БОСС</color>\n" +
                 $"<color=yellow>Конец ивент: </color><color=red>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10);
             }
-            else if (Player.List.Count(r => r.Team == Team.TUT) == 0)
+            else if (Player.List.Count(r => r.Team == Team.MTF) == 0)
             {
                 BroadcastPlayers($"<color=#D71868><b><i>Бой с боссом</i></b></color>\n" +
                 $"<color=yellow>ПОБЕДИЛИ - <color=blue>{Player.List.Count(r => r.Team == Team.MTF)} РЫЦАРИ</color></color>\n" +

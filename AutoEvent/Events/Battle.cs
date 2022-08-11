@@ -113,7 +113,7 @@ namespace AutoEvent.Events
                 player.AllItems.ToList().ForEach(item => player.RemoveItem(item));
                 Timing.CallDelayed(2f, () =>
                 {
-                    player.Position = Model.GameObject.transform.position + new Vector3(44, 5, 5);
+                    player.Position = Model.GameObject.transform.position + new Vector3(44, 5, 5);  
                 });
             }
             else

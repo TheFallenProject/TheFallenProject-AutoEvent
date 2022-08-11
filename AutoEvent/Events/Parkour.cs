@@ -40,16 +40,12 @@ namespace AutoEvent.Events
         {
             Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
-            Qurre.Events.Player.Dead += OnDead;
-            Qurre.Events.Player.Damage += OnDamage;
             OnEventStarted();
         }
         public void OnStop()
         {
             Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
-            Qurre.Events.Player.Dead -= OnDead;
-            Qurre.Events.Player.Damage -= OnDamage;
             Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
@@ -65,7 +61,6 @@ namespace AutoEvent.Events
             {
                 prim.GameObject.AddComponent<LavaComponent>();
             }
-            //PlayAudio("Zombie.f32le", 20, true, "Zombie");
             Player.List.ToList().ForEach(player =>
             {
                 player.Role = RoleType.ClassD;
@@ -74,7 +69,34 @@ namespace AutoEvent.Events
                     player.Position = Model.GameObject.transform.position + new Vector3(-25.44f, 1.51f, -0.74f);
                 });
             });
-            //Timing.RunCoroutine(TimingBeginEvent($"Заражение", 15), "zombie_time");
+        }
+        public IEnumerator<float> Cycle()
+        {
+            // Создание лавы
+            LavaModel = new Model("lava", Model.GameObject.transform.position);
+            LavaModel.AddPart(new ModelPrimitive(LavaModel, PrimitiveType.Cube, new Color32(255, 0, 0, 255), new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(100, 1, 100)));
+            foreach (var prim in LavaModel.Primitives)
+            {
+                prim.GameObject.AddComponent<LavaComponent>();
+            }
+
+            while (Player.List.ToList().Count(r => r.Role != RoleType.Spectator) > 1)
+            {
+                BroadcastPlayers($"<size=20><color=red><b>Живых: {Player.List.ToList().Count(r => r.Role != RoleType.Spectator)} Игроков</b></color></size>", 1);
+                LavaModel.GameObject.transform.position += new Vector3(0, 0.1f, 0);
+                yield return Timing.WaitForSeconds(1f);
+                EventTime += TimeSpan.FromSeconds(1f);
+            }
+            if (Player.List.ToList().Count(r => r.Role != RoleType.Spectator) == 1)
+            {
+                BroadcastPlayers($"<size=80><color=red><b>Победитель\n{Player.List.ToList().First(r => r.Role != RoleType.Spectator).Nickname}</b></color></size>", 10);
+            }
+            else
+            {
+                BroadcastPlayers($"<size=70><color=red><b>Все утонули в Лаве (ахахахахах)</b></color></size>", 10);
+            }
+            OnStop();
+            yield break;
         }
         public void EventEnd()
         {
@@ -83,24 +105,9 @@ namespace AutoEvent.Events
             Timing.RunCoroutine(CleanUpAll());
         }
         // Ивенты
-        public void OnDamage(DamageEvent ev)
-        {
-            if (ev.Attacker.Role == RoleType.Scp0492)
-            {
-                BlockAndChangeRolePlayer(ev.Target, RoleType.Scp0492);
-            }
-        }
-        public void OnDead(DeadEvent ev)
-        {
-            ev.Target.Role = RoleType.Scp0492;
-            Timing.CallDelayed(2f, () =>
-            {
-                ev.Target.Position = Model.GameObject.transform.position + new Vector3(-25.44f, 1.51f, -0.74f);
-            });
-        }
         public void OnJoin(JoinEvent ev)
         {
-            ev.Player.Role = RoleType.Scp0492;
+            ev.Player.Role = RoleType.ClassD;
             Timing.CallDelayed(2f, () =>
             {
                 ev.Player.Position = Model.GameObject.transform.position + new Vector3(-25.44f, 1.51f, -0.74f);
