@@ -27,7 +27,7 @@ namespace AutoEvent.Events
         // The point is that there is vertical parkour and there is lava.
         // You need to get to the top quickly before the lava kills a person.
         public string Name => "Паркур";
-        public string Description => "[Infinity Work!!!]";
+        public string Description => "[ВЕДУТСЯ РАБОТЫ. Могут быть биги или ивент не работает]";
         public string Color => "FF4242";
         public string CommandName => "parkour";
         public static Player Zombie { get; set; }
@@ -82,8 +82,10 @@ namespace AutoEvent.Events
 
             while (Player.List.ToList().Count(r => r.Role != RoleType.Spectator) > 1)
             {
+                Log.Info("Защёл в цикл");
                 BroadcastPlayers($"<size=20><color=red><b>Живых: {Player.List.ToList().Count(r => r.Role != RoleType.Spectator)} Игроков</b></color></size>", 1);
                 LavaModel.GameObject.transform.position += new Vector3(0, 0.1f, 0);
+                Log.Info(LavaModel.GameObject.transform.position);
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
