@@ -178,7 +178,6 @@ namespace AutoEvent.Events
             ItemType.GunRevolver,
             ItemType.GunLogicer,
             ItemType.ParticleDisruptor,
-            ItemType.MicroHID,
             ItemType.GunShotgun
         };
         public void OnJoin(JoinEvent ev) => ev.Player.Role = RoleType.Spectator;

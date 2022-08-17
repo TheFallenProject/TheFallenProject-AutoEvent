@@ -36,7 +36,7 @@ namespace AutoEvent.Events
         {
             Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
-            OnEventStarted();
+            OnEventStarted();   
         }
         public void OnStop()
         {
