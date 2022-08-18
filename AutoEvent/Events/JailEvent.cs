@@ -202,7 +202,6 @@ namespace AutoEvent.Events
             }
             return position;
         }
-        // Fuck Doors :D
         public void PhysicDoors()
         {
             foreach (var door in JailerDoors.Primitives)
