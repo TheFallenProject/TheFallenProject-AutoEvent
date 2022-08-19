@@ -78,7 +78,7 @@ namespace AutoEvent.Events
         public IEnumerator<float> Cycle()
         {
             // Обнуление таймера
-            EventTime = new TimeSpan(0, 10, 0);
+            EventTime = new TimeSpan(0, 5, 0);
             BluePoints = 0;
             RedPoints = 0;
             // Запуск

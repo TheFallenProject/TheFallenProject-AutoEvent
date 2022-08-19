@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -87,6 +88,8 @@
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="EventManager.cs" />
+    <Compile Include="Events\Parkour.cs" />
+    <Compile Include="Events\ZombieSurvival.cs" />
     <Compile Include="Events\Versus.cs" />
     <Compile Include="Events\HideAndSeek.cs" />
     <Compile Include="Events\FootballEvent.cs" />
@@ -98,10 +101,10 @@
     <Compile Include="Events\Escape.cs" />
     <Compile Include="Events\DeathParty.cs" />
     <Compile Include="Events\JailEvent.cs" />
-    <Compile Include="Events\Event.cs" />
     <Compile Include="Events\BounceEvent.cs" />
     <Compile Include="Events\InfectionEvent.cs" />
     <Compile Include="Functions\FootballComponent.cs" />
+    <Compile Include="Functions\LedderComponent.cs" />
     <Compile Include="Functions\MoveComponent.cs" />
     <Compile Include="Functions\GlassComponent.cs" />
     <Compile Include="Functions\LavaComponent.cs" />
