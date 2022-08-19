@@ -88,6 +88,8 @@
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="EventManager.cs" />
+    <Compile Include="Events\AmongUS.cs" />
+    <Compile Include="Events\Lazerwars.cs" />
     <Compile Include="Events\Parkour.cs" />
     <Compile Include="Events\ZombieSurvival.cs" />
     <Compile Include="Events\Versus.cs" />
