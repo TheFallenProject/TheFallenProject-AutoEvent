@@ -1,23 +1,15 @@
-﻿using AutoEvent.Functions;
-using AutoEvent.Interfaces;
-using Interactables.Interobjects.DoorUtils;
+﻿using AutoEvent.Interfaces;
 using MEC;
-using Mirror;
-using Qurre;
 using Qurre.API;
 using Qurre.API.Addons.Models;
 using Qurre.API.Controllers;
-using Qurre.API.Controllers.Items;
 using Qurre.API.Events;
-using Qurre.API.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using static AutoEvent.Functions.MainFunctions;
-using Random = UnityEngine.Random;
+//What? Why are there so many NOT USED references?
 
 namespace AutoEvent.Events
 {
@@ -27,14 +19,18 @@ namespace AutoEvent.Events
         public string Description => "Дуель игроков на карте 35hp из cs 1.6";
         public string Color => "FFFF00";
         public string CommandName => "35hp";
-        public Model Model { get; set; }
-        public Model Doors { get; set; }
-        public bool ClassdDoorOpened { get; set; } = false;
-        public bool ScientistDoorOpened { get; set; } = false;
-        public Player Scientist { get; set; }
-        public Player ClassD { get; set; }
-        public TimeSpan EventTime { get; set; }
+        public static Model Model { get; set; }
+        public static Model Doors { get; set; }
+        public static bool ClassdDoorOpened { get; set; } = false;
+        public static bool ScientistDoorOpened { get; set; } = false;
+        public static Player Scientist { get; set; }
+        public static Player ClassD { get; set; }
+        public static TimeSpan EventTime { get; set; }
         public int Votes { get; set; }
+
+        Door doora;
+
+        Door doorb;
 
         public void OnStart()
         {
@@ -50,25 +46,26 @@ namespace AutoEvent.Events
         }
         public void OnEventStarted()
         {
-            EventTime = new TimeSpan(0, 0, 0);
+            EventTime = new TimeSpan(0, 0, 0); //Event Time? But you have System.Diagnostics.Stopwatch?
 
-            CreatingMapFromJson("35Hp.json", new Vector3(145.18f, 930f, -122.97f), out var model);
-            Model = model;
+            CreatingMapFromJson("35Hp.json", new Vector3(145.18f, 930f, -122.97f), out var model); //r/funny alexanderk plugin
+
+            Model = model; //that model was loaded by method above
 
             //PlayAudio("MGS4.f32le", 10, true, "БИТВА");
-            var count = 0;
-            foreach (Player player in Player.List)
+            var count = 0; //count of what?
+            foreach (Player player in Player.List) //spawn of players?
             {
-                if (count % 2 == 0)
+                if (count % 2 == 0) //if equal
                 {
-                    player.Role = RoleType.Scientist;
+                    player.Role = RoleType.Scientist; //he is with the science team
                     Timing.CallDelayed(2f, () =>
                     {
                         player.Position = Model.GameObject.transform.position + new Vector3(-56.1f, -6.3f, 3.12f);
                         player.ClearInventory();
                     });
                 }
-                else
+                else //1 extra
                 {
                     player.Role = RoleType.ClassD;
                     Timing.CallDelayed(2f, () =>
@@ -81,11 +78,11 @@ namespace AutoEvent.Events
             }
             Timing.RunCoroutine(Cycle(), "35hp_time");
         }
-        public IEnumerator<float> Cycle()
+        public static IEnumerator<float> Cycle()
         {
             for (int time = 10; time > 0; time--)
             {
-                BroadcastPlayers($"<size=100><color=red>{time}</color></size>", 1);
+                BroadcastPlayers($"<size=100><color=red>{time}</color></size>", 1); //dont get it...
                 yield return Timing.WaitForSeconds(1f);
             }
             // Player.List.Count(r => r.Team == Team.RSC) > 0 && Player.List.Count(r => r.Team == Team.CDP) > 0
@@ -110,10 +107,11 @@ namespace AutoEvent.Events
                 $"<color=yellow><color=yellow>{Player.List.Count(r => r.Team == Team.RSC)}</color> VS <color=orange>{Player.List.Count(r => r.Team == Team.CDP)}</color></color>\n" +
                 $"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
             }
-            OnStop();
+            Versus refer = new Versus();
+            refer.OnStop();
             yield break;
         }
-        public void Arena()
+        public static void Arena()
         {
             foreach (Player player in Player.List)
             {
@@ -182,7 +180,7 @@ namespace AutoEvent.Events
             Timing.RunCoroutine(CleanUpAll());
         }
         public void CreateDoors()
-        { // 3.16
+        { // 3.16 [what 3.16?]
             Doors = new Model("PrisonerDoors", Model.GameObject.transform.position);
             Doors.AddPart(new ModelPrimitive(Doors, PrimitiveType.Cube, new Color32(85, 87, 85, 51), new Vector3(-30.15f, -5.45f, 3.12f), new Vector3(90, 90, 0), new Vector3(3.1f, 1f, 6.52f)));
             Doors.AddPart(new ModelPrimitive(Doors, PrimitiveType.Cube, new Color32(85, 87, 85, 51), new Vector3(1.76f, -5.45f, 3.12f), new Vector3(90, 90, 0), new Vector3(3.1f, 1f, 6.52f)));
