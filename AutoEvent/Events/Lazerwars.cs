@@ -52,7 +52,7 @@ namespace AutoEvent.Events
                 pl.FriendlyFire = true;
                 Timing.CallDelayed(3f, () => { pl.Position = RandomPosition(); });
                 pl.ShakeScreen();
-                Timing.CallDelayed(5f, () => { pl.ShowHint("\n"+"\n"+"<color=red> !УБЕЙ ИХ ВСЕХ! </color>", 5); });
+                Timing.CallDelayed(5f, () => { pl.ShowHint("\n" + "\n" + "<color=red> !УБЕЙ ИХ ВСЕХ! </color>", 5); });
                 pl.AddItem(ItemType.ParticleDisruptor, 3);
                 pl.AddItem(ItemType.Medkit, 5);
             }
@@ -90,7 +90,7 @@ namespace AutoEvent.Events
             }
             if (Player.List.Count(r => r.Team == Team.CDP) == 1)
             {
-                foreach(Player pl in Player.List)
+                foreach (Player pl in Player.List)
                 {
                     if (pl.Role == RoleType.ClassD)
                     {
@@ -98,7 +98,7 @@ namespace AutoEvent.Events
                         $"<color=yellow>ПОБЕДИЛ - <color=green>{pl.Nickname}</color></color>\n" +
                         $"<color=yellow>Конец ивента: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
                     }
-                }   
+                }
             }
             else if (Player.List.Count(r => r.Team == Team.CDP) == 0)
             {
