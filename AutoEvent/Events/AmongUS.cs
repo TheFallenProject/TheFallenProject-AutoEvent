@@ -164,6 +164,8 @@ namespace AutoEvent.Events
                 else
                 {
                     Map.Broadcast("<color=red> Шериф убил невиновного! И был убит! </color>", 5);
+                    ev.Target.ClearInventory();
+                    ev.Attacker.Kill("Убит: судьбой");
                     foreach (Player pl in Player.List)
                     {
                         if (pl.Id == kilid)
@@ -172,15 +174,12 @@ namespace AutoEvent.Events
                         }
                         else
                         {
-                            var ran = Random.Range(1, 2);
-                            if (ran == 1)
-                            {
-                                continue;
-                            }
-                            else
+                            if (pl.Role != RoleType.Spectator)
                             {
                                 pl.ShakeScreen();
-                                pl.ShowHint("<color=red> <Вам дали пистолет, убей убийцу!> </color>", 5);
+                                pl.ShowHint("<color=green> <Вам дали пистолет, убей убийцу!> </color>", 5);
+                                pl.AddItem(ItemType.GunCOM18);
+                                shid = pl.Id;
                                 break;
                             }
                         }
@@ -196,7 +195,7 @@ namespace AutoEvent.Events
                 }
             }
             ev.Target.ClearInventory();
-            ev.Target.Kill();
+            ev.Target.Kill("Убит: хз кем");
 
         }
         public Vector3 RandomPosition()
