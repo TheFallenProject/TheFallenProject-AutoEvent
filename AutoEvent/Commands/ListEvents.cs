@@ -27,7 +27,7 @@ namespace AutoEvent.Commands
                 return false;
             }
             string resp = String.Empty;
-            resp += "<color=yellow><b>Список ивентов</color></b>:\n";
+            resp += "<color=yellow><b>Список ивентов (запуская ивент вы несёте ответственность за него)</color></b>:\n";
             var arr = GetTypesInNamespace(Assembly.GetExecutingAssembly(), "AutoEvent.Events");
             foreach (var type in arr)
             {
