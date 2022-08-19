@@ -139,6 +139,7 @@ namespace AutoEvent.Events
                                 pl.ShakeScreen();
                                 pl.ShowHint("<color=green> <Вам дали пистолет, убей убийцу!> </color>", 5);
                                 pl.AddItem(ItemType.GunCOM18);
+                                shid = pl.Id;
                                 break;
                             }
                         }
@@ -157,7 +158,6 @@ namespace AutoEvent.Events
                 pcount--;
                 if (ev.Target.Id == kilid)
                 {
-
                     Map.Broadcast("<color=red> Убийца убит! </color>", 5);
                     OnStop();
                 }
