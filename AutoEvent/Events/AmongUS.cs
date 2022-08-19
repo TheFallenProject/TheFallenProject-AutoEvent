@@ -46,7 +46,7 @@ namespace AutoEvent.Events
         public int Votes { get; set; }
 
         public void OnStart()
-        {   
+        {
             Qurre.Events.Player.Damage += OnDamage;
             Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
@@ -205,7 +205,7 @@ namespace AutoEvent.Events
             var rand = Random.Range(0, 14);
             switch (rand)
             { //?
-                case 1: position = new Vector3(78f, 949f, -171f); break; 
+                case 1: position = new Vector3(78f, 949f, -171f); break;
                 case 2: position = new Vector3(78f, 949f, -120f); break;
                 case 3: position = new Vector3(17f, 949f, -155f); break;
                 case 4: position = new Vector3(17f, 949f, -120f); break;
