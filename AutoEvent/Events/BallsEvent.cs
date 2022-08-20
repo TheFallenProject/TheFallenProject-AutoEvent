@@ -46,10 +46,8 @@ namespace AutoEvent.Events
         {
             CreatingMapFromJson("Death.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
             Model = model;
-            //PlayAudio("FallGuys_FallRoll.f32le", 15, true, "Death");
             Balls = new Model("balls", new Vector3(0, 0, 0));
             TeleportAndChangeRolePlayers(Player.List.ToList(), RoleType.ClassD, Model.GameObject.transform.position);
-            // Запуск ивента
             Timing.RunCoroutine(Cycle(), "ballevent_time");
         }
         public IEnumerator<float> Cycle()

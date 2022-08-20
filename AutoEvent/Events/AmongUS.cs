@@ -39,7 +39,8 @@ namespace AutoEvent.Events
         public static int takeitD1 = 0;
         public string Description => "Мафия (Запуская вы подтверждаете, что в случае краша сервера ВЫ несёте ответственность)";
         public static int tasks = 0;
-        public int killers = 0;
+        public string killrol;
+        public int krcount = -1;
         public int plcount = 1;
         public int pcount = 0;
         public static int kilid = 0;
@@ -56,6 +57,7 @@ namespace AutoEvent.Events
             Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
             Qurre.Events.Player.Shooting += OnShootEvent;
+            Qurre.Events.Player.Leave += OnLeave;
             OnEventStarted();
         }
 
@@ -65,11 +67,12 @@ namespace AutoEvent.Events
             Plugin.IsEventRunning = false;
             Qurre.Events.Player.Shooting -= OnShootEvent;
             Qurre.Events.Player.Join -= OnJoin;
+            Qurre.Events.Player.Leave -= OnLeave;
             Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
         {
-            BroadcastPlayers("<color=blue> Запускаем... </color>", 5);
+            BroadcastPlayers("<color=blue> -=-Among-=- </color>", 5);
             CreatingMapFromJson("Among.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
             Model = model;
             foreach (Player pl in Player.List)
@@ -78,10 +81,14 @@ namespace AutoEvent.Events
                 pl.ClearInventory();
                 Timing.CallDelayed(2f, () => { pl.Position = RandomPosition(); });
                 Log.Info($"Id игрока: {pl.Id} | Имя: {pl.Nickname} | pos: {pl.Position}");
+                if(pl.Position.y < 800)
+                {
+                    pl.Position = new Vector3(78f, 949f, -171f);
+                }
                 plcount += 1;
                 pcount += 1;
             }
-            Map.Broadcast("<color=green> Скоро всё начнётся </color> <color=red> (это не финальная версия, в след будут задания!) </color>", 10);
+            Map.Broadcast("<color=green> Скоро всё начнётся... </color> <color=red> v1.1 </color>", 10);
             Timing.WaitForSeconds(10f);
             var ran = Random.Range(2, plcount);
             var sh = Random.Range(2, plcount);
@@ -98,6 +105,8 @@ namespace AutoEvent.Events
                     Timing.CallDelayed(10f, () => { pl.ShowHint("<color=red> Вы стали !УБИЙЦЕЙ! </color> \n" + "Убей их всех! (Пистолет скоро вам дадут)", 10); });
                     Timing.CallDelayed(10f, () => { pl.AddItem(ItemType.GunCOM18, 1); });
                     kilid = ran;
+                    killrol = pl.RoleName;
+                    
                 }
                 else if (pl.Id == sh)
                 {
@@ -107,38 +116,16 @@ namespace AutoEvent.Events
                 }
                 else
                 {
-                    Timing.CallDelayed(10f, () => { pl.ShowHint("<color=green> Вы мирый житель! </color> \n" + "Выживай!", 10); });
+                    Timing.CallDelayed(10f, () => { pl.ShowHint("<color=green> Вы МИРНЫЙ! </color> \n" + "Выживай!", 10); });
                 }
             }
-            Timing.RunCoroutine(Cycle(), "among_time");
-        }
-        public IEnumerator<float> Cycle()
-        {
-            Log.Info("324343");
-            yield break;
-        }
-        public IEnumerator<float> Cooldown(int i)
-        {
-            Log.Info($"Выстрел: {i}");
-            foreach (Player pl in Player.List)
-            {
-                if (pl.Id == i)
-                {
-                    for (int j = 15; j > 0; j--)
-                    {
-                        Log.Info($"j = {j}");
-                        pl.ShowHint($"Перезарядка... {j} секунд");
-                        Timing.WaitForSeconds(1f);
-                    }
-                    pl.AddItem(ItemType.GunCOM18);
-                }
-            }
-            yield break;
         }
         public void OnShootEvent(ShootingEvent ev)
         {
             ev.Shooter.ClearInventory();
-            Timing.RunCoroutine(Cooldown(ev.Shooter.Id), "cd_time");
+            float j = 15;
+            ev.Shooter.ShowHint($"Перезарядка... {j} секунд");
+            Timing.CallDelayed(j, () => { ev.Shooter.AddItem(ItemType.GunCOM18); });
         }
         public void EventEnd()
         {
@@ -146,107 +133,88 @@ namespace AutoEvent.Events
             Timing.RunCoroutine(DestroyObjects(Model));
             Timing.RunCoroutine(CleanUpAll());
         }
+        public void OnLeave(LeaveEvent ev)
+        {
+            if(ev.Player.Id == kilid)
+            {
+                Log.Info("Убийца вышел");
+                Map.ClearBroadcasts();
+                Map.Broadcast("Убийца вышел, конец ивента", 5);
+                OnStop();
+            }
+            else if(ev.Player.Id == shid)
+            {
+                Log.Info("Шериф вышел");
+                Map.ClearBroadcasts();
+                Map.Broadcast("Шериф вышел, пистолет у мирного", 5);
+                var ran = Random.Range(2, plcount);
+                if (ran == kilid || ran == shid)
+                {
+                    while (ran != kilid && ran != shid)
+                    {
+                        ran = Random.Range(2, plcount);
+                    }
+                }
+                foreach (Player pl in Player.List)
+                {
+                    if (ran == pl.Id)
+                    {
+                        pl.ShowHint("<color=yellow> Вам дали пистолет, убей убийцу! </color>");
+                        pl.AddItem(ItemType.GunCOM18, 1);
+                        shid = pl.Id;
+                    }
+                }
+            }
+        }
         public void OnDamage(DamageEvent ev)
         {
-            if (ev.Attacker.Id == kilid)
+            if(ev.Target.Id == kilid)
             {
-                pcount--;
-                if (ev.Target.Id == shid)
-                {
-                    if (pcount == 1)
-                    {
-                        Map.ClearBroadcasts();
-                        Map.Broadcast("<color=red> Убийца убил всех! </color>", 5);
-                        OnStop();
-                    }
-                    else
-                    {
-                        Map.Broadcast("<color=blue> Шериф убит! (пистолет передался рандомному игроку!) </color> ", 3);
-                        foreach (Player pl in Player.List)
-                        {
-                            if (pl.Id == kilid)
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                if (pl.Role != RoleType.Spectator)
-                                {
-                                    pl.ShakeScreen();
-                                    pl.ShowHint("<color=green> <Вам дали пистолет, убей убийцу!> </color>", 5);
-                                    pl.AddItem(ItemType.GunCOM18);
-                                    shid = pl.Id;
-                                    break;
-                                }
-                            }
-                        }
-                    } 
-                }
-                if (pcount == 1)
-                {
-                    Map.ClearBroadcasts();
-                    Map.Broadcast("<color=red> Убийца убил всех! </color>", 5);
-                    OnStop();
-                }
-                ev.Target.Kill("Убит: Убийцей");
+                Map.ClearBroadcasts();
+                Map.Broadcast("<Color=red> Убийца убит! Победа мирных! </color>", 5);
+                OnStop();
             }
-            else if (ev.Attacker.Id == shid)
+            else if (ev.Target.Id == shid)
             {
                 pcount--;
-                if (ev.Target.Id == kilid)
+                if(pcount == 1)
                 {
                     Map.ClearBroadcasts();
-                    Map.Broadcast("<color=red> Убийца убит! </color>", 5);
+                    Map.Broadcast("<color=red> Убийца убил всех </color>", 5);
                     OnStop();
                 }
                 else
                 {
-                    Map.Broadcast("<color=red> Шериф убил невиновного! И был убит! </color>", 5);
-                    ev.Target.ClearInventory();
-                    ev.Attacker.Kill("Убит: судьбой");
-                    pcount--;
-                    foreach (Player pl in Player.List)
+                    Map.ClearBroadcasts();
+                    Map.Broadcast("<Color=blue> Шириф убит (пистолет теперь у мирного) </color>", 5);
+                    var ran = Random.Range(2, plcount);
+                    if (ran == kilid || ran == shid)
                     {
-                        if (pl.Id == kilid)
+                        while (ran != kilid && ran != shid)
                         {
-                            continue;
-                        }
-                        else
-                        {
-                            if (pl.Role != RoleType.Spectator)
-                            {
-                                pl.ShakeScreen();
-                                pl.ShowHint("<color=green> <Вам дали пистолет, убей убийцу!> </color>", 5);
-                                pl.AddItem(ItemType.GunCOM18);
-                                shid = pl.Id;
-                                break;
-                            }
+                            ran = Random.Range(2, plcount);
                         }
                     }
-                    if (pcount == 1)
+                    foreach (Player pl in Player.List)
                     {
-                        Map.ClearBroadcasts();
-                        Map.Broadcast("<color=red> Убийца убил всех! </color>", 5);
-                        OnStop();
+                        if (ran == pl.Id)
+                        {
+                            pl.ShowHint("<color=yellow> Вам дали пистолет, убей убийцу! </color>");
+                            pl.AddItem(ItemType.GunCOM18, 1);
+                            shid = pl.Id;
+                        }
                     }
                 }
             }
             else
             {
-                if (pcount == 1)
+                pcount--;
+                if(pcount == 1)
                 {
                     Map.ClearBroadcasts();
-                    Map.Broadcast("<color=red> Убийца убил всех! </color>", 5);
+                    Map.Broadcast("<color=red> Убийца убил всех </color>", 5);
                     OnStop();
                 }
-            }
-            ev.Target.ClearInventory();
-            ev.Target.Kill("Убит: хз кем");
-            if (pcount == 1)
-            {
-                Map.ClearBroadcasts();
-                Map.Broadcast("<color=red> Убийца убил всех! </color>", 5);
-                OnStop();
             }
         }
         public Vector3 RandomPosition()
