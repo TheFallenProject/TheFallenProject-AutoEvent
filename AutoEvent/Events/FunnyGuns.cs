@@ -94,6 +94,7 @@ namespace AutoEvent.Events
             }
 
             Timing.RunCoroutine(ldZonesChecker(), "ldZonesChecker");
+            Timing.RunCoroutine(endgameChecker(), "endgameChecker");
         }
 
         public void OnStop()
@@ -102,6 +103,7 @@ namespace AutoEvent.Events
             Timing.KillCoroutines("hud");
             Timing.KillCoroutines("ldZonesChecker");
             Timing.KillCoroutines("instantDeath");
+            Timing.KillCoroutines("endgameChecker");
             ldzones.Clear();
 
             foreach (var mut in Muts)
