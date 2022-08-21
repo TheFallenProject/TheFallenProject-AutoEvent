@@ -47,6 +47,7 @@ namespace AutoEvent.Events.EventClasses.FunnyGuns
                     NTFTickets--;
                     pl.SetRole(RoleType.NtfSergeant);
                     pl.ClearInventory();
+                    pl.AddItem(ItemType.Flashlight);
                     pl.AddItem(ItemType.KeycardNTFCommander);
                     pl.AddItem(ItemType.ArmorCombat);
                     pl.AddItem(ItemType.SCP500);
@@ -59,6 +60,7 @@ namespace AutoEvent.Events.EventClasses.FunnyGuns
                     CITickets--;
                     pl.SetRole(RoleType.ChaosRifleman);
                     pl.ClearInventory();
+                    pl.AddItem(ItemType.Flashlight);
                     pl.AddItem(ItemType.KeycardChaosInsurgency);
                     pl.AddItem(ItemType.ArmorCombat);
                     pl.AddItem(ItemType.SCP500);
@@ -71,6 +73,7 @@ namespace AutoEvent.Events.EventClasses.FunnyGuns
                     CITickets--;
                     pl.SetRole(RoleType.ChaosRifleman);
                     pl.ClearInventory();
+                    pl.AddItem(ItemType.Flashlight);
                     pl.AddItem(ItemType.KeycardChaosInsurgency);
                     pl.AddItem(ItemType.ArmorCombat);
                     pl.AddItem(ItemType.SCP500);
@@ -83,6 +86,7 @@ namespace AutoEvent.Events.EventClasses.FunnyGuns
                     NTFTickets--;
                     pl.SetRole(RoleType.NtfSergeant);
                     pl.ClearInventory();
+                    pl.AddItem(ItemType.Flashlight);
                     pl.AddItem(ItemType.KeycardNTFCommander);
                     pl.AddItem(ItemType.ArmorCombat);
                     pl.AddItem(ItemType.SCP500);
