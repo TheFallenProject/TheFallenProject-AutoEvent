@@ -80,14 +80,15 @@ namespace AutoEvent.Events
             Qurre.Events.Player.IcomSpeak += IntercomUsed;
             Qurre.Events.Map.DoorDamage += DoorDestruct;
             Qurre.Events.Player.DamageProcess += Hurting;
+            Qurre.Events.Player.Dies += LootDrop;
             EventClasses.FunnyGuns.Game.StageChangeEvent += StageChangeEvent;
             EventClasses.FunnyGuns.Game.StageChangeEvent += AllowReinforcements;
 
             foreach (var door in Qurre.API.Map.Doors)
             {
+                door.Open = false;
                 if (door.Type == Qurre.API.Objects.DoorType.Surface_Gate)
                 {
-                    door.Open = false;
                     door.Locked = true;
                     break;
                 }
@@ -126,6 +127,7 @@ namespace AutoEvent.Events
             Qurre.Events.Player.IcomSpeak -= IntercomUsed;
             Qurre.Events.Map.DoorDamage -= DoorDestruct;
             Qurre.Events.Player.DamageProcess -= Hurting;
+            Qurre.Events.Player.Dies -= LootDrop;
             EventClasses.FunnyGuns.Game.StageChangeEvent -= StageChangeEvent;
             EventClasses.FunnyGuns.Game.StageChangeEvent -= AllowReinforcements;
 
@@ -148,6 +150,13 @@ namespace AutoEvent.Events
             }
 
             Qurre.Log.Info($"FunnyGuns (ver. {ver}) has been terminated.");
+        }
+
+        private void LootDrop(Qurre.API.Events.DiesEvent ev)
+        {
+            ev.Target.ClearInventory();
+            ev.Target.AddItem(ItemType.Medkit);
+            ev.Target.AddItem(ItemType.Medkit);
         }
 
         private IEnumerator<float> endgameChecker()
