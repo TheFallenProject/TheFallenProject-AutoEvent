@@ -164,6 +164,7 @@ namespace AutoEvent.Events
                     Map.ClearBroadcasts();
                     Map.Broadcast($"{(mtfs == 0 ? "Победа <color=green>хаоса</color>!" : "Победа <color=blue>мога</color>!")}", 10, true);
                 }
+                yield return Timing.WaitForSeconds(1f);
             }
         }
 
@@ -292,8 +293,7 @@ namespace AutoEvent.Events
                 Timing.CallDelayed(10f, () => icomDoor.Locked = false);
                 foreach (var pl in Qurre.API.Player.List)
                 {
-                    //pl.Role == RoleType.Spectator
-                    if (true)
+                    if (pl.Role == RoleType.Spectator)
                     {
                         specs.Add(pl);
                     }
