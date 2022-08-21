@@ -34,13 +34,11 @@ namespace AutoEvent.Events
         public static int hp = 25000;
         public void OnStart()
         {
-            Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
             OnEventStarted();   
         }
         public void OnStop()
         {
-            Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
             Timing.CallDelayed(5f, () => EventEnd());
         }

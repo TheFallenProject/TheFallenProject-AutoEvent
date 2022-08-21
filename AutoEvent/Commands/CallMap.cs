@@ -30,7 +30,7 @@ namespace AutoEvent.Commands
                 response = $"Раунд ещё не начался!";
                 return false;
             }
-            if (Plugin.IsEventRunning)
+            if (Plugin.ActiveEvent != null)
             {
                 response = $"Мини-Игра уже проводится!";
                 return false;

@@ -14,6 +14,7 @@ using Round = Qurre.API.Round;
 using Server = Qurre.API.Server;
 using Map = Qurre.API.Map;
 using AutoEvent.Functions;
+using AutoEvent.Interfaces;
 
 namespace AutoEvent
 {
@@ -26,7 +27,7 @@ namespace AutoEvent
         public override void Disable() => UnregisterEvents();
         public override int Priority => int.MaxValue;
         public static bool NeedDoLobby = false;
-        public static bool IsEventRunning = false;
+        public static IEvent ActiveEvent = null;
         public static Config CustomConfig { get; set; }
         public void RegisterEvents()
         {
@@ -119,7 +120,7 @@ namespace AutoEvent
         }
         public void OnSendRA(SendingRAEvent ev)
         {
-            if (Plugin.IsEventRunning)
+            if (Plugin.ActiveEvent != null)
             {
                 if (Plugin.CustomConfig.DonatorGroups.Contains(ev.Player.GroupName))
                 {
@@ -144,26 +145,26 @@ namespace AutoEvent
         }
         public void OnTeamRespawning(TeamRespawnEvent ev)
         {
-            if (Plugin.IsEventRunning) ev.Allowed = false;
+            if (Plugin.ActiveEvent != null) ev.Allowed = false;
         }
         // независимо от включения или выключения плагина, блокировки раунда и лобби не будет
         public void OnRoundEnded(RoundEndEvent ev)
         {
-            Plugin.IsEventRunning = false;
+            Plugin.ActiveEvent = null;
 
             Round.LobbyLock = false;
             Round.Lock = false;
         }
         public void OnWaiting()
         {
-            Plugin.IsEventRunning = false;
+            Plugin.ActiveEvent = null;
 
             Round.LobbyLock = false;
             Round.Lock = false;
         }
         public void OnRestart()
         {
-            Plugin.IsEventRunning = false;
+            Plugin.ActiveEvent = null;
 
             Round.LobbyLock = false;
             Round.Lock = false;

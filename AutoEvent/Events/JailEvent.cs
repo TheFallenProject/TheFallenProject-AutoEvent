@@ -40,7 +40,6 @@ namespace AutoEvent.Events
 
         public void OnStart()
         {
-            Plugin.IsEventRunning = true;
             Qurre.Events.Player.RoleChange += OnChangeRole;
             Qurre.Events.Player.Shooting += OnShootEvent;
             Qurre.Events.Player.InteractGenerator += OnInteractGenerator;
@@ -48,7 +47,6 @@ namespace AutoEvent.Events
         }
         public void OnStop()
         {
-            Plugin.IsEventRunning = false;
             Qurre.Events.Player.RoleChange -= OnChangeRole;
             Qurre.Events.Player.Shooting -= OnShootEvent;
             Qurre.Events.Player.InteractGenerator -= OnInteractGenerator;

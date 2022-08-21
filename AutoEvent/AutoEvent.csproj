@@ -32,62 +32,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\Рабочий стол\файлы\Qurre\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Рабочий стол\файлы\Qurre\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp_publicized">
-      <HintPath>..\..\..\..\Рабочий стол\файлы\Qurre\Assembly-CSharp_publicized.dll</HintPath>
-    </Reference>
-    <Reference Include="CommandSystem.Core">
-      <HintPath>..\..\..\..\Рабочий стол\файлы\CommandSystem.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DissonanceVoip">
-      <HintPath>..\..\..\..\Рабочий стол\файлы\DissonanceVoip.dll</HintPath>
-    </Reference>
-    <Reference Include="DnsClient">
-      <HintPath>..\..\..\..\Рабочий стол\файлы\Qurre\DnsClient.dll</HintPath>
-    </Reference>
-    <Reference Include="Mirror">
-      <HintPath>..\..\..\..\Рабочий стол\файлы\Mirror.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Рабочий стол\файлы\Qurre\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLayer">
-      <HintPath>..\..\..\..\Рабочий стол\файлы\Qurre\NLayer.dll</HintPath>
-    </Reference>
-    <Reference Include="Qurre, Version=1.14.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Рабочий стол\файлы\Qurre\Qurre.dll</HintPath>
-    </Reference>
-    <Reference Include="SchematicUnity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SchematicUnity.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\Рабочий стол\файлы\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\Рабочий стол\файлы\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\..\Рабочий стол\файлы\UnityEngine.PhysicsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="YamlDotNet">
-      <HintPath>..\..\..\..\Рабочий стол\файлы\Qurre\YamlDotNet.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Commands\CallMap.cs" />
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\RunEvent.cs" />
+    <Compile Include="Commands\TerminateEvent.cs" />
     <Compile Include="EventManager.cs" />
+    <Compile Include="Events\EventClasses\FunnyGuns\Game.cs" />
+    <Compile Include="Events\EventClasses\FunnyGuns\HUD.cs" />
+    <Compile Include="Events\EventClasses\FunnyGuns\IMutator.cs" />
+    <Compile Include="Events\EventClasses\FunnyGuns\Muts\damageX2.cs" />
+    <Compile Include="Events\EventClasses\FunnyGuns\Muts\doorStuck.cs" />
+    <Compile Include="Events\EventClasses\FunnyGuns\Muts\example.cs" />
+    <Compile Include="Events\EventClasses\FunnyGuns\Muts\legalWH.cs" />
+    <Compile Include="Events\EventClasses\FunnyGuns\Muts\LightsOut.cs" />
+    <Compile Include="Events\EventClasses\FunnyGuns\Muts\LowVisibility.cs" />
+    <Compile Include="Events\EventClasses\FunnyGuns\Muts\o5ForEveryone.cs" />
+    <Compile Include="Events\EventClasses\FunnyGuns\Muts\PassiveRegen.cs" />
+    <Compile Include="Events\FunnyGuns.cs" />
     <Compile Include="Events\AmongUS.cs" />
     <Compile Include="Events\Lazerwars.cs" />
     <Compile Include="Events\Parkour.cs" />
@@ -118,5 +79,51 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Reference Include="0Harmony, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Desktop\haha code\Exiled References\EXILED\Plugins\dependencies\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\CommandSystem.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DissonanceVoip, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\DissonanceVoip.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Mirror.dll</HintPath>
+    </Reference>
+    <Reference Include="Qurre, Version=1.14.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\AppData\Roaming\Qurre\Qurre.dll</HintPath>
+    </Reference>
+    <Reference Include="SchematicUnity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SchematicUnity.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /y "$(TargetPath)" "%25appdata%25/Qurre/Plugins/$(TargetFileName)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

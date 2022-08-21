@@ -36,7 +36,6 @@ namespace AutoEvent.Events
 
         public void OnStart()
         {
-            Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
             Qurre.Events.Player.DroppingItem += OnDroppingItem;
             Qurre.Events.Player.PickupItem += OnPickupItem;
@@ -44,7 +43,6 @@ namespace AutoEvent.Events
         }
         public void OnStop()
         {
-            Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
             Qurre.Events.Player.DroppingItem -= OnDroppingItem;
             Qurre.Events.Player.PickupItem -= OnPickupItem;

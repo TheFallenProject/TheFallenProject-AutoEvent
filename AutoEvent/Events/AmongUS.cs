@@ -54,7 +54,6 @@ namespace AutoEvent.Events
             pcount = 0;
             plcount = 1;
             Qurre.Events.Player.Damage += OnDamage;
-            Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
             Qurre.Events.Player.Shooting += OnShootEvent;
             Qurre.Events.Player.Leave += OnLeave;
@@ -64,7 +63,7 @@ namespace AutoEvent.Events
         public void OnStop()
         {
             Qurre.Events.Player.Damage += OnDamage;
-            Plugin.IsEventRunning = false;
+            Plugin.ActiveEvent = null;
             Qurre.Events.Player.Shooting -= OnShootEvent;
             Qurre.Events.Player.Join -= OnJoin;
             Qurre.Events.Player.Leave -= OnLeave;

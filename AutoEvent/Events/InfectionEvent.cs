@@ -34,7 +34,6 @@ namespace AutoEvent.Events
 
         public void OnStart()
         {
-            Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
             Qurre.Events.Player.Dead += OnDead;
             Qurre.Events.Player.Damage += OnDamage;
@@ -42,7 +41,6 @@ namespace AutoEvent.Events
         }
         public void OnStop()
         {
-            Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
             Qurre.Events.Player.Dead -= OnDead;
             Qurre.Events.Player.Damage -= OnDamage;

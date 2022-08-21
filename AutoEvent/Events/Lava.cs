@@ -34,7 +34,6 @@ namespace AutoEvent.Events
 
         public void OnStart()
         {
-            Plugin.IsEventRunning = true;
             Qurre.Events.Player.Damage += OnDamage;
             Qurre.Events.Player.RagdollSpawn += OnRagdollSpawn;
             Qurre.Events.Player.Join += OnJoin;
@@ -43,7 +42,6 @@ namespace AutoEvent.Events
         }
         public void OnStop()
         {
-            Plugin.IsEventRunning = false;
             Qurre.Events.Player.Damage -= OnDamage;
             Qurre.Events.Player.RagdollSpawn -= OnRagdollSpawn;
             Qurre.Events.Player.Join -= OnJoin;

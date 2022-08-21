@@ -35,14 +35,12 @@ namespace AutoEvent.Events
 
         public void OnStart()
         {
-            Plugin.IsEventRunning = true;
             Qurre.Events.Player.Damage += OnDamage;
             Qurre.Events.Map.ScpDeadAnnouncement += OnScpDead;
             OnEventStarted();
         }
         public void OnStop()
         {
-            Plugin.IsEventRunning = false;
             Qurre.Events.Player.Damage -= OnDamage;
             Qurre.Events.Map.ScpDeadAnnouncement -= OnScpDead;
             Timing.CallDelayed(10f, () => EventEnd());

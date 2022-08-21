@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AutoEvent.Functions;
+using AutoEvent.Interfaces;
 using CommandSystem;
 using Qurre.API;
 
@@ -32,7 +33,7 @@ namespace AutoEvent.Commands
                 response = $"Раунд ещё не начался!";
                 return false;
             }
-            if (Plugin.IsEventRunning)
+            if (Plugin.ActiveEvent != null)
             {
                 response = $"Мини-Игра уже проводится!";
                 return false;
@@ -40,6 +41,7 @@ namespace AutoEvent.Commands
             if (arguments.Count != 1)
             {
                 response = $"Необходим только 1 аргумент - командное название ивента!";
+                return false;
             }
             var arr = GetTypesInNamespace(Assembly.GetExecutingAssembly(), "AutoEvent.Events");
             foreach (var type in arr)
@@ -57,6 +59,7 @@ namespace AutoEvent.Commands
                                 sender.Respond("Пытаюсь запустить ивент, OnStart не null...");
                                 eng.Invoke(Activator.CreateInstance(type), null);
                                 Round.Lock = true;
+                                Plugin.ActiveEvent = (IEvent)ev;
                                 response = "Ивент найден, запускаю.";
                                 return true;
                             }

@@ -31,14 +31,12 @@ namespace AutoEvent.Events
 
         public void OnStart()
         {
-            Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
             Qurre.Events.Player.Damage += OnDamage;
             OnEventStarted();
         }
         public void OnStop()
         {
-            Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
             Qurre.Events.Player.Damage -= OnDamage;
             Timing.CallDelayed(5f, () => EventEnd());

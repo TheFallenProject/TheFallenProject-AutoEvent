@@ -31,14 +31,12 @@ namespace AutoEvent.Events
 
         public void OnStart()
         {
-            Plugin.IsEventRunning = true;
             Qurre.Events.Player.Join += OnJoin;
             //Qurre.Events.Voice.PressAltChat += OnPressV;
             OnWaitingEvent();
         }
         public void OnStop()
         {
-            Plugin.IsEventRunning = false;
             Qurre.Events.Player.Join -= OnJoin;
             //Qurre.Events.Voice.PressAltChat -= OnPressV;
             Timing.CallDelayed(5f, () => EventEnd());
