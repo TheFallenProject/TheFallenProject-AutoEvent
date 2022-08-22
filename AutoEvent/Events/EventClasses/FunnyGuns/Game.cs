@@ -18,6 +18,7 @@ namespace AutoEvent.Events.EventClasses.FunnyGuns
 
         public static void EngageEvent()
         {
+            Events.FunnyGuns.fun = UnityEngine.Random.Range(0, 100);
             Events.FunnyGuns.Stage = 0;
             Events.FunnyGuns.SecondsBeforeNextStage = 30;
             Events.FunnyGuns.EventActive = true;
@@ -203,7 +204,7 @@ namespace AutoEvent.Events.EventClasses.FunnyGuns
                                 return;
                             }
                             Events.FunnyGuns.Muts.Add((IMutator)mut_obj);
-                            Map.Broadcast($"Был запущен мутатор \"{type.GetProperty("dispName").GetValue(mut_obj)}\"\n<size=18>{type.GetProperty("description").GetValue(mut_obj)}</size>", 10);
+                            Map.Broadcast($"Был запущен мутатор \"{type.GetProperty("dispName").GetValue(mut_obj)}\"\n<size=18>{type.GetProperty("description").GetValue(mut_obj)}</size>", 20);
                             Qurre.Log.Info("Mutator has been engaged and is now operational!");
                             return;
                         }
