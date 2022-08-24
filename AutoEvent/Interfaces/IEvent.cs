@@ -10,7 +10,7 @@ namespace AutoEvent.Interfaces
     public interface IEvent
     {
         /// <summary>
-        /// Название ивента в команде, при котором он вызывается. Например: ev_run [CommandName]. ДОЛЖЕН БЫТЬ ОБЯЗАТЕЛЬНО В НИЖНЕМ РЕГИСТРЕ!!!1!!!!1!
+        /// Название ивента в команде, при котором он вызывается. Например: ev_run [CommandName].
         /// </summary>
         string CommandName { get; }
 

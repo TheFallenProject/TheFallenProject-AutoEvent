@@ -37,7 +37,17 @@ namespace AutoEvent.Events.EventClasses.FunnyGuns
                 {
                     if (Events.FunnyGuns.RespawnAvaliable)
                     {
-                        msg += "<color=#c5ff84>Вызов подкрепления доступен. Используйте интерком для вызова.</color>\n";
+                        int specs = Qurre.API.Player.List.Count(pl => pl.Role == RoleType.Spectator);
+                        if (specs > 5)
+                            specs = 5;
+                        if (specs > 0)
+                        {
+                            msg += $"<color=#c5ff84>Вызов подкрепления доступен. Используйте интерком для респавна {specs} членов вашей команды.</color>\n";
+                        }
+                        else
+                        {
+                            msg += $"<color=#c5ff84>Вызов подкрепления доступен, но нет спектаторов, которые бы могли быть возрождены. Отстаивайте интерком или потратьте его впустую.</color>\n";
+                        }
                     }
                     if (Events.FunnyGuns.Stage == 1)
                     {
@@ -103,8 +113,13 @@ namespace AutoEvent.Events.EventClasses.FunnyGuns
                 {
                     // GET OUTTA HERE U PLACEHOLDER
                     // msg += $"<b>FG_BETA_TEST_PREP_STAGE ({Events.FunnyGuns.SecondsBeforeNextStage}s before stage 1)</b>";
-                    msg += "<b>Funny Guns. Стадия подготовки.</b>\n<color=yellow>Суть ивента: </color>Ваша задача - уничтожить всю вражескую команду. Во время игры будут добавляться мутаторы и закрываться зоны, удачи!\n";
+                    msg += "<b>Funny Guns. Стадия подготовки.</b>\n<color=yellow>Суть ивента: </color>Ваша задача - уничтожить всю вражескую команду. Во время игры будут добавляться мутаторы и закрываться зоны. Также вы можете вызывать подкрепление до 5 игроков в интеркоме." +
+                        " <b>Гейт на улице будет постоянно закрыт, единственный способ продвигаться - через комплекс.</b>\n";
                     msg += $"До следуюшей стадии {Events.FunnyGuns.SecondsBeforeNextStage} {SecondsEnding(Events.FunnyGuns.SecondsBeforeNextStage)}";
+                    if (Events.FunnyGuns.fun < 10)
+                    {
+                        msg += "\n<color=gray>Hoppediah Plantar FTW</color>";
+                    }
                 }
                 if (CIRed > 0)
                     CIRed--;
