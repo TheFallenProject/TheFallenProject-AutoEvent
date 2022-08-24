@@ -19,7 +19,7 @@ namespace AutoEvent.Events
         public string CommandName => "funnyGuns";
 
         public string Name => "Funny Guns";
-
+        
         public string Color => "FFFFFF";
 
         public string Description => "Тупой ивент Treeshold (aka Darcy Gaming) с ржачными пушками. [Это бета версия, сервер, конечно, не упадёт, но ивент \"может сделать брррррррррр\"]";
