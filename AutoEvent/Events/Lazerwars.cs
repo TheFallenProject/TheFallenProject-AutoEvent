@@ -63,17 +63,17 @@ namespace AutoEvent.Events
             var rand = Random.Range(0, 11);
             switch (rand)
             {
-                case 0: position = new Vector3(101.94f, 950f, -155.8f); break;
-                case 1: position = new Vector3(101.94f, 950f, -155.8f); break;
-                case 2: position = new Vector3(101.94f, 950f, -155.8f); break;
-                case 3: position = new Vector3(122.96f, 950f, -91.19f); break;
-                case 4: position = new Vector3(134.65f, 950f, -85.92f); break;
-                case 5: position = new Vector3(134.65f, 950f, -85.92f); break;
-                case 6: position = new Vector3(174.04f, 950f, -159.97f); break;
-                case 7: position = new Vector3(122.26f, 950f, -125.35f); break;
-                case 8: position = new Vector3(139.82f, 950f, -154.51f); break;
-                case 9: position = new Vector3(143.57f, 950f, -109.93f); break;
-                case 10: position = new Vector3(144.07f, 950f, -119.53f); break;
+                case 0: position = new Vector3(101.94f, 945f, -155.8f); break;
+                case 1: position = new Vector3(101.94f, 945f, -155.8f); break;
+                case 2: position = new Vector3(101.94f, 945f, -155.8f); break;
+                case 3: position = new Vector3(122.96f, 945f, -91.19f); break;
+                case 4: position = new Vector3(134.65f, 945f, -85.92f); break;
+                case 5: position = new Vector3(134.65f, 945f, -85.92f); break;
+                case 6: position = new Vector3(174.04f, 945f, -159.97f); break;
+                case 7: position = new Vector3(122.26f, 945f, -125.35f); break;
+                case 8: position = new Vector3(139.82f, 945f, -154.51f); break;
+                case 9: position = new Vector3(143.57f, 945f, -109.93f); break;
+                case 10: position = new Vector3(144.07f, 945f, -119.53f); break;
             }
             return position;
         }

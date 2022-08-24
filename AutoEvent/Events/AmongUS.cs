@@ -31,10 +31,11 @@ namespace AutoEvent.Events
         public string CommandName => "among";
         public string Name => "AmongUS";
         public string Color => "FF4242";
-        public static Model taskd1S { get; set; }
+        public static Model taskd { get; set; }
         public static Model Model { get; set; }
-        public static Model taskd1F { get; set; }
         public static Model Bbody { get; set; }
+        public static Model Door { get; set; }
+        public static Model Screens { get; set; }
         public TimeSpan EventTime { get; set; }
         public static int takeitD1 = 0;
         public string Description => "Мафия (Запуская вы подтверждаете, что в случае краша сервера ВЫ несёте ответственность)";
@@ -46,7 +47,10 @@ namespace AutoEvent.Events
         public static int kilid = 0;
         public static int shid = 0;
         public int Votes { get; set; }
-
+        public List<bool> Tasks = new List<bool>()
+        {
+             
+        };
         public void OnStart()
         {
             kilid = 0;
@@ -57,6 +61,7 @@ namespace AutoEvent.Events
             Qurre.Events.Player.Join += OnJoin;
             Qurre.Events.Player.Shooting += OnShootEvent;
             Qurre.Events.Player.Leave += OnLeave;
+            Voice.PressAltChat += OnAlt;
             OnEventStarted();
         }
 
@@ -69,8 +74,17 @@ namespace AutoEvent.Events
             Qurre.Events.Player.Leave -= OnLeave;
             Timing.CallDelayed(10f, () => EventEnd());
         }
+        public void OnAlt(PressAltChatEvent ev)
+        {
+            
+        }
         public void OnEventStarted()
         {
+            foreach (Player pl in Player.List)
+            {
+                pl.GameObject.AddComponent<BoxCollider>();
+                pl.GameObject.AddComponent<BoxCollider>().size = new Vector3(3f, 1f, 3f);
+            }
             BroadcastPlayers("<color=blue> -=-Among-=- </color>", 5);
             CreatingMapFromJson("Among.json", new Vector3(145.18f, 945.26f, -122.97f), out var model);
             Model = model;
@@ -101,7 +115,7 @@ namespace AutoEvent.Events
             {
                 if (pl.Id == ran)
                 {
-                    Timing.CallDelayed(10f, () => { pl.ShowHint("<color=red> Вы стали !УБИЙЦЕЙ! </color> \n" + "Убей их всех! (Пистолет скоро вам дадут)", 10); });
+                    Timing.CallDelayed(10f, () => { pl.ShowHint("<color=red> Вы стали !ХАКЕРОМ! </color> \n" + "Взломай терминалы чтобы ПОБЕДИТЬ", 10); });
                     Timing.CallDelayed(10f, () => { pl.AddItem(ItemType.GunCOM18, 1); });
                     kilid = ran;
                     killrol = pl.RoleName;
@@ -109,15 +123,18 @@ namespace AutoEvent.Events
                 }
                 else if (pl.Id == sh)
                 {
-                    Timing.CallDelayed(10f, () => { pl.ShowHint(" <color=blue> Вы стали !ШЕРИФОМ! </color> \n" + "Убей убийцу!", 10); });
+                    Timing.CallDelayed(10f, () => { pl.ShowHint(" <color=blue> Вы из группы зачистки </color> \n" + "Убей хакеров!", 10); });
                     Timing.CallDelayed(10f, () => { pl.AddItem(ItemType.GunCOM18, 1); });
                     shid = pl.Id;
                 }
                 else
                 {
-                    Timing.CallDelayed(10f, () => { pl.ShowHint("<color=green> Вы МИРНЫЙ! </color> \n" + "Выживай!", 10); });
+                    Timing.CallDelayed(10f, () => { pl.ShowHint("<color=green> Вы РАБОЧИЙ! </color> \n" + "Работай и ищи хакеров", 10); });
                 }
             }
+            TrigCreate();
+            DoorCreate();
+            ScreenCreate();
         }
         public void OnShootEvent(ShootingEvent ev)
         {
@@ -167,54 +184,7 @@ namespace AutoEvent.Events
         }
         public void OnDamage(DamageEvent ev)
         {
-            if(ev.Target.Id == kilid)
-            {
-                Map.ClearBroadcasts();
-                Map.Broadcast("<Color=red> Убийца убит! Победа мирных! </color>", 5);
-                OnStop();
-            }
-            else if (ev.Target.Id == shid)
-            {
-                pcount--;
-                if(pcount == 1)
-                {
-                    Map.ClearBroadcasts();
-                    Map.Broadcast("<color=red> Убийца убил всех </color>", 5);
-                    OnStop();
-                }
-                else
-                {
-                    Map.ClearBroadcasts();
-                    Map.Broadcast("<Color=blue> Шириф убит (пистолет теперь у мирного) </color>", 5);
-                    var ran = Random.Range(2, plcount);
-                    if (ran == kilid || ran == shid)
-                    {
-                        while (ran != kilid && ran != shid)
-                        {
-                            ran = Random.Range(2, plcount);
-                        }
-                    }
-                    foreach (Player pl in Player.List)
-                    {
-                        if (ran == pl.Id)
-                        {
-                            pl.ShowHint("<color=yellow> Вам дали пистолет, убей убийцу! </color>");
-                            pl.AddItem(ItemType.GunCOM18, 1);
-                            shid = pl.Id;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                pcount--;
-                if(pcount == 1)
-                {
-                    Map.ClearBroadcasts();
-                    Map.Broadcast("<color=red> Убийца убил всех </color>", 5);
-                    OnStop();
-                }
-            }
+
         }
         public Vector3 RandomPosition()
         {
@@ -245,9 +215,106 @@ namespace AutoEvent.Events
             RoleType.ChaosConscript,
             RoleType.Scientist
         };
+        public void TrigCreate()
+        {
+            taskd = new Model("trig", Model.GameObject.transform.position);
+            taskd.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(255, 0, 1, 125), new Vector3(0.47f, 2.14f, -13.58f), new Vector3(0, 0, 0), new Vector3(2.657938f, 3.390858f, 1.928785f)));
+            taskd.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(255, 0, 2, 125), new Vector3(-67.67f, 2.14f, -56.33f), new Vector3(0, 0, 0), new Vector3(2.657938f, 3.390858f, 1.928785f)));
+            taskd.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(255, 0, 3, 125), new Vector3(-126.11f, 2.14f, -44.36f), new Vector3(0, 0, 0), new Vector3(2.657938f, 3.390858f, 1.928785f)));
+            taskd.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(255, 0, 4, 125), new Vector3(-149.01f, 2.14f, -3.02f), new Vector3(0, 0, 0), new Vector3(2.657938f, 3.390858f, 1.928785f)));
+            taskd.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(255, 0, 5, 125), new Vector3(-96.16f, 2.14f, 10.437f), new Vector3(0, 0, 0), new Vector3(2.657938f, 3.390858f, 1.928785f)));
+            taskd.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(255, 0, 6, 125), new Vector3(-40.75f, 2.14f, 46.2f), new Vector3(0, 0, 0), new Vector3(2.657938f, 3.390858f, 1.928785f)));
+            foreach (var trig in taskd.Primitives)
+            {
+                trig.GameObject.AddComponent<Trigger>();
+            }
+        }
+        public void ScreenCreate()
+        {
+            Screens = new Model("screen", Model.GameObject.transform.position);
+            Screens.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(255, 0, 0, 125), new Vector3(0.6083f, 2.831f, -14.14f), new Vector3(0, 0, 0), new Vector3(2.246967f, 1.708155f, 0.4473f)));
+            Screens.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(255, 0, 0, 125), new Vector3(-67.59f, 2.831f, -56.91601f), new Vector3(0, 0, 0), new Vector3(2.657938f, 1.708155f, 1.928785f)));
+            Screens.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(255, 0, 0, 125), new Vector3(-126.24f, 2.831f, -44.64f), new Vector3(0, 0, 0), new Vector3(2.657938f, 1.708155f, 1.928785f)));
+            Screens.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(255, 0, 0, 125), new Vector3(-148.93f, 2.831f, -3.307f), new Vector3(0, 0, 0), new Vector3(2.657938f, 1.708155f, 1.928785f)));
+            Screens.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(255, 0, 0, 125), new Vector3(-96.1f, 2.831f, 9.893997f), new Vector3(0, 0, 0), new Vector3(2.657938f, 1.708155f, 1.928785f)));
+            Screens.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(255, 0, 0, 125), new Vector3(-40.75f, 2.831f, 45.849f), new Vector3(0, 0, 0), new Vector3(2.657938f, 1.708155f, 1.928785f)));
+            foreach (var screen in Screens.Primitives)
+            {
+                screen.GameObject.AddComponent<Screens>();
+            }
+        }
+        public void DoorCreate()
+        {
+            Door = new Model("door", Model.GameObject.transform.position);
+            Door.AddPart(new ModelPrimitive(taskd, PrimitiveType.Cube, new Color32(27, 70, 19, 255), new Vector3(0.6083f, 2.831f, -14.14f), new Vector3(0, 0, 0), new Vector3(2.246967f, 1.708155f, 0.4473f)));
+            foreach (var door in Door.Primitives)
+            {
+                door.GameObject.AddComponent<Doorr>();
+            }
+        }
         public void OnJoin(JoinEvent ev)
         {
             ev.Player.Role = RoleType.Spectator;
         }
     }
+    class Taskcreate1S : MonoBehaviour 
+    {
+        
+        public static bool istask1 = false;
+        private BoxCollider collider;
+        void Start()
+        {
+            collider = gameObject.AddComponent<BoxCollider>();
+            collider.isTrigger = true;
+        }
+        void OnTriggerStay(Collider other)
+        {
+            var pl = Player.Get(other.gameObject);
+            if (istask1 == false)
+            {
+                pl.AddItem(ItemType.KeycardJanitor, 3);
+                pl.ShowHint("<color=green> Вы взяли задание, отнеси это в зал А </color>", 5);
+            }
+            else if (istask1 == true)
+            {
+                pl.ShowHint("<color=red> Вы его сделали </color>", 5);
+            }
+        }
+    }
+    internal class Doorr : MonoBehaviour
+    {
+       private BoxCollider collider;
+       private void Start()
+       {
+          collider = gameObject.AddComponent<BoxCollider>();
+          collider.isTrigger = true;
+          Log.Info("дверь");
+       }
+    }
+    internal class Screens : MonoBehaviour
+    {
+        private BoxCollider collider;
+        private void Start()
+        {
+            collider = gameObject.AddComponent<BoxCollider>();
+            collider.isTrigger = true;
+            Log.Info("экран");
+        }
+    }
+    internal class Trigger : MonoBehaviour
+    {
+        private BoxCollider collider;
+        private void Start()
+        {
+            collider = gameObject.AddComponent<BoxCollider>();
+            collider.isTrigger = true;
+            Log.Info("Триггер");
+        }
+        void OnTriggerStay(Collider other)
+        {
+            Log.Info("триггггггггггг");
+            var pl = Player.Get(other.gameObject);
+        }
+    }
 }
+
