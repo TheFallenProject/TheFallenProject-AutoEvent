@@ -22,10 +22,15 @@ namespace AutoEvent.Events
 
         public string Color => "FFFFFF";
 
-        public string Description => "Тупой ивент Treeshold (aka Darcy Gaming) с ржачными пушками. [Это бета версия, сервер, конечно, не упадёт, но ивент \"может сделать брррррррррр\"]";
+        public string Description => "Тупой ивент Treeshold (aka Darcy Gaming) с ржачными пушками. [Public Beta => Stable]";
 
         //is this depricated?
         public int Votes { get; set; }
+
+        /// <summary>
+        /// Fun. Lots of Fun. Fun. Fun. Fun. Fun. Fun. Fun. Fun. Fun. Fun. Fun. Fun. Fun. Fun. Fun. Fun. Fun.
+        /// </summary>
+        public static int fun;
 
         public static List<EventClasses.FunnyGuns.IMutator> Muts = new List<EventClasses.FunnyGuns.IMutator>(10);
 
@@ -65,10 +70,12 @@ namespace AutoEvent.Events
         /// </summary>
         public static uint AliveNTF = 0;
 
+        /// <summary>
+        /// Zones, which are locked down.
+        /// </summary>
         public static List<Qurre.API.Objects.ZoneType> ldzones = new List<Qurre.API.Objects.ZoneType>(5);
 
-
-        private static string ver = "0.6.0.0-BETA";
+        private static string ver = "0.6.1.0-PUBLIC-BETA";
 
         public void OnStart()
         {

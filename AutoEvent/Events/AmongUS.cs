@@ -139,9 +139,9 @@ namespace AutoEvent.Events
         public void OnShootEvent(ShootingEvent ev)
         {
             ev.Shooter.ClearInventory();
-            float j = 15;
-            ev.Shooter.ShowHint($"Перезарядка... {j} секунд");
-            Timing.CallDelayed(j, () => { ev.Shooter.AddItem(ItemType.GunCOM18); });
+            ev.Shooter.ShowHint($"Перезарядка... 15 секунд");
+            //Why do you store time IN A VARIABLE? THERE ARE NO OTHER REFERENCES TO IT OTHER THAN HERE?
+            Timing.CallDelayed(15f, () => { ev.Shooter.AddItem(ItemType.GunCOM18); });
         }
         public void EventEnd()
         {
