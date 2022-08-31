@@ -19,7 +19,7 @@ namespace AutoEvent.Functions
             collider = gameObject.AddComponent<BoxCollider>();
             collider.isTrigger = true;
         }
-        void OnTriggerStay(Collider other) // Много ресурсов ест
+        void OnTriggerStay(Collider other)
         {
             if (Player.Get(other.gameObject) is Player)
             {

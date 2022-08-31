@@ -22,12 +22,7 @@ namespace AutoEvent.Functions
         void OnTriggerEnter(Collider other)
         {
             var pl = Player.Get(other.gameObject);
-            //pl.EnableEffect(Qurre.API.Objects.EffectType.Stained, 1);
             Destroy(gameObject);
         }
-        //void Update()
-        //{
-        //transform.Rotate(0, 1f, 0);
-        //}
     }
 }

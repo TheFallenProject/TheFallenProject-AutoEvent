@@ -1,0 +1,129 @@
+using AutoEvent.Functions;
+using AutoEvent.Interfaces;
+using InventorySystem.Items;
+using MEC;
+using Mirror;
+using Qurre;
+using Qurre.API;
+using Qurre.API.Addons.Models;
+using Qurre.API.Controllers;
+using Qurre.API.Controllers.Items;
+using Qurre.API.Events;
+using Qurre.API.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using UnityEngine;
+using static AutoEvent.Functions.MainFunctions;
+using Random = UnityEngine.Random;
+
+namespace AutoEvent.Events
+{
+    internal class Dog : IEvent
+    {
+        public string Name => "Заражение собак";
+        public string Description => "Заражение собак. Если собака убивает человека - он становится собакой.";
+        public string Color => "ff0505";
+        public string CommandName => "dog";
+        public Model Model { get; set; }
+        public TimeSpan EventTime { get; set; }
+        public int Votes { get; set; }
+        
+        public void OnStart()
+        {
+            Qurre.Events.Player.Join += OnJoin;
+            Timing.RunCoroutine(Event(), "event_time");
+        }
+
+        public void OnEventStarted()
+        {
+            Log.Info("Хуй");
+            // Count Members
+            int Count = Player.List.Count();
+            // Cleanup all
+            CleanUpAll();
+            // Lock Gate_A, Gate_B
+            foreach (var door in Map.Doors)
+            {
+                Log.Info("[prewrwef");
+                if (door.Type == DoorType.Gate_A ^ door.Type == DoorType.Gate_B)
+                {
+                    door.Locked = true;
+                }
+            }
+            // Lock LiftGate_A, LiftGate_B
+            foreach (var lift in Map.Lifts)
+            {
+                Log.Info("3erwefdsadqerq4tgfec");
+                if (lift.Type == LiftType.GateA ^ lift.Type == LiftType.GateB)
+                {
+                    lift.Locked = true;
+                }
+            }
+            // Give Role / Items / RandomTeleport
+            foreach (Player p1 in Player.List)
+            {
+                Log.Info("3erqef1234rf1234f");
+                p1.Role = RoleType.ClassD;
+                p1.AddItem(ItemType.Medkit);
+                p1.AddItem(ItemType.GrenadeFlash);
+                Timing.CallDelayed(0.4f, () => p1.TeleportToRandomDoor());
+            }
+            // Random SCP
+            SetDog(Player.List.ToList().RandomItem());
+            Log.Info("423r34fwfdfasvafasv");
+        }
+
+        public void OnStop()
+        {
+            BroadcastPlayers("Раунд завершён!", 15);
+        }
+
+        public IEnumerator<float> Event()
+        {
+            // Отсчет обратного времени
+            for (int time = 10; time > 0; time--)
+            {
+                Log.Info(time);
+                BroadcastPlayers($"<size=100><color=red>{time}</color></size>", 1);
+                yield return Timing.WaitForSeconds(1f);
+            }
+            Log.Info("Гей");
+            OnEventStarted();
+            while (Player.List.Count(r => r.Team == Team.SCP) > 0)
+            {
+                foreach (Player p in Player.List)
+                {
+                    if (p.Role == RoleType.Spectator)
+                    {
+                        SetDog(p);
+                    }
+                    p.Broadcast($"<color=#{Color}><size=50><b>{Name}</b></size></color>\n<color=red><b>Собак: </b></color><color=yellow><b>{Player.List.Count(r => r.Team == Team.SCP)}</b></color><color=grey>|</color><color=red><b>Людей:</b></color><color=yellow><b> {Player.List.Count(r => r.Team == Team.TUT)}</b></color>", 1);
+                }
+            }
+            if (Player.List.Count(r => r.Team == Team.SCP) == 0)
+            {
+                BroadcastPlayers("<color=yellow><b>Раунд закончен!\nЛюди победили.", 15);
+            }    
+            else if (Player.List.Count(r => r.Team != Team.SCP) == 0)
+            {
+                BroadcastPlayers("<color=yellow><b>Раунд закончен!\nSCP победили.", 15);
+            }
+            OnStop();
+            yield break;
+        }
+
+        // Какая та штука
+        public void OnJoin(JoinEvent ev)
+        {
+            ev.Player.Role = RoleType.Spectator;
+        }
+
+        public void SetDog(Player player)
+        {
+            player.Role = RoleType.Scp93953;
+            player.Broadcast("<color=red><b>Вас заразили! Вы стали SCP 939-53</b></color>", 15);
+        }
+    }
+}

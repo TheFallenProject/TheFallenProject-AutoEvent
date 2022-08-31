@@ -23,13 +23,8 @@ namespace AutoEvent.Functions
         /// <summary>Переспавнить игрока без телепортиции на точку спавна.</summary>
         public static void BlockAndChangeRolePlayer(Player player, RoleType role)
         {
-            player.BlockSpawnTeleport = true; // Блокирует телепортацию при спавне
-            player.Role = role;               // Меняем роль
-        }
-
-        public static void TeleportPlayersToPosition(List<Player> players, Vector3 pos) // input -> Player.List.ToList(), Position
-        {
-            players.ForEach(player => player.Position = pos);
+            player.BlockSpawnTeleport = true;
+            player.Role = role;
         }
 
         public static void TeleportAndChangeRolePlayers(List<Player> players, RoleType type, Vector3 pos) // input -> Player.List.ToList(), Position
@@ -42,12 +37,6 @@ namespace AutoEvent.Functions
                     player.Position = pos;
                 });
             });
-        }
-
-        /// <summary>Переспавнить игроков без телепортиции на точку спавна.</summary>
-        public static void BlockAndChangeRolePlayers(List<Player> players, RoleType role)
-        {
-            players.ForEach(x => BlockAndChangeRolePlayer(x, role));
         }
 
         /// <summary>Проиграть аудиофайл</summary>
@@ -70,12 +59,6 @@ namespace AutoEvent.Functions
                 player.ClearBroadcasts();
                 player.Broadcast(message, time);
             });
-        }
-
-        /// <summary>Написать сообщение всем игрокам в консоль</summary>
-        public static void ConsolePlayers(string message)
-        {
-            Player.List.ToList().ForEach(x => x.SendConsoleMessage(message, "white"));
         }
 
         /// <summary>Загрузить карту из JSON</summary>
@@ -103,32 +86,9 @@ namespace AutoEvent.Functions
 
             Round.End();
         }
-        public static IEnumerator<float> TimingBeginBroadcastPlayers(string eventName, float time) // time = 30
-        {
-            while (time > 0)
-            {
-                Map.ClearBroadcasts();
-                Map.Broadcast($"<color=#D71868><b><i>{eventName}</i></b></color>\n<color=#ABF000>До начала ивента осталось <color=red>{time}</color> секунд.</color>", 1);
-
-                yield return Timing.WaitForSeconds(1f);
-                time--;
-            }
-            yield break;
-        }
-        /// <summary>Выдача всем игрокам эффектов.</summary>
-        public static void EnablePlayersEffect(List<Player> players, EffectType effect)
-        {
-            players.ForEach(x => x.EnableEffect(effect));
-        }
-        /// <summary>Убрать у всех игроков выданные эффекты.</summary>
-        public static void DisablePlayersEffect(List<Player> players, EffectType effect)
-        {
-            players.ForEach(x => x.DisableEffect(effect));
-        }
         /// <summary>Очистка мусора после ивента.</summary>
         public static IEnumerator<float> CleanUpAll()
         {
-            //Task.Run(() => { });
             foreach (Pickup pickup in Map.Pickups)
             {
                 pickup.Base.DestroySelf();
@@ -142,7 +102,6 @@ namespace AutoEvent.Functions
         /// <summary>Очистка карты после ивента.</summary>
         public static IEnumerator<float> DestroyObjects(Model model)
         {
-            //Task.Run(() => { });
             foreach (var prim in model.Primitives)
             {
                 GameObject.Destroy(prim.GameObject);
@@ -154,7 +113,5 @@ namespace AutoEvent.Functions
             model.Destroy();
             yield break;
         }
-        public static bool IsHuman(Player player) => player.Team != Team.SCP && player.Team != Team.RIP;
-        public static int HumanCount = Player.List.Count(r => r.Team != Team.SCP && r.Team != Team.RIP);
     }
 }

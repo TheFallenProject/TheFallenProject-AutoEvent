@@ -36,19 +36,6 @@
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Commands\TerminateEvent.cs" />
-    <Compile Include="EventManager.cs" />
-    <Compile Include="Events\EventClasses\FunnyGuns\Game.cs" />
-    <Compile Include="Events\EventClasses\FunnyGuns\HUD.cs" />
-    <Compile Include="Events\EventClasses\FunnyGuns\IMutator.cs" />
-    <Compile Include="Events\EventClasses\FunnyGuns\Muts\damageX2.cs" />
-    <Compile Include="Events\EventClasses\FunnyGuns\Muts\doorStuck.cs" />
-    <Compile Include="Events\EventClasses\FunnyGuns\Muts\example.cs" />
-    <Compile Include="Events\EventClasses\FunnyGuns\Muts\legalWH.cs" />
-    <Compile Include="Events\EventClasses\FunnyGuns\Muts\LightsOut.cs" />
-    <Compile Include="Events\EventClasses\FunnyGuns\Muts\LowVisibility.cs" />
-    <Compile Include="Events\EventClasses\FunnyGuns\Muts\o5ForEveryone.cs" />
-    <Compile Include="Events\EventClasses\FunnyGuns\Muts\PassiveRegen.cs" />
-    <Compile Include="Events\FunnyGuns.cs" />
     <Compile Include="Events\AmongUS.cs" />
     <Compile Include="Events\Lazerwars.cs" />
     <Compile Include="Events\Parkour.cs" />
@@ -57,7 +44,6 @@
     <Compile Include="Events\HideAndSeek.cs" />
     <Compile Include="Events\FootballEvent.cs" />
     <Compile Include="Events\Bossbattle.cs" />
-    <Compile Include="Events\BallsEvent.cs" />
     <Compile Include="Events\Glass.cs" />
     <Compile Include="Events\Battle.cs" />
     <Compile Include="Events\Lava.cs" />
@@ -68,12 +54,10 @@
     <Compile Include="Events\InfectionEvent.cs" />
     <Compile Include="Functions\FootballComponent.cs" />
     <Compile Include="Functions\LedderComponent.cs" />
-    <Compile Include="Functions\MoveComponent.cs" />
     <Compile Include="Functions\GlassComponent.cs" />
     <Compile Include="Functions\LavaComponent.cs" />
     <Compile Include="Functions\MainFunctions.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
-    <Compile Include="Patches\BetterHints.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,7 +70,7 @@
     </Reference>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\!SCPslD!\scmd\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

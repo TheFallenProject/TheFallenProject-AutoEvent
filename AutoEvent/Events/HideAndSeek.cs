@@ -115,22 +115,14 @@ namespace AutoEvent.Events
                             if(pos.x == anotherPlayer.GameObject.transform.position.x && pos.y == anotherPlayer.GameObject.transform.position.y && pos.z == anotherPlayer.GameObject.transform.position.z)
                             {
                                 if (Vector3.Distance(player.GameObject.transform.position, anotherPlayer.GameObject.transform.position) < 3)
-                            {
-                                 BlockAndChangeRolePlayer(player, RoleType.NtfCaptain);
-                                 player.ClearInventory();
+                                {
+                                    BlockAndChangeRolePlayer(player, RoleType.NtfCaptain);
+                                    player.ClearInventory();
                            
-                                BlockAndChangeRolePlayer(anotherPlayer, RoleType.ClassD);
-                                anotherPlayer.ClearInventory();
+                                    BlockAndChangeRolePlayer(anotherPlayer, RoleType.ClassD);
+                                    anotherPlayer.ClearInventory();
                                 }
                             }
-                            // if (Vector3.Distance(player.GameObject.transform.position, anotherPlayer.GameObject.transform.position) < 3)
-                            // {
-                            //     BlockAndChangeRolePlayer(player, RoleType.NtfCaptain);
-                            //      player.ClearInventory();
-                            //
-                            //     BlockAndChangeRolePlayer(anotherPlayer, RoleType.ClassD);
-                            //     anotherPlayer.ClearInventory();
-                            //}
                         }
                     }
                 }
