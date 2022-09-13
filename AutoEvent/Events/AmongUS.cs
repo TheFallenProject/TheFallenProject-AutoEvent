@@ -140,6 +140,7 @@ namespace AutoEvent.Events
         {
             ev.Shooter.ClearInventory();
             ev.Shooter.ShowHint($"Перезарядка... 15 секунд");
+            //Why do you store time IN A VARIABLE? THERE ARE NO OTHER REFERENCES TO IT OTHER THAN HERE?
             Timing.CallDelayed(15f, () => { ev.Shooter.AddItem(ItemType.GunCOM18); });
         }
         public void EventEnd()
@@ -300,7 +301,7 @@ namespace AutoEvent.Events
             Log.Info("экран");
         }
     }
-    internal class Trigger : MonoBehaviour  
+    internal class Trigger : MonoBehaviour
     {
         private BoxCollider collider;
         private void Start()

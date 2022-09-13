@@ -1,4 +1,4 @@
-using AutoEvent.Functions;
+﻿using AutoEvent.Functions;
 using MEC;
 using Qurre.API;
 using System;

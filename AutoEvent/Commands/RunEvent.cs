@@ -51,7 +51,7 @@ namespace AutoEvent.Commands
                     var ev = Activator.CreateInstance(type);
                     try
                     {
-                        if ((string)type.GetProperty("CommandName").GetValue(ev) == arguments.ElementAt(0))
+                        if ((string)type.GetProperty("CommandName").GetValue(ev) == arguments.ElementAt(0)) //This is unsafe, but working with unknown data has it's drawbacks.
                         {
                             var eng = type.GetMethod("OnStart");
                             if (eng != null)

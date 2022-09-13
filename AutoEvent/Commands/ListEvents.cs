@@ -20,6 +20,7 @@ namespace AutoEvent.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            //Why the fuck would you prohibit a player to use VIEW command, it doesn't even do anything u stoopid!
             Player admin = Player.Get((sender as CommandSender).SenderId);
             if (Plugin.CustomConfig.DonatorGroups.Contains(admin.GroupName))
             {
